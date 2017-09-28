@@ -1,0 +1,3881 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.example.carlosje.reportes_ibm.ATMprevActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
+            app:toolbarId="@+id/toolbar">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
+
+            <ImageView
+                android:id="@+id/app_bar_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cabecera" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+
+
+
+
+
+
+
+
+    </android.support.design.widget.AppBarLayout>
+
+    <TextView
+        android:id="@+id/tv_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="18sp"
+        android:visibility="invisible" />
+
+    <android.support.v4.widget.NestedScrollView
+
+        android:id="@+id/nestedScrollView"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
+
+        <LinearLayout
+            android:id="@+id/lay_gral"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+<ScrollView
+    android:id="@+id/sv_nuevo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <LinearLayout
+                android:id="@+id/lay_nuevo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+
+                android:paddingTop="16dp"
+                android:visibility="visible"
+                android:weightSum="1">
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card1"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3.73"
+            android:elevation="0dp"
+            android:focusable="false"
+            android:visibility="visible"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true"
+            app:contentPaddingBottom="32dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp">
+
+
+                <TextView
+                    android:id="@+id/fecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginRight="16px"
+                    android:onClick="showDatePickerDialog"
+                    android:text="Fecha de atención"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_et_reporte"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="64px">
+
+
+                    <EditText
+                        android:id="@+id/reporte"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/fecha"
+                        android:layout_marginTop="11dp"
+                        android:ems="10"
+                        android:hint="Call"
+
+                        android:inputType="textCapCharacters" />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_et_TPV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="64px"
+                    android:layout_toRightOf="@+id/input_et_reporte">
+
+                    <EditText
+                        android:id="@+id/id_tpv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="15dp"
+                        android:ems="10"
+                        android:hint="ID ATM"
+                        android:inputType="textCapCharacters" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_et_Localidad"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/input_et_reporte">
+
+                    <EditText
+                        android:id="@+id/localidad"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/input_et_reporte"
+                        android:ems="10"
+                        android:hint="Localidad"
+                        android:inputType="textPersonName" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/lb_datos_atm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_below="@+id/input_et_Localidad"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginTop="56px"
+                    android:text="Datos ATM"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_et_marca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lb_datos_atm"
+                    android:layout_toLeftOf="@+id/input_et_carga"
+                    android:layout_toStartOf="@+id/input_et_carga">
+
+                    <EditText
+                        android:id="@+id/marca"
+                        android:layout_width="172dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/lb_datos_atm"
+                        android:ems="10"
+                        android:hint="Marca"
+                        android:inputType="textPersonName" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_et_modelo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/lb_datos_atm"
+                    android:layout_toRightOf="@+id/input_et_marca">
+
+                    <EditText
+                        android:id="@+id/modelo"
+                        android:layout_width="206dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/lb_datos_atm"
+                        android:ems="10"
+                        android:hint="Modelo"
+                        android:inputType="textPersonName" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_et_serie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/input_et_marca">
+
+                    <EditText
+                        android:id="@+id/serie"
+                        android:layout_width="172dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/input_et_marca"
+                        android:ems="10"
+                        android:hint="Serie"
+                        android:inputType="textCapCharacters" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_et_carga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/input_et_modelo"
+                    android:layout_toRightOf="@+id/input_et_serie">
+
+                    <EditText
+                        android:id="@+id/carga"
+                        android:layout_width="199dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/input_et_modelo"
+                        android:ems="10"
+                        android:hint="Carga"
+                        android:inputType="textPersonName" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_et_no_inv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/input_et_serie">
+
+                    <EditText
+                        android:id="@+id/inventario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/input_et_serie"
+                        android:ems="10"
+                        android:hint="Numero de inventario"
+                        android:inputType="textPersonName" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/lb_banco"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/input_et_no_inv"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="56px"
+
+                    android:text="Banco"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_banco"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_banco"
+
+
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/RB_banco_banamex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Banamex"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_banco_bancomer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Bancomer"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_banco_banorte"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Banorte"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_banco_bancoppel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Bancoppel"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_banco_santander"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Santander"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_remo_suc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_banco"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="56px"
+
+                    android:text="Remoto / Sucursal"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_remo_suc"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_remo_suc"
+
+
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/RB_remo_suc_remoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Remoto"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_remo_suc_sucursal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Sucursal"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_et_cte_final"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/op_remo_suc"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginTop="24px">
+
+                    <EditText
+                        android:id="@+id/cliente_final"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/input_et_no_inv"
+                        android:ems="10"
+                        android:hint="Cliente final / Donde se encuentra"
+                        android:inputType="textPersonName" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/lb_caje_serv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_below="@+id/input_et_cte_final"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginTop="24px"
+                    android:text="El cajero da servicio a:"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+                <RadioGroup
+                    android:id="@+id/op_cajero_servi_a"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_caje_serv"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_publico"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Todo púbico"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_Personal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Solo personal de la empresa"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/lb_siguiente2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+
+                    android:layout_below="@+id/op_cajero_servi_a"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginRight="32px"
+                    android:layout_marginTop="32px"
+                    android:onClick="siguiente2"
+                    android:text="Siguiente"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3.73"
+            android:elevation="0dp"
+            android:visibility="gone"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true"
+            app:contentPaddingBottom="32dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="16dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="16dp">
+
+
+                <TextView
+                    android:id="@+id/lb_mod_sw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_marginBottom="16px"
+
+                    android:text="Módulos de software"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_et_sis_op"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_below="@+id/lb_mod_sw">
+
+
+                    <EditText
+                        android:id="@+id/sistema_operativo"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/lb_mod_sw"
+                        android:layout_marginTop="11dp"
+                        android:ems="10"
+                        android:hint="Sistema operativo"
+                        android:inputType="textPersonName" />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_et_ver_multiv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lb_mod_sw"
+
+                    android:layout_toRightOf="@+id/input_et_sis_op">
+
+                    <EditText
+                        android:id="@+id/version_multivendor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="15dp"
+                        android:ems="10"
+                        android:hint="Versión multivendor"
+                        android:inputType="textPersonName" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/lb_herramientas_seg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/input_et_sis_op"
+                    android:layout_marginBottom="16px"
+
+                    android:layout_marginTop="56px"
+
+                    android:text="Herramientas de seguridad instaladas"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:id="@+id/CB_CSDS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lb_herramientas_seg"
+                    android:text="CSDS" />
+
+                <CheckBox
+                    android:id="@+id/CB_CHECKER"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/CB_CSDS"
+                    android:text="CHECKER" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_et_ver_checker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignBottom="@+id/CB_CHECKER"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_toEndOf="@+id/lb_mod_sw"
+                    android:layout_toRightOf="@+id/lb_mod_sw">
+
+                    <EditText
+                        android:id="@+id/version_checker"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/CB_CHECKER"
+                        android:hint="Versión:"
+
+                        android:inputType="textPersonName"
+                        android:textSize="12dp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <CheckBox
+                    android:id="@+id/CB_RKL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/CB_CHECKER"
+                    android:text="RKL" />
+
+                <CheckBox
+                    android:id="@+id/CB_FIX_WIN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/CB_RKL"
+                    android:text="FIX WINDOWS" />
+
+
+                <TextView
+                    android:id="@+id/lb_mod_seg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_below="@+id/CB_FIX_WIN"
+
+                    android:layout_marginBottom="16px"
+
+
+                    android:layout_marginTop="56px"
+
+                    android:text="Módulos de seguridad"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lb_tipo_dial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/lb_mod_seg"
+
+                    android:layout_marginBottom="16px"
+                    android:layout_marginTop="16px"
+
+                    android:text="Tipo de DIal"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_tipo_dial"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_tipo_dial"
+
+
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/RB_tipo_dial_mecanico"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Mecánico"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_tipo_dial_electrico"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Eléctrico"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_tipo_dial_randomico"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Randomico"
+                        android:textColor="#424242" />
+                </RadioGroup>
+
+
+                <Spinner
+                    android:id="@+id/sp_tipo_dial"
+
+                    android:layout_width="fill_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lb_tipo_dial"
+
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:id="@+id/lb_cerradura_tipo_h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_tipo_dial"
+
+                    android:layout_marginBottom="32px"
+                    android:layout_marginTop="32px"
+
+                    android:text="Cerradura tipo H"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_cerradura_tipo_h"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_cerradura_tipo_h"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_cerradura_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_cerradura_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_puntos_anclaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_cerradura_tipo_h"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Puntos de anclaje"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_puntos_de_anclaje"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_puntos_anclaje"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_puntos_anclaje_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="4"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_puntos_anclaje_6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="6"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_puntos_anclaje_otro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="otro"
+                        android:textColor="#424242" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_puntos_anclaje"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginLeft="100px"
+
+                        >
+
+                        <EditText
+                            android:id="@+id/puntos_anclaje_otro"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+
+
+                            android:ems="10"
+                            android:hint="Otro:" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_tipo_anclaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_puntos_de_anclaje"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Tipo de anlcaje"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_tipo_de_anclaje"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_tipo_anclaje"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_tipo_anclaje_RM16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="RM16"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_tipo_anclaje_tradicional"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Tradicional"
+                        android:textColor="#424242" />
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_base_anclaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_tipo_de_anclaje"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Base de anclaje"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_base_de_anclaje"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_base_anclaje"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_base_anclaje_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_base_anclaje_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_placa_seguridad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_base_de_anclaje"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Placa de seguridad"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_placa_seguridad"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_placa_seguridad"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_placa_seguridad_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_placa_seguridad_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_perno_apertura"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_placa_seguridad"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Perno apertura fascia (solo en ATM carga frontal)"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_perno_apertura"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_perno_apertura"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_perno_apertura_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_perno_apertura_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_siguiente3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+
+                    android:layout_below="@+id/op_perno_apertura"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginRight="32px"
+                    android:layout_marginTop="80px"
+                    android:onClick="siguiente3"
+                    android:text="Siguiente"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/lb_anterior1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+
+                    android:layout_below="@+id/op_perno_apertura"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginLeft="32px"
+                    android:layout_marginTop="80px"
+                    android:onClick="anterior1"
+                    android:text="Anterior"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3.73"
+            android:elevation="0dp"
+            android:visibility="gone"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true"
+            app:contentPaddingBottom="32dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="16dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="16dp">
+
+                <TextView
+                    android:id="@+id/lb_sitio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_marginBottom="16px"
+
+                    android:text="Seguridad del sitio / ambiente del sitio"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lb_placa_seg_sitio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/lb_sitio"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Placa de seguridad"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_placa_seg_sitio"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_placa_seg_sitio"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_placa_seg_sitio_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_placa_seg_sitio_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_postes_exter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_placa_seg_sitio"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Postes exteriores"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/OP_postes_exter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_postes_exter"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_postes_ext_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_postes_ext_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_empotrado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/OP_postes_exter"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Empotrado a muro"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/OP_emportrado"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_empotrado"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_empotrado_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_empotrado_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_carcaza_copete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/OP_emportrado"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Carcaza / Copete"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_carcaza_copete"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_carcaza_copete"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_carcaza_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_carcaza_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_espp_carcaza"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginLeft="16px"
+
+                        >
+
+                        <EditText
+                            android:id="@+id/carcaza"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+
+
+                            android:ems="10"
+                            android:hint="Especifique carcaza / copete" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_aire"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_carcaza_copete"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Aire acondicionado"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_aire"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_aire"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_aire_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_aire_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_temp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginLeft="16px"
+
+                        >
+
+                        <EditText
+                            android:id="@+id/temperatura"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+
+                            android:ems="10"
+
+
+                            android:hint="Temperatura"
+                            android:inputType="number" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_limpieza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_aire"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Limpieza del sitio"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_limpieza"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_limpieza"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_limpieza_buena"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Buena"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_limpieza_mala"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Mala"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_limpieza_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Regular"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_cesto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_limpieza"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Sitio con cesto de basura"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/OP_cesto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_cesto"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_cesto_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_cesto_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/lb_polvo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/OP_cesto"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Expuesto a polvo"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/OP_polvo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_polvo"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_polvo_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_polvo_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_sol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/OP_polvo"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Expuesto a sol"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/OP_sol"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_sol"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_sol_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_sol_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_iluminacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/OP_sol"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Iluminacion"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/OP_iluminacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_iluminacion"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_iluminacion_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_iluminacion_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_notas_seguridad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/OP_iluminacion"
+
+
+                    >
+
+                    <EditText
+                        android:id="@+id/notas_seguridad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginTop="40px"
+
+
+                        android:ems="10"
+                        android:hint="Notas:" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/lb_siguiente4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+
+                    android:layout_below="@+id/input_notas_seguridad"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginRight="32px"
+                    android:layout_marginTop="80px"
+                    android:onClick="siguiente4"
+                    android:text="Siguiente"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/lb_anterior2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+
+                    android:layout_below="@+id/input_notas_seguridad"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginLeft="32px"
+                    android:layout_marginTop="80px"
+                    android:onClick="anterior2"
+                    android:text="Anterior"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+
+            android:id="@+id/card4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3.73"
+            android:elevation="0dp"
+            android:visibility="gone"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true"
+            app:contentPaddingBottom="32dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="16dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="16dp">
+
+
+                <TextView
+                    android:id="@+id/lb_electr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_marginBottom="16px"
+
+                    android:text="Instalacion eléctrica"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lb_supresor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/lb_electr"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Supresor de picos"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_supresor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_supresor"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_supresor_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_supresor_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_UPS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_supresor"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="UPS"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_UPS"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_UPS"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_UPS_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_UPS_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_UPS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginLeft="100px"
+
+                        >
+
+                        <EditText
+                            android:id="@+id/UPS_kva"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+
+
+                            android:ems="10"
+                            android:hint="Capacidad KVA"
+                            android:inputType="number" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_regulador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_UPS"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Regulador"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_Regulador"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_regulador"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_regulador_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_regulador_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_regulador"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginLeft="100px"
+
+                        >
+
+                        <EditText
+                            android:id="@+id/regulador_kva"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+
+
+                            android:ems="10"
+                            android:hint="Capacidad KVA"
+                            android:inputType="number" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </RadioGroup>
+
+
+
+
+
+                <TextView
+                    android:id="@+id/lb_f_neutro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_below="@+id/op_Regulador"
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Fase neutro"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:id="@+id/ly_fn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_f_neutro"
+
+                    android:orientation="horizontal">
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_f_n_v_pared"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        >
+
+                        <EditText
+                            android:id="@+id/fase_neutro_v_pared"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+
+
+                            android:ems="10"
+                            android:hint="Voltaje pared"
+                            android:inputType="number" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_f_n_v_regulado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginLeft="16px"
+
+                        >
+
+                        <EditText
+                            android:id="@+id/fase_neutro_v_regulado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+
+
+                            android:ems="10"
+                            android:hint="Voltaje regulado"
+                            android:inputType="number" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/lb_f_tierra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/ly_fn"
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+                    android:text="Fase tierra"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:id="@+id/ly_ft"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_f_tierra"
+                    android:orientation="horizontal"
+
+                    >
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_f_t_v_pared"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        >
+
+                        <EditText
+                            android:id="@+id/fase_tierra_v_pared"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+
+
+                            android:ems="10"
+                            android:hint="Voltaje pared"
+                            android:inputType="number" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_f_t_v_regulado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginLeft="16px"
+
+                        >
+
+                        <EditText
+                            android:id="@+id/fase_tierra_v_regulado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+
+
+                            android:ems="10"
+                            android:hint="Voltaje regulado"
+                            android:inputType="number" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/lb_tierra_neutro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/ly_ft"
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+                    android:text="Tierra-Neutro"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:id="@+id/ly_ftn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_tierra_neutro"
+                    android:orientation="horizontal"
+
+                    >
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_t_n_pared"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        >
+
+                        <EditText
+                            android:id="@+id/tierra_neutro_v_pared"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+
+
+                            android:ems="10"
+                            android:hint="Voltaje pared"
+                            android:inputType="number" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_t_n_regulado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginLeft="16px"
+
+                        >
+
+                        <EditText
+                            android:id="@+id/tierra_neutro_v_regulado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+
+
+                            android:ems="10"
+                            android:hint="Voltaje regulado"
+                            android:inputType="number" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/lb_polarizacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/ly_ftn"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="56px"
+
+                    android:text="Polarizacion correcta"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_polarizacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_polarizacion"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_polarizacion_correcta_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_polarizacion_correcta_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/lb_voltaje_regulado_suministro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_polarizacion"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="56px"
+
+                    android:text="Voltaje regulado suministrado por"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_volt_regulado_sum"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_voltaje_regulado_suministro"
+
+
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/RB_volt_regulado_sum_UPS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="UPS"
+                        android:textColor="#424242" />
+
+
+
+                    <RadioButton
+                        android:id="@+id/RB_volt_regulado_sum_regulador"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Regulador"
+                        android:textColor="#424242" />
+
+
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_tipo_regulado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_volt_regulado_sum"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="56px"
+
+                    android:text="Tipo de conector"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_tipo_regulado"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_tipo_regulado"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_tipo_regulado_Twist_lock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Twist lock"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_tipo_regulado_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Normal"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_notas_elect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/op_tipo_regulado"
+
+
+                    >
+
+                    <EditText
+                        android:id="@+id/notas_inst_elect"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginTop="40px"
+
+
+                        android:ems="10"
+                        android:hint="Notas:" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/lb_siguiente5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+
+                    android:layout_below="@+id/input_notas_elect"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginRight="32px"
+                    android:layout_marginTop="80px"
+                    android:onClick="siguiente5"
+                    android:text="Siguiente"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/lb_anterior3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+
+                    android:layout_below="@+id/input_notas_elect"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginLeft="32px"
+                    android:layout_marginTop="80px"
+                    android:onClick="anterior3"
+                    android:text="Anterior"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3.73"
+            android:elevation="0dp"
+            android:visibility="gone"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true"
+            app:contentPaddingBottom="32dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="16dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="16dp">
+
+
+                <TextView
+                    android:id="@+id/lb_senalizacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_marginBottom="16px"
+
+                    android:text="Señalización (Calcomanias)"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lb_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/lb_senalizacion"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Logo"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_logo"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_logo_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_logo_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_logo_deteriorada"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Deteriorada"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_senal_lectora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_logo"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Lectora"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_senal_lectora"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_senal_lectora"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_senal_lectora_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_senal_lectora_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_senal_lectora_deteriorada"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Deteriorada"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_senal_impresora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_senal_lectora"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Impresora"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_senal_impresora"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_senal_impresora"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_senal_impresora_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_senal_impresora_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_senal_impresora_deteriorada"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Deteriorada"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_senal_salida_efectivo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_senal_impresora"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Salida de efectivo"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_senal_salida_efectivo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_senal_salida_efectivo"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_senal_salida_efectivo_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_senal_salida_efectivo_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_senal_salida_efectivo_deteriorada"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Deteriorada"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_senal_carcaza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_senal_salida_efectivo"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Carcaza"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_senal_carcaza"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_senal_carcaza"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_senal_carcaza_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_senal_carcaza_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_senal_carcaza_deteriorada"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Deteriorada"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_edo_disp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_below="@+id/op_senal_carcaza"
+
+
+                    android:layout_marginBottom="16px"
+                    android:layout_marginTop="56px"
+
+                    android:text="Estado de los dispositivos"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lb_edo_impresora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/lb_edo_disp"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Impresora"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_edo_impresora"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_edo_impresora"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_impresora_ok"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Ok"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_impresora_danado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Dañado"
+                        android:textColor="#424242" />
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_ob_edo_impresora"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        >
+
+                        <EditText
+                            android:id="@+id/ob_edo_impresora"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+
+                            android:layout_marginLeft="56px"
+
+
+                            android:ems="10"
+                            android:hint="Observaciones:" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_edo_lectora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_edo_impresora"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Lectora"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_edo_lectora"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_edo_lectora"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_lectora_ok"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Ok"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_lectora_danado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Dañado"
+                        android:textColor="#424242" />
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_ob_edo_lectora"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        >
+
+                        <EditText
+                            android:id="@+id/ob_edo_lectora"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+
+                            android:layout_marginLeft="56px"
+
+
+                            android:ems="10"
+                            android:hint="Observaciones:" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_edo_teclados"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_edo_lectora"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Teclados"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_edo_teclados"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_edo_teclados"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_teclados_ok"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Ok"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_teclados_danado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Dañado"
+                        android:textColor="#424242" />
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_ob_edo_teclados"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        >
+
+                        <EditText
+                            android:id="@+id/ob_edo_teclados"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+
+                            android:layout_marginLeft="56px"
+
+
+                            android:ems="10"
+                            android:hint="Observaciones:" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_edo_CPU"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_edo_teclados"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="CPU"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_edo_CPU"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_edo_CPU"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_CPU_ok"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Ok"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_CPU_danado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Dañado"
+                        android:textColor="#424242" />
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_ob_edo_CPU"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        >
+
+                        <EditText
+                            android:id="@+id/ob_edo_CPU"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+
+                            android:layout_marginLeft="56px"
+
+
+                            android:ems="10"
+                            android:hint="Observaciones:" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_edo_monitor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_edo_CPU"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Monitor"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_edo_monitor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_edo_monitor"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_monitor_ok"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Ok"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_monitor_danado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Dañado"
+                        android:textColor="#424242" />
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_ob_edo_monitor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        >
+
+                        <EditText
+                            android:id="@+id/ob_edo_monitor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+
+                            android:layout_marginLeft="56px"
+
+
+                            android:ems="10"
+                            android:hint="Observaciones:" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_edo_dispensador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_edo_monitor"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Dispensador"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_edo_dispensador"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_edo_dispensador"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_dispensador_ok"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Ok"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_dispensador_danado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Dañado"
+                        android:textColor="#424242" />
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_ob_edo_dispensador"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        >
+
+                        <EditText
+                            android:id="@+id/ob_edo_dispensador"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+
+                            android:layout_marginLeft="56px"
+
+
+                            android:ems="10"
+                            android:hint="Observaciones:" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_siguiente6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+
+                    android:layout_below="@+id/op_edo_dispensador"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginRight="32px"
+                    android:layout_marginTop="80px"
+                    android:onClick="siguiente6"
+                    android:text="Siguiente"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/lb_anterior4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+
+                    android:layout_below="@+id/op_edo_dispensador"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginLeft="32px"
+                    android:layout_marginTop="80px"
+                    android:onClick="anterior4"
+                    android:text="Anterior"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3.73"
+            android:elevation="0dp"
+            android:visibility="gone"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true"
+            app:contentPaddingBottom="32dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="16dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="16dp">
+
+
+                <TextView
+                    android:id="@+id/lb_comunicaciones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_marginBottom="16px"
+
+                    android:text="Comunicaciones"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lb_tipo_comunicacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/lb_comunicaciones"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+                    android:text="Tipo de comunicación"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_tipo_comunicacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_tipo_comunicacion"
+
+
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/RB_satelital"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Satelital"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_DIAL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="DIAL-UP(TELLABS)"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_ADSL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="ADSL"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_3_4_G"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="3G / 4G"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_marca_router"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_below="@+id/op_tipo_comunicacion"
+                    android:layout_marginBottom="40px"
+
+
+                    android:layout_marginTop="40px"
+
+
+                    >
+
+                    <EditText
+                        android:id="@+id/marca_router"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        android:ems="10"
+                        android:hint="Marca Router:" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/lb_edo_cableado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/input_marca_router"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+
+                    android:text="Estado del cableado"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_edo_cableado"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_edo_cableado"
+
+
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_cableado_bueno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Bueno"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_cableado_a_la_vista"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="A la vista de los usuarios"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_edo_cableado_maltratado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Maltratado"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_ob_long_cable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_below="@+id/op_edo_cableado"
+                    android:layout_marginBottom="40px"
+
+
+                    android:layout_marginTop="40px"
+
+
+                    >
+
+                    <EditText
+                        android:id="@+id/longitud_cable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        android:ems="10"
+
+
+                        android:hint="Longitud del cableado de red de ATM (metros)"
+                        android:inputType="number" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/lb_conf_cableado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/input_ob_long_cable"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+
+                    android:text="Configuración del cableado"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_conf_cableado"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_conf_cableado"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_conf_cableado_conex_directa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Conexión directa"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_conf_cableado_conex_cruzado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Cruzado"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/lb_equipo_con_alte"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_below="@+id/op_conf_cableado"
+
+                    android:layout_marginBottom="40px"
+                    android:layout_marginTop="40px"
+
+
+                    android:text="Equipo de comunicacion alertado"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_equipo_con_alte"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_equipo_con_alte"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_equipo_con_alte_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_equipo_con_alte_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/lb_pruebas_ping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/op_equipo_con_alte"
+                    android:layout_marginBottom="40px"
+
+                    android:layout_marginTop="40px"
+
+
+                    android:text="Pruebas de ping extendido a host"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_pruebas_ping"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_pruebas_ping"
+
+
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RB_pruebas_ping_si"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Si"
+                        android:textColor="#424242" />
+
+                    <RadioButton
+                        android:id="@+id/RB_pruebas_ping_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="No"
+                        android:textColor="#424242" />
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_pruebas_ping_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        >
+
+                        <EditText
+                            android:id="@+id/pruebas_ping_result"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginLeft="16px"
+
+                            android:ems="10"
+                            android:hint="Especifique resultado" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </RadioGroup>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_notas_comunic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/op_pruebas_ping"
+
+
+                    >
+
+                    <EditText
+                        android:id="@+id/notas_comunic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginTop="40px"
+
+
+                        android:ems="10"
+                        android:hint="Notas:" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/lb_siguiente7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/input_notas_comunic"
+
+                    android:layout_marginBottom="16px"
+                    android:layout_marginRight="32px"
+                    android:layout_marginTop="80px"
+                    android:onClick="siguiente7"
+                    android:text="Siguiente"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:id="@+id/lb_anterior5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+
+                    android:layout_below="@+id/input_notas_comunic"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginLeft="32px"
+                    android:layout_marginTop="80px"
+                    android:onClick="anterior5"
+                    android:text="Anterior"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <RelativeLayout
+
+            android:id="@+id/lay_save_prev_atm_cabecera"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="-40dp"
+
+            android:elevation="16dp"
+            android:orientation="horizontal"
+            android:paddingBottom="4dp"
+
+            android:paddingLeft="8dp"
+            android:paddingTop="6dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="100dp">
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fl_btn_save_atm_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                android:layout_alignParentEnd="true"
+
+
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+
+                android:layout_marginRight="4dp"
+
+
+                android:clickable="true"
+                app:backgroundTint="@android:color/holo_red_dark"
+                app:elevation="8dp"
+                app:fabSize="mini"
+
+
+                app:srcCompat="@android:drawable/ic_menu_save" />
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</ScrollView>
+
+
+            <LinearLayout
+                android:id="@+id/lay_fotos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+
+
+                android:visibility="visible"
+                android:weightSum="1">
+
+                <RelativeLayout
+
+                    android:id="@+id/lay_fotos_cabecera"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginBottom="-55dp"
+                    android:elevation="16dp"
+
+                    android:orientation="horizontal"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="8dp"
+
+                    android:paddingTop="8dp"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="205dp">
+
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fl_btn_add_photo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:layout_marginRight="4dp"
+                        android:layout_alignParentEnd="true"
+
+
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+
+
+                        android:clickable="true"
+                        app:elevation="8dp"
+                        app:fabSize="mini"
+                        app:srcCompat="@android:drawable/ic_menu_camera"
+
+
+                        />
+
+
+                </RelativeLayout>
+
+
+                <android.support.v7.widget.CardView
+
+                    android:id="@+id/ly_fotos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.73"
+                    android:elevation="0dp"
+                    android:focusable="false"
+                    android:visibility="visible"
+                    app:cardElevation="8dp"
+                    app:cardUseCompatPadding="true"
+
+
+
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RelativeLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:foregroundGravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="8dp">
+
+                        <TextView
+                            android:id="@+id/lb_fotos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+
+
+
+                            android:text="Imágenes  (Capturar imagenes de los voltajes  y otras observaciones)"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="14sp" />
+
+
+
+
+                        <RelativeLayout
+
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_below="@+id/lb_fotos"
+                                android:foregroundGravity="center_horizontal"
+                                android:orientation="horizontal"
+                                android:paddingBottom="2dp"
+                                android:paddingLeft="8dp"
+                                android:paddingRight="8dp"
+
+
+                                android:paddingTop="8dp">
+
+
+                            <ImageView
+                                android:id="@+id/photo_ATM_prev"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="40px"
+                                app:srcCompat="@drawable/ic_shutter" />
+
+
+
+
+
+                                <android.support.design.widget.TextInputLayout
+                                    android:id="@+id/input_notas_image"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="32px"
+                                    android:layout_marginRight="32px"
+                                    android:layout_marginTop="40px"
+                                    android:layout_toRightOf="@+id/photo_ATM_prev"
+
+
+                                    >
+
+                                    <EditText
+                                        android:id="@+id/notas_image"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_marginLeft="32px"
+                                        android:layout_marginRight="32px"
+                                        android:layout_marginTop="40px"
+
+
+                                        android:ems="10"
+                                        android:hint="Observaciones:" />
+
+
+
+                                </android.support.design.widget.TextInputLayout>
+
+                            <ProgressBar
+                                android:id="@+id/progressBarPhoto"
+                                style="?android:attr/progressBarStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignTop="@+id/bt_imagen_a_recicler"
+                                android:layout_centerHorizontal="true"
+                                android:visibility="gone" />
+
+                            <android.support.design.widget.FloatingActionButton
+                                android:id="@+id/bt_imagen_a_recicler"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+
+
+                                android:layout_below="@+id/input_notas_image"
+
+
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="20dp"
+                                android:layout_marginRight="10dp"
+                                android:clickable="true"
+                                app:fabSize="mini"
+
+
+                                android:onClick="subir_imagen"
+                                app:backgroundTint="@android:color/holo_red_dark"
+                                app:elevation="8dp"
+                                app:srcCompat="@drawable/ic_add" />
+
+                            <TextView
+                                android:id="@+id/url_photo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="URL"
+                                android:layout_below="@+id/bt_imagen_a_recicler"
+                                android:visibility="gone"/>
+
+
+                            <ImageView
+                                android:id="@+id/fotito"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/url_photo"
+                                android:layout_marginTop="40px"
+                                android:visibility="gone"
+                                app:srcCompat="@drawable/ic_shutter" />
+
+
+                        </RelativeLayout>
+
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/reciclador"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="0dp"
+                android:elevation="8dp"
+                android:scrollbars="horizontal"
+
+                app:layout_goneMarginEnd="0dp"
+                tools:layout_editor_absoluteX="8dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+

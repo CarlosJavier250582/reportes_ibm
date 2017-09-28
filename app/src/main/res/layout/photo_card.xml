@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+
+
+    android:id="@+id/card_fotos_recicler"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:elevation="0dp"
+    android:focusable="false"
+    android:visibility="visible"
+    app:cardElevation="8dp"
+    app:cardUseCompatPadding="true"
+
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+
+
+
+
+
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lb_fotos"
+            android:foregroundGravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+
+
+            android:paddingTop="8dp">
+
+
+            <ImageView
+                android:id="@+id/photo_ATM_reci"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32px"
+                android:layout_marginRight="32px"
+                android:layout_marginBottom="32px"
+
+
+
+                app:srcCompat="@android:drawable/ic_menu_camera" />
+
+
+
+
+                <TextView
+                    android:id="@+id/notas_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="32px"
+                    android:layout_marginRight="32px"
+                    android:layout_marginTop="32px"
+                    android:layout_toRightOf="@+id/photo_ATM_reci"
+                    android:ems="10"
+                    android:text="Notas:" />
+
+
+
+
+
+
+
+
+
+
+        </RelativeLayout>
+
+
+
+
+</android.support.v7.widget.CardView>
+
+
+
