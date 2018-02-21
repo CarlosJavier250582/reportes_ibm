@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1070853250325",
+    "firebase_url": "https://reportes1-f98ac.firebaseio.com",
+    "project_id": "reportes1-f98ac",
+    "storage_bucket": "reportes1-f98ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070853250325:android:0a9dfecb1a95a1c2",
+        "android_client_info": {
+          "package_name": "com.example.carlosje.reportes_ibm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070853250325-bsnhej7d7flsdr0l0vfu7rukdi55v1bv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.carlosje.reportes_ibm",
+            "certificate_hash": "3882a3177bcb1f32d3b3b0b55a8aed8ec61bc604"
+          }
+        },
+        {
+          "client_id": "1070853250325-bdenda2tgv5kv9gs6cq3n54kh5fugpu6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4KTm5p0HWsa9Rf2Jxb4zcy-wBImfgPME"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070853250325-bdenda2tgv5kv9gs6cq3n54kh5fugpu6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
