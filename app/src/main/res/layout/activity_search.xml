@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.example.carlosje.reportes_ibm.SearchActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
+            app:toolbarId="@+id/toolbar">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+
+            </android.support.v7.widget.Toolbar>
+
+            <ImageView
+                android:id="@+id/app_bar_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cabecera" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+
+
+    </android.support.design.widget.AppBarLayout>
+
+    <TextView
+        android:id="@+id/tv_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="18sp"
+        android:visibility="invisible" />
+
+    <android.support.v4.widget.NestedScrollView
+
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
+
+        <LinearLayout
+            android:id="@+id/lay_gral"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:id="@+id/sv_nuevo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/lay_nuevo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="16dp"
+                    android:visibility="visible"
+                    android:weightSum="1">
+
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card1"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elevation="0dp"
+                        android:focusable="false"
+                        android:visibility="visible"
+                        app:cardElevation="8dp"
+                        app:cardUseCompatPadding="true"
+                        app:contentPaddingBottom="32dp"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <RelativeLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:paddingBottom="8dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:paddingTop="8dp">
+
+                            <TextView
+                                android:id="@+id/lb_tipo_equipo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="40px"
+                                android:layout_marginTop="56px"
+                                android:text="Selecchiona el tipo de equipo"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="14sp" />
+
+                            <RadioGroup
+                                android:id="@+id/op_tipo_equipo"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_below="@+id/lb_tipo_equipo"
+                                android:gravity="left"
+                                android:orientation="vertical">
+
+                                <RadioButton
+                                    android:id="@+id/RB_ATM"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="ATM"
+                                    android:textColor="#424242" />
+
+                                <RadioButton
+                                    android:id="@+id/RB_Logo_OEM"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Logo / OEM"
+                                    android:textColor="#424242" />
+                            </RadioGroup>
+
+                            <android.support.design.widget.TextInputLayout
+                                android:id="@+id/input_serie_id"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="80px"
+                                android:layout_below="@+id/op_tipo_equipo">
+
+                                <EditText
+
+                                    android:id="@+id/serie"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_below="@+id/fecha"
+                                    android:layout_marginTop="11dp"
+                                    android:ems="10"
+                                    android:hint=""
+                                    android:inputType="textCapCharacters" />
+
+
+                            </android.support.design.widget.TextInputLayout>
+
+                        </RelativeLayout>
+
+
+                    </android.support.v7.widget.CardView>
+
+
+                    <RelativeLayout
+
+                        android:id="@+id/lay_save_prev_atm_cabecera"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="-40dp"
+                        android:elevation="16dp"
+                        android:orientation="horizontal"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="100dp">
+
+
+                        <android.support.design.widget.FloatingActionButton
+                            android:id="@+id/fl_btn_buscar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:clickable="true"
+                            app:elevation="8dp"
+                            app:fabSize="mini"
+                            app:srcCompat="@android:drawable/ic_menu_search" />
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+            </ScrollView>
+
+                <ProgressBar
+                android:id="@+id/PB_busqueda"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/reciclador"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="0dp"
+                android:elevation="8dp"
+                android:scrollbars="horizontal"
+                app:layout_goneMarginEnd="0dp"
+                tools:layout_editor_absoluteX="8dp">
+            </android.support.v7.widget.RecyclerView>
+
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+

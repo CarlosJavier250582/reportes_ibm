@@ -35,14 +35,6 @@
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
-
-
-
-
-
-
-
-
     </android.support.design.widget.AppBarLayout>
 
     <TextView
@@ -72,41 +64,79 @@
                 android:id="@+id/ly_botones"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+
+
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal"
-                android:paddingBottom="16dp"
-                android:paddingEnd="16dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp">
+                >
 
                 <Button
                     android:id="@+id/bt_nuevo"
-                    android:layout_width="match_parent"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="wrap_content"
+                    android:textSize="12dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
+                    android:layout_margin="1dp"
                     android:layout_weight="1"
                     android:background="@color/colorPrimary"
                     android:elevation="8dp"
                     android:onClick="nuevo"
                     android:text="New"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
                     android:textColor="@color/cardview_light_background" />
 
                 <Button
                     android:id="@+id/bt_buscar"
-                    android:layout_width="match_parent"
+
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_margin="1dp"
                     android:layout_weight="1"
                     android:background="@color/colorPrimary"
                     android:elevation="8dp"
+                    android:onClick="buscar"
                     android:text="Search"
-                    android:textColor="@color/cardview_light_background" />
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:textColor="@color/cardview_light_background"
+                    android:textSize="10dp" />
+
+
+                <Button
+                    android:id="@+id/bt_evidencia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_weight="1"
+
+                    android:background="@color/colorPrimary"
+                    android:elevation="8dp"
+                    android:onClick="evidencia"
+                    android:text="Evidencias"
+                    android:textColor="@color/cardview_light_background"
+                    android:textSize="10dp"
+                    android:visibility="visible" />
+
+                <Button
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_green_dark"
+                    android:elevation="8dp"
+                    android:onClick="pendientes"
+                    android:text="Pendientes"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textSize="10dp" />
+
 
             </LinearLayout>
 
-            <LinearLayout
+
+            <RelativeLayout
                 android:id="@+id/lay_select_rep"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -118,6 +148,52 @@
                 android:visibility="gone"
                 android:weightSum="1">
 
+                <TextView
+                    android:id="@+id/lb_tipo_reporte"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_marginBottom="16px"
+                    android:layout_marginTop="16px"
+
+                    android:text="Tipo de reporte"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/op_tipo_reporte"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_tipo_reporte"
+
+
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+
+
+                    <RadioButton
+                        android:id="@+id/RB_Correctivo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:checked="false"
+                        android:text="Correctivo / Instalación"
+                        android:textColor="#424242" />
+                    <RadioButton
+                        android:id="@+id/RB_Preventivo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:checked="false"
+                        android:text="Preventivo"
+                        android:textColor="#424242" />
+
+
+                </RadioGroup>
 
                 <TextView
                     android:id="@+id/lb_categoria_rep"
@@ -137,7 +213,7 @@
 
                 <RadioGroup
                     android:id="@+id/op_categoria_reporte"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/lb_categoria_rep"
 
@@ -149,88 +225,41 @@
                         android:id="@+id/RB_Categoria_ATM"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
+                        android:checked="false"
 
                         android:text="ATM"
                         android:textColor="#424242" />
 
+                    <RadioButton
+                        android:id="@+id/RB_Categoria_LOGO"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+
+                        android:text="LOGO / OEM"
+                        android:textColor="#424242" />
+
 
                 </RadioGroup>
 
 
-                <TextView
-                    android:id="@+id/lb_tipo_reporte"
+                <Button
+                    android:id="@+id/bt_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:layout_below="@+id/op_categoria_reporte"
-                    android:layout_marginBottom="16px"
-                    android:layout_marginTop="16px"
-
-                    android:text="Tipo de reporte"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="14sp" />
-
-
-                <RadioGroup
-                    android:id="@+id/lb_tipo_reporte"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/lb_logo"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/lb_categoria_rep"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorAccent"
+                    android:elevation="8dp"
+                    android:onClick="select_nuevo"
+                    android:text="Go"
+                    android:textColor="@color/cardview_light_background" />
 
 
-                    android:gravity="left"
-                    android:orientation="vertical">
-
-                    <RadioButton
-                        android:id="@+id/RB_Preventivo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="Preventivo"
-                        android:textColor="#424242" />
-
-                    <RadioButton
-                        android:id="@+id/RB_Correctivo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-
-                        android:text="Correctivo"
-                        android:textColor="#424242" />
-
-
-                </RadioGroup>
-
-                <LinearLayout
-                    android:id="@+id/lay_select_rep"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="right"
-                    android:orientation="vertical"
-                    android:paddingBottom="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingTop="16dp"
-                    android:visibility="visible"
-                    android:weightSum="1">
-
-
-                    <Button
-                        android:id="@+id/bt_nuevo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="50px"
-                        android:layout_weight="1"
-                        android:background="@color/colorAccent"
-                        android:elevation="8dp"
-                        android:onClick="select_nuevo"
-                        android:text="Go"
-                        android:textColor="@color/cardview_light_background" />
-                </LinearLayout>
-
-
-            </LinearLayout>
+            </RelativeLayout>
 
             <ProgressBar
                 android:id="@+id/progressBar"

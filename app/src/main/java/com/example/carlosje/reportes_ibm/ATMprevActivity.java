@@ -1,43 +1,36 @@
 package com.example.carlosje.reportes_ibm;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.LabeledIntent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.Image;
+import android.location.Address;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
-
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-
-
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -45,68 +38,63 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Exclude;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnPausedListener;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import static java.lang.String.valueOf;
 
 
-public class ATMprevActivity extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener {
+public class ATMprevActivity extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
 
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
-
     private ProgressBar progressBarPhoto;
-
-
-
-
-    private ScrollView sv_nuevo;
-
+    private NestedScrollView nestedScrollView;
     private CardView card1, card2, card3, card4, card5, card6;
-
     private ImageView photo_ATM_prev,fotito;
-
-
     private Button bt_nuevo, bt_buscar, bt_fecha;
     private LinearLayout lay_buscar, lay_nuevo, lay_gral;
-
     private FloatingActionButton fl_btn_add_photo, fl_btn_save_atm_prev;
-
     private String usuarioid;
-    private int dia, mes, ano;
-    private TextView tv_user, fecha,url_photo;
+
+    private TextView tv_user, fecha,url_photo, mLatitude,mLongitude,mPosicion,TV_sc,TV_ac,TV_ac_label,TV_fecha_ini,TV_fecha_fin,TV_hr_ini,TV_hr_fin;
+
 
     private EditText notas_image, reporte, id_tpv, localidad, marca, modelo, serie, carga, inventario, cliente_final, sistema_operativo, version_multivendor, version_checker, puntos_anclaje_otro;
     private EditText carcaza, temperatura, UPS_kva, regulador_kva, fase_neutro_v_pared, fase_neutro_v_regulado, fase_tierra_v_pared, fase_tierra_v_regulado, tierra_neutro_v_pared, tierra_neutro_v_regulado;
     private EditText notas_seguridad, notas_inst_elect, notas_comunic;
     private EditText ob_edo_impresora, ob_edo_lectora, ob_edo_teclados, ob_edo_CPU, ob_edo_monitor, ob_edo_dispensador;
-    private EditText marca_router, longitud_cable, pruebas_ping_result;
+    private EditText marca_router, longitud_cable, pruebas_ping_result, vobo,puesto, folio,solucion;
+    private EditText capacidad_hd, RAM, nombre_atm, ob_esp_sitio, obs_telecontrol, tamaño_monitor, procesador, vel_procesador, version_antivirus;
+
+
+
+
 
     private RadioButton RB_publico, RB_Personal, RB_cerradura_si, RB_cerradura_no, RB_puntos_anclaje_6, RB_puntos_anclaje_4, RB_puntos_anclaje_otro, RB_tipo_anclaje_RM16, RB_tipo_anclaje_tradicional;
     private RadioButton RB_base_anclaje_no, RB_base_anclaje_si, RB_placa_seguridad_si, RB_placa_seguridad_no, RB_perno_apertura_si, RB_perno_apertura_no;
@@ -122,7 +110,10 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     private RadioButton RB_conf_cableado_conex_directa, RB_conf_cableado_conex_cruzado, RB_equipo_con_alte_si, RB_equipo_con_alte_no;
     private RadioButton  RB_pruebas_ping_si, RB_pruebas_ping_no, RB_tipo_dial_mecanico, RB_tipo_dial_electrico, RB_tipo_dial_randomico;
     private RadioButton RB_empotrado_si, RB_empotrado_no, RB_banco_banamex, RB_banco_bancomer ,RB_banco_banorte, RB_banco_bancoppel, RB_banco_santander, RB_remo_suc_remoto, RB_remo_suc_sucursal ;
-    private RadioButton RB_ADSL, RB_3_4_G;
+    private RadioButton RB_ADSL, RB_3_4_G,RB_regulador_si,RB_regulador_no;
+
+
+    private RadioButton RB_01800_cambio, RB_01800_deteriorada, RB_01800_no, RB_01800_si, RB_antiskimmer_ebras, RB_antiskimmer_no, RB_antiskimmer_si, RB_blindaje_cab_no, RB_blindaje_cab_si, RB_braile_no, RB_braile_si, RB_caseta_prefab_no, RB_caseta_prefab_si, RB_chapa_rand_no, RB_chapa_rand_si, RB_entintado_billete_no, RB_entintado_billete_si, RB_jumper_no, RB_jumper_si, RB_logo_cambio, RB_nicho_de_protec_no, RB_nicho_de_protec_si, RB_tipo_placa_antivand_der, RB_tipo_placa_antivand_izq, RB_placa_antivand_no, RB_placa_antivand_si, RB_rack_no, RB_rack_si, RB_seg_shutter_no, RB_seg_shutter_si, RB_senal_carcaza_cambio, RB_senal_impresora_cambio, RB_senal_lectora_cambio, RB_senal_salida_efectivo_cambio, RB_telecontrol_conect_dañado, RB_telecontrol_conect_no, RB_telecontrol_conect_si, RB_tipo_telecontrol_IBOOT, RB_tipo_telecontrol_MTC, RB_tipo_telecontrol_Ninguno;
 
 
 
@@ -171,12 +162,9 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
 
 
     private String RB_servicio_V;
-
     private String RB_tipo_dial_V;
-
     private String RB_cerradura_V;
     private String RB_puntos_anclaje_V;
-
     private String RB_tipo_anclaje_V;
     private String RB_base_anclaje_V;
     private String RB_placa_seguridad_V;
@@ -187,14 +175,12 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     private String RB_carcaza_V;
     private String RB_aire_V;
     private String RB_limpieza_V;
-
     private String RB_cesto_V;
     private String RB_polvo_V;
     private String RB_sol_V;
     private String RB_iluminacion_V;
     private String RB_UPS_V;
     private String RB_supresor_V;
-
     private String RB_polarizacion_correcta_V;
     private String RB_volt_regulado_sum_V;
     private String RB_tipo_regulado_V;
@@ -203,9 +189,11 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     private String RB_senal_impresora_V;
     private String RB_senal_salida_efectivo_V;
     private String RB_senal_carcaza_V;
+    private String RB_senal_01800_V;
     private String RB_edo_impresora_V;
     private String RB_edo_lectora_V;
     private String RB_edo_teclados_V;
+
     private String RB_edo_CPU_V;
     private String RB_edo_monitor_V;
     private String RB_edo_dispensador_V;
@@ -213,46 +201,47 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     private String RB_edo_cableado_V;
     private String RB_conf_cableado_conex_V;
     private String RB_equipo_con_alte_V;
-
     private String RB_pruebas_ping_V;
-
     private String RB_banco_V;
     private String RB_remo_suc_V;
+    private String RB_regulador_V;
+
+    private String RB_antiskimmer_V;
+    private String RB_blindaje_V;
+    private String RB_braile_V;
+    private String RB_caseta_prefab_V;
+    private String RB_chapa_rand_V;
+    private String RB_entintado_billete_V;
+    private String RB_jumper_V;
+    private String RB_nicho_de_protec_V;
+    private String RB_tipo_placa_antivand_V;
+    private String RB_placa_antivand_V;
+    private String RB_rack_V;
+    private String RB_seg_shutter_V;
+    private String RB_telecontrol_conect_V;
+    private String RB_tipo_telecontrol_V;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    Button bt_get_firma;
+    private ImageView im_firma;
     private String CB_CSDS_V;
     private String CB_CHECKER_V;
     private String CB_RKL_V;
     private String CB_FIX_WIN_V;
     private String sp_tipo_dial_V;
-
-
     private String valida_fecha;
     private String valida_IDatm;
     private String valida_reporte;
 
-
     private CheckBox CB_CSDS, CB_CHECKER, CB_RKL, CB_FIX_WIN;
+    private Location mLastLocation;
+    private  String prim_child;
+    RequestQueue requestQueue;
+    private String tipo_fecha="";
+    private String hr_ini_V, hr_fin_V, fecha_ini_V, fecha_fin_V, SC_V, AC_V;
 
-    private Spinner sp_tipo_dial;
+
+
 
 
     @Override
@@ -262,22 +251,22 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        requestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
+        prim_child="ATMs";
         pais="México";
+        mLatitude = (TextView) findViewById(R.id.mLatitude);
+        mLongitude = (TextView) findViewById(R.id.mLongitude);
+
+
+        bt_get_firma=(Button)findViewById(R.id.bt_get_firma);
 
         usuarioid = getIntent().getStringExtra("usuario");
-
         fl_btn_add_photo = (FloatingActionButton) findViewById(R.id.fl_btn_add_photo);
         fl_btn_save_atm_prev = (FloatingActionButton) findViewById(R.id.fl_btn_save_atm_prev);
-
         photo_ATM_prev = (ImageView) findViewById(R.id.photo_ATM_prev);
-
         fotito= (ImageView) findViewById(R.id.fotito);
-
-
+        nestedScrollView=(NestedScrollView) findViewById(R.id.nestedScrollView);
         progressBarPhoto=(ProgressBar) findViewById(R.id.progressBarPhoto);
-
-        sv_nuevo = (ScrollView) findViewById(R.id.sv_nuevo);
 
         card1 = (CardView) findViewById(R.id.card1);
         card2 = (CardView) findViewById(R.id.card2);
@@ -286,21 +275,20 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         card5 = (CardView) findViewById(R.id.card5);
         card6 = (CardView) findViewById(R.id.card6);
 
+        TV_fecha_ini= (TextView) findViewById(R.id.TV_fecha_ini);
+        TV_fecha_fin= (TextView) findViewById(R.id.TV_fecha_fin);
+        TV_hr_fin= (TextView) findViewById(R.id.TV_hr_fin);
+        TV_hr_ini= (TextView) findViewById(R.id.TV_hr_ini);
+
         tv_user = (TextView) findViewById(R.id.tv_user);
-
         fecha = (TextView) findViewById(R.id.fecha);
-
         url_photo= (TextView) findViewById(R.id.url_photo);
-
         lay_gral = (LinearLayout) findViewById(R.id.lay_gral);
-
         lay_nuevo = (LinearLayout) findViewById(R.id.lay_nuevo);
-
 
         bt_nuevo = (Button) findViewById(R.id.bt_nuevo);
         bt_buscar = (Button) findViewById(R.id.bt_buscar);
         bt_buscar = (Button) findViewById(R.id.bt_buscar);
-
 
         notas_image = (EditText) findViewById(R.id.notas_image);
 
@@ -330,7 +318,10 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         notas_seguridad = (EditText) findViewById(R.id.notas_seguridad);
         notas_inst_elect = (EditText) findViewById(R.id.notas_inst_elect);
         notas_comunic = (EditText) findViewById(R.id.notas_comunic);
-
+        vobo = (EditText) findViewById(R.id.vobo);
+        puesto= (EditText) findViewById(R.id.puesto);
+        folio= (EditText) findViewById(R.id.folio);
+        solucion= (EditText) findViewById(R.id.solucion);
 
         ob_edo_impresora = (EditText) findViewById(R.id.ob_edo_impresora);
         ob_edo_lectora = (EditText) findViewById(R.id.ob_edo_lectora);
@@ -342,6 +333,58 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         longitud_cable = (EditText) findViewById(R.id.longitud_cable);
         pruebas_ping_result = (EditText) findViewById(R.id.pruebas_ping_result);
 
+
+
+        capacidad_hd=(EditText) findViewById(R.id.capacidad_hd);
+        RAM=(EditText) findViewById(R.id.RAM);
+        nombre_atm=(EditText) findViewById(R.id.nombre_atm);
+        ob_esp_sitio=(EditText) findViewById(R.id.ob_esp_sitio);
+        obs_telecontrol=(EditText) findViewById(R.id.obs_telecontrol);
+        tamaño_monitor=(EditText) findViewById(R.id.tamaño_monitor);
+        procesador=(EditText) findViewById(R.id.procesador);
+        vel_procesador=(EditText) findViewById(R.id.vel_procesador);
+        version_antivirus=(EditText) findViewById(R.id.version_antivirus);
+
+        RB_01800_cambio=(RadioButton) findViewById(R.id.RB_01800_cambio);
+        RB_01800_deteriorada=(RadioButton) findViewById(R.id.RB_01800_deteriorada);
+        RB_01800_no=(RadioButton) findViewById(R.id.RB_01800_no);
+        RB_01800_si=(RadioButton) findViewById(R.id.RB_01800_si);
+        RB_antiskimmer_ebras=(RadioButton) findViewById(R.id.RB_antiskimmer_ebras);
+        RB_antiskimmer_no=(RadioButton) findViewById(R.id.RB_antiskimmer_no);
+        RB_antiskimmer_si=(RadioButton) findViewById(R.id.RB_antiskimmer_si);
+        RB_blindaje_cab_no=(RadioButton) findViewById(R.id.RB_blindaje_cab_no);
+        RB_blindaje_cab_si=(RadioButton) findViewById(R.id.RB_blindaje_cab_si);
+        RB_braile_no=(RadioButton) findViewById(R.id.RB_braile_no);
+        RB_braile_si=(RadioButton) findViewById(R.id.RB_braile_si);
+        RB_caseta_prefab_no=(RadioButton) findViewById(R.id.RB_caseta_prefab_no);
+        RB_caseta_prefab_si=(RadioButton) findViewById(R.id.RB_caseta_prefab_si);
+        RB_chapa_rand_no=(RadioButton) findViewById(R.id.RB_chapa_rand_no);
+        RB_chapa_rand_si=(RadioButton) findViewById(R.id.RB_chapa_rand_si);
+        RB_entintado_billete_no=(RadioButton) findViewById(R.id.RB_entintado_billete_no);
+        RB_entintado_billete_si=(RadioButton) findViewById(R.id.RB_entintado_billete_si);
+        RB_jumper_no=(RadioButton) findViewById(R.id.RB_jumper_no);
+        RB_jumper_si=(RadioButton) findViewById(R.id.RB_jumper_si);
+        RB_logo_cambio=(RadioButton) findViewById(R.id.RB_logo_cambio);
+        RB_nicho_de_protec_no=(RadioButton) findViewById(R.id.RB_nicho_de_protec_no);
+        RB_nicho_de_protec_si=(RadioButton) findViewById(R.id.RB_nicho_de_protec_si);
+        RB_tipo_placa_antivand_der=(RadioButton) findViewById(R.id.RB_tipo_placa_antivand_der);
+        RB_tipo_placa_antivand_izq=(RadioButton) findViewById(R.id.RB_tipo_placa_antivand_izq);
+        RB_placa_antivand_no=(RadioButton) findViewById(R.id.RB_placa_antivand_no);
+        RB_placa_antivand_si=(RadioButton) findViewById(R.id.RB_placa_antivand_si);
+        RB_rack_no=(RadioButton) findViewById(R.id.RB_rack_no);
+        RB_rack_si=(RadioButton) findViewById(R.id.RB_rack_si);
+        RB_seg_shutter_no=(RadioButton) findViewById(R.id.RB_seg_shutter_no);
+        RB_seg_shutter_si=(RadioButton) findViewById(R.id.RB_seg_shutter_si);
+        RB_senal_carcaza_cambio=(RadioButton) findViewById(R.id.RB_senal_carcaza_cambio);
+        RB_senal_impresora_cambio=(RadioButton) findViewById(R.id.RB_senal_impresora_cambio);
+        RB_senal_lectora_cambio=(RadioButton) findViewById(R.id.RB_senal_lectora_cambio);
+        RB_senal_salida_efectivo_cambio=(RadioButton) findViewById(R.id.RB_senal_salida_efectivo_cambio);
+        RB_telecontrol_conect_dañado=(RadioButton) findViewById(R.id.RB_telecontrol_conect_dañado);
+        RB_telecontrol_conect_no=(RadioButton) findViewById(R.id.RB_telecontrol_conect_no);
+        RB_telecontrol_conect_si=(RadioButton) findViewById(R.id.RB_telecontrol_conect_si);
+        RB_tipo_telecontrol_IBOOT=(RadioButton) findViewById(R.id.RB_tipo_telecontrol_IBOOT);
+        RB_tipo_telecontrol_MTC=(RadioButton) findViewById(R.id.RB_tipo_telecontrol_MTC);
+        RB_tipo_telecontrol_Ninguno=(RadioButton) findViewById(R.id.RB_tipo_telecontrol_Ninguno);
 
 
         RB_publico = (RadioButton) findViewById(R.id.RB_publico);
@@ -383,12 +426,10 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         RB_UPS_no = (RadioButton) findViewById(R.id.RB_UPS_no);
         RB_supresor_si = (RadioButton) findViewById(R.id.RB_supresor_si);
         RB_supresor_no = (RadioButton) findViewById(R.id.RB_supresor_no);
-
         RB_polarizacion_correcta_si = (RadioButton) findViewById(R.id.RB_polarizacion_correcta_si);
         RB_polarizacion_correcta_no = (RadioButton) findViewById(R.id.RB_polarizacion_correcta_no);
         RB_volt_regulado_sum_UPS = (RadioButton) findViewById(R.id.RB_volt_regulado_sum_UPS);
         RB_volt_regulado_sum_regulador = (RadioButton) findViewById(R.id.RB_volt_regulado_sum_regulador);
-
         RB_tipo_regulado_Twist_lock = (RadioButton) findViewById(R.id.RB_tipo_regulado_Twist_lock);
         RB_tipo_regulado_normal = (RadioButton) findViewById(R.id.RB_tipo_regulado_normal);
         RB_logo_si = (RadioButton) findViewById(R.id.RB_logo_si);
@@ -420,7 +461,6 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         RB_edo_dispensador_danado = (RadioButton) findViewById(R.id.RB_edo_dispensador_danado);
         RB_satelital = (RadioButton) findViewById(R.id.RB_satelital);
         RB_DIAL = (RadioButton) findViewById(R.id.RB_DIAL);
-
         RB_edo_cableado_maltratado = (RadioButton) findViewById(R.id.RB_edo_cableado_maltratado);
         RB_edo_cableado_bueno = (RadioButton) findViewById(R.id.RB_edo_cableado_bueno);
         RB_edo_cableado_a_la_vista = (RadioButton) findViewById(R.id.RB_edo_cableado_a_la_vista);
@@ -428,7 +468,6 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         RB_conf_cableado_conex_cruzado = (RadioButton) findViewById(R.id.RB_conf_cableado_conex_cruzado);
         RB_equipo_con_alte_si = (RadioButton) findViewById(R.id.RB_equipo_con_alte_si);
         RB_equipo_con_alte_no = (RadioButton) findViewById(R.id.RB_equipo_con_alte_no);
-
         RB_pruebas_ping_si = (RadioButton) findViewById(R.id.RB_pruebas_ping_si);
         RB_pruebas_ping_no = (RadioButton) findViewById(R.id.RB_pruebas_ping_no);
         RB_tipo_dial_mecanico = (RadioButton) findViewById(R.id.RB_tipo_dial_mecanico);
@@ -436,7 +475,6 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         RB_tipo_dial_randomico = (RadioButton) findViewById(R.id.RB_tipo_dial_randomico);
         RB_empotrado_si = (RadioButton) findViewById(R.id.RB_empotrado_si);
         RB_empotrado_no = (RadioButton) findViewById(R.id.RB_empotrado_no);
-
         RB_banco_banamex = (RadioButton) findViewById(R.id.RB_banco_banamex);
         RB_banco_bancomer = (RadioButton) findViewById(R.id.RB_banco_bancomer);
         RB_banco_banorte = (RadioButton) findViewById(R.id.RB_banco_banorte);
@@ -444,26 +482,15 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         RB_banco_santander = (RadioButton) findViewById(R.id.RB_banco_santander);
         RB_remo_suc_remoto = (RadioButton) findViewById(R.id.RB_remo_suc_remoto);
         RB_remo_suc_sucursal = (RadioButton) findViewById(R.id.RB_remo_suc_sucursal);
-
         RB_ADSL = (RadioButton) findViewById(R.id.RB_ADSL);
         RB_3_4_G = (RadioButton) findViewById(R.id.RB_3_4_G);
-
-
-
-
-
-
-
+        RB_regulador_si = (RadioButton) findViewById(R.id.RB_regulador_si);
+        RB_regulador_no = (RadioButton) findViewById(R.id.RB_regulador_no);
 
         CB_CSDS = (CheckBox) findViewById(R.id.CB_CSDS);
         CB_CHECKER = (CheckBox) findViewById(R.id.CB_CHECKER);
         CB_RKL = (CheckBox) findViewById(R.id.CB_RKL);
         CB_FIX_WIN = (CheckBox) findViewById(R.id.CB_FIX_WIN);
-
-
-        sp_tipo_dial = (Spinner) findViewById(R.id.sp_tipo_dial);
-        String[] tipo_dial = {"Seleccionar", "Mecánico", "Electrónico", "Randómico"};
-        sp_tipo_dial.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tipo_dial));
 
 
         valida_fecha = fecha.getText().toString();
@@ -474,7 +501,10 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         tv_user.setText(usuarioid);
 
 
-        //// Invisible a cards //
+
+        TV_sc= (TextView) findViewById(R.id.TV_sc);
+        TV_ac= (TextView) findViewById(R.id.TV_ac);
+        TV_ac_label= (TextView) findViewById(R.id.TV_ac_label);
 
 
         card2.setVisibility(View.GONE);
@@ -484,6 +514,9 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         card6.setVisibility(View.GONE);
 
 
+        TV_ac.setVisibility(View.GONE);
+        TV_ac_label.setVisibility(View.GONE);
+
         fl_btn_add_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -492,7 +525,7 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
             }
         });
 
-        ///////////////dialogo confirmar salvar
+
 
 
         fl_btn_save_atm_prev.setOnClickListener(new View.OnClickListener() {
@@ -500,11 +533,7 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
             public void onClick(View v) {
 
 
-                String flag_fecha = fecha.getText().toString();
-                String flag_reporte = reporte.getText().toString();
-                String flag_idATM = id_tpv.getText().toString();
-
-                if (fecha.getText().toString().equals("Fecha de atención")) {
+                if (fecha.getText().toString().equals("Fecha")) {
 
                     Context context = getApplicationContext();
                     CharSequence text = "Favor seleccionar fecha de ateción";
@@ -545,51 +574,1234 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
                 }
 
 
+                if (localidad.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar localidad";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+
+
+                }
+
+                if (marca.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar marca";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (modelo.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar modelo";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (carga.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar carga";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (serie.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar serie";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (inventario.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar inventario";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (cliente_final.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar cliente final";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (sistema_operativo.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar sistema operativo";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (version_multivendor.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar versiín multivendor";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (temperatura.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar temperatura";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (UPS_kva.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar UPS kva";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (regulador_kva.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar regulador kva";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (fase_neutro_v_pared.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar fase neutro v pared";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (fase_neutro_v_regulado.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar fase neutro v regulado";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (fase_tierra_v_pared.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar fase tierra v pared";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (fase_tierra_v_regulado.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar fase tierra v regulado";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (tierra_neutro_v_pared.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar tierra neutro  v pared";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (tierra_neutro_v_regulado.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar tierra neutro v regulado";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (marca_router.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar  marca router";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (longitud_cable.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar longitud de cable";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (pruebas_ping_result.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar resultado pruebas ping";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (folio.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar folio";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (solucion.getText().toString().equals("")) {
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar solución";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (vobo.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar VoBo";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (puesto.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar puesto";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (capacidad_hd.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar capacidad HD";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (RAM.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar memoria RAM";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (nombre_atm.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar nombre de ATM";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (tamaño_monitor.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar tamaño de monitor";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (procesador.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar  procesador";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (vel_procesador.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar velocidad de procesador";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (version_antivirus.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor documentar ver. antivirus";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+
+
+
+                if (!CB_CSDS.isChecked() && !CB_CHECKER.isChecked()&& !CB_RKL.isChecked()&& !CB_FIX_WIN.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar herramientas de seguridad";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+
+
+
+
+                if (!RB_01800_cambio.isChecked() && !RB_01800_deteriorada.isChecked()&& !RB_01800_no.isChecked()&& !RB_01800_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar 01 800";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_blindaje_cab_no.isChecked() && !RB_blindaje_cab_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar Blindaje de cableado";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_braile_no.isChecked() && !RB_braile_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar Braile en teclado";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+
+
+                if (!RB_caseta_prefab_no.isChecked() && !RB_caseta_prefab_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar caseta prefabricada";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+
+                if (!RB_chapa_rand_no.isChecked() && !RB_chapa_rand_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar chapa randómica";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+
+                if (!RB_entintado_billete_no.isChecked() && !RB_entintado_billete_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar entindato de billete";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+                if (!RB_jumper_no.isChecked() && !RB_jumper_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar jumper";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+
+                if (!RB_nicho_de_protec_no.isChecked() && !RB_nicho_de_protec_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar nicho de protección";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+                if (!RB_tipo_placa_antivand_der.isChecked() && !RB_tipo_placa_antivand_izq.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar tipo de placa antivandalismo";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+
+
+                if (!RB_placa_antivand_no.isChecked() && !RB_placa_antivand_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar  placa antivandalismo";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+                if (!RB_rack_no.isChecked() && !RB_rack_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar  Rack";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+
+                if (!RB_seg_shutter_no.isChecked() && !RB_seg_shutter_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar  seguridad de shutter";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_telecontrol_conect_dañado.isChecked() && !RB_telecontrol_conect_no.isChecked()&& !RB_telecontrol_conect_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar telecontrol conectado";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+                if (!RB_tipo_telecontrol_IBOOT.isChecked() && !RB_tipo_telecontrol_MTC.isChecked()&& !RB_tipo_telecontrol_Ninguno.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar tipo de telecontrol";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+
+
+
+
+
+
+
+
+                if (!RB_antiskimmer_ebras.isChecked() && !RB_antiskimmer_no.isChecked() && !RB_antiskimmer_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar Antiskimmer";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_banco_banamex.isChecked() && !RB_banco_bancomer.isChecked()&& !RB_banco_banorte.isChecked()&& !RB_banco_bancoppel.isChecked()&& !RB_banco_santander.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar Banco";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_remo_suc_remoto.isChecked() && !RB_remo_suc_sucursal.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar Remoto / Sucursal";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_publico.isChecked() && !RB_Personal.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar Remoto / Sucursal";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_tipo_dial_mecanico.isChecked() && !RB_tipo_dial_electrico.isChecked()&& !RB_tipo_dial_randomico.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar tipo de Dial";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_cerradura_si.isChecked() && !RB_cerradura_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar tipo de Cerradura H";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_puntos_anclaje_6.isChecked() && !RB_puntos_anclaje_4.isChecked()&& !RB_puntos_anclaje_otro.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar puntos de anclaje";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_tipo_anclaje_RM16.isChecked() && !RB_tipo_anclaje_tradicional.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar tipo de anclaje";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_base_anclaje_no.isChecked() && !RB_base_anclaje_si.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar base de anclaje";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_placa_seguridad_si.isChecked() && !RB_placa_seguridad_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar placa de seguridad";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_perno_apertura_si.isChecked() && !RB_perno_apertura_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar perno de apertura";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_placa_seg_sitio_si.isChecked() && !RB_placa_seg_sitio_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar placa de seguridad en sitio";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_postes_ext_si.isChecked() && !RB_postes_ext_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar postes exteriores";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_empotrado_si.isChecked() && !RB_empotrado_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar empotrado a muro";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_carcaza_si.isChecked() && !RB_carcaza_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar carcaza/copete";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_aire_si.isChecked() && !RB_aire_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar aire acondiconado";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+
+
+                if (!RB_limpieza_buena.isChecked() && !RB_limpieza_mala.isChecked()&& !RB_limpieza_regular.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar limpieza del sitio";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_cesto_si.isChecked() && !RB_cesto_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar cesto de basura";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_polvo_si.isChecked() && !RB_polvo_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar expuesto a polvo";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_sol_si.isChecked() && !RB_sol_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar expuesto a sol";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_iluminacion_si.isChecked() && !RB_iluminacion_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar iluminacion";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_supresor_si.isChecked() && !RB_supresor_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar supresor de picos";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_UPS_si.isChecked() && !RB_UPS_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar UPS";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+                if (!RB_regulador_si.isChecked() && !RB_regulador_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar regulador";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_polarizacion_correcta_si.isChecked() && !RB_polarizacion_correcta_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar polarizacion";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_volt_regulado_sum_UPS.isChecked() && !RB_volt_regulado_sum_regulador.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar voltaje regulado por";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_tipo_regulado_Twist_lock.isChecked() && !RB_tipo_regulado_normal.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar tipo de conector";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+
+
+
+
+                if (!RB_logo_si.isChecked() && !RB_logo_no.isChecked()&& !RB_logo_deteriorada.isChecked()&& !RB_logo_cambio.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar señalización logo";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_senal_lectora_deteriorada.isChecked() && !RB_senal_lectora_si.isChecked()&& !RB_senal_lectora_no.isChecked()&& !RB_senal_lectora_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar señalización lectora";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_senal_impresora_si.isChecked() && !RB_senal_impresora_no.isChecked()&& !RB_senal_impresora_deteriorada.isChecked()&& !RB_senal_impresora_cambio.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar señalización impresora";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_senal_salida_efectivo_si.isChecked() && !RB_senal_salida_efectivo_no.isChecked()&& !RB_senal_salida_efectivo_deteriorada.isChecked()&& !RB_senal_salida_efectivo_cambio.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar señalización salida de efectivo";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_senal_carcaza_si.isChecked() && !RB_senal_carcaza_no.isChecked()&& !RB_senal_carcaza_deteriorada.isChecked()&& !RB_senal_carcaza_cambio.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar señalización carcaza";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+                if (!RB_edo_impresora_ok.isChecked() && !RB_edo_impresora_danado.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar estado impresora";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_edo_lectora_ok.isChecked() && !RB_edo_lectora_danado.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar estado lectora";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_edo_teclados_ok.isChecked() && !RB_edo_teclados_danado.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar estado teclados";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_edo_CPU_ok.isChecked() && !RB_edo_CPU_danado.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar estado CPU";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_edo_monitor_ok.isChecked() && !RB_edo_monitor_danado.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar estado monitor";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_edo_dispensador_ok.isChecked() && !RB_edo_dispensador_danado.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar estado dispensador";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_satelital.isChecked() && !RB_DIAL.isChecked() && !RB_ADSL.isChecked() && !RB_3_4_G.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar tipo de comunicación";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+
+
+                if (!RB_edo_cableado_maltratado.isChecked() && !RB_edo_cableado_bueno.isChecked()&& !RB_edo_cableado_a_la_vista.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar estado del cableado";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (!RB_conf_cableado_conex_directa.isChecked() && !RB_conf_cableado_conex_cruzado.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar configuración de cableado";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_equipo_con_alte_si.isChecked() && !RB_equipo_con_alte_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar equipo de cumunicacion alertado";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+                if (!RB_pruebas_ping_si.isChecked() && !RB_pruebas_ping_no.isChecked()){
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar equipo pruebas de ping";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+                }
+
+
+                if (TV_sc.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar SC";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+
+
+                }
+
+                if (TV_ac.getText().toString().equals("")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar AC";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+
+
+                }
+
+
+                if (TV_fecha_ini.getText().toString().equals("Fecha de llegada")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar Fecha de llegada";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+
+
+                }
+
+                if (TV_fecha_fin.getText().toString().equals("Fecha de terminación")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar Fecha de terminación";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+
+
+                }
+
+
+                if (TV_hr_ini.getText().toString().equals("Hora de llegada")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar Hora de llegada";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+
+
+                }
+
+                if (TV_hr_fin.getText().toString().equals("Hora de terminación")) {
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Favor seleccionar Hora de terminación";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    return;
+
+
+                }
+
                 muestraDialogo();
 
             }
         });
 
 
+        /////TODO Geolocalizacion
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .enableAutoManage(this, this)
+                .build();
+
+
     }
 
 
     ///abrir calendario
+
+    ///abrir calendario
+
+    public void showDatePickerDialog_fecha_fin(View v) {
+
+        tipo_fecha="fecha_fin";
+        DialogFragment newFragment = new DatePick();
+        Bundle args = new Bundle();
+        args.putInt("num", 2);
+        newFragment.setArguments(args);
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+
+    }
+
+    public void showDatePickerDialog_fecha_ini(View v) {
+
+        tipo_fecha="fecha_ini";
+        DialogFragment newFragment = new DatePick();
+        Bundle args = new Bundle();
+        args.putInt("num", 2);
+        newFragment.setArguments(args);
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+
+    }
+
+
+
+    public void showDatePickerDialog_Head(View v) {
+
+        tipo_fecha="head";
+        DialogFragment newFragment = new DatePick();
+        Bundle args = new Bundle();
+        args.putInt("num", 2);
+        newFragment.setArguments(args);
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+
+    }
+
+    ///recoge datos calendario
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
 
         String m_v;
         String d_v;
 
-
         m_v = valueOf(monthOfYear + 1);
-
         d_v = valueOf(dayOfMonth);
-
 
         if (m_v.length() == 1) {
             m_v = "0" + m_v;
         }
 
-
         if (d_v.length() == 1) {
             d_v = "0" + d_v;
         }
 
+        if (tipo_fecha.equals("head")){
+            fecha.setText(valueOf(year)+ "/"+ m_v + "/" + d_v  );
+        }
 
-        //fecha.setText( valueOf(dayOfMonth)  + "/ " + valueOf(monthOfYear + 1) + "/ " + valueOf(year) );
+        if (tipo_fecha.equals("fecha_ini")){
+            TV_fecha_ini.setText(valueOf(year)+ "/"+ m_v + "/" + d_v  );
+        }
 
-        fecha.setText(m_v + "/" + d_v + "/" + valueOf(year));
+        if (tipo_fecha.equals("fecha_fin")){
+            TV_fecha_fin.setText(valueOf(year)+ "/"+ m_v + "/" + d_v  );
+        }
+
+
+
+
+
+    }
+    ///abrir reloj
+
+
+    public void showTimePickerDialog_Head_hr_ini(View v) {
+
+
+
+        DialogFragment newFragment = new TimePick();
+        Bundle args = new Bundle();
+        args.putInt("num", 1);
+        newFragment.setArguments(args);
+        newFragment.show(getSupportFragmentManager(), "timePicker");
 
     }
 
-    public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePick();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
+    public void showTimePickerDialog_Head_hr_fin(View v) {
+
+
+        DialogFragment newFragment = new TimePick();
+        Bundle args = new Bundle();
+        args.putInt("num", 2);
+        newFragment.setArguments(args);
+        newFragment.show(getSupportFragmentManager(), "timePicker");
 
     }
-
 
     ///abrir dialogo
 
@@ -597,7 +1809,7 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     public void muestraDialogo() {
         AlertDialog.Builder myBuild = new AlertDialog.Builder(this);
         myBuild.setTitle("Importante");
-        myBuild.setMessage("¿Guardar Checklist? Al confirmar se cargaran los datos documentados y se reiniciará el formulario");
+        myBuild.setMessage("¿Guardar Checklist? Al confirmar se cargaran los datos documentados?");
         myBuild.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -654,8 +1866,10 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
 
 
     public void anterior1(View view) {
-        card2.setVisibility(View.GONE);
         card1.setVisibility(View.VISIBLE);
+        card2.setVisibility(View.GONE);
+
+        nestedScrollView.scrollTo(0, 0);
 
     }
 
@@ -663,6 +1877,7 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     public void anterior2(View view) {
         card2.setVisibility(View.VISIBLE);
         card3.setVisibility(View.GONE);
+        nestedScrollView.scrollTo(0, 0);
 
     }
 
@@ -670,12 +1885,14 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     public void anterior3(View view) {
         card3.setVisibility(View.VISIBLE);
         card4.setVisibility(View.GONE);
+        nestedScrollView.scrollTo(0, 0);
 
     }
 
     public void anterior4(View view) {
         card4.setVisibility(View.VISIBLE);
         card5.setVisibility(View.GONE);
+        nestedScrollView.scrollTo(0, 0);
 
     }
 
@@ -683,6 +1900,7 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     public void anterior5(View view) {
         card5.setVisibility(View.VISIBLE);
         card6.setVisibility(View.GONE);
+        nestedScrollView.scrollTo(0, 0);
 
     }
 
@@ -690,6 +1908,7 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     public void siguiente2(View view) {
         card2.setVisibility(View.VISIBLE);
         card1.setVisibility(View.GONE);
+        nestedScrollView.scrollTo(0, 0);
 
     }
 
@@ -697,12 +1916,14 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     public void siguiente3(View view) {
         card2.setVisibility(View.GONE);
         card3.setVisibility(View.VISIBLE);
+        nestedScrollView.scrollTo(0, 0);
 
     }
 
     public void siguiente4(View view) {
         card3.setVisibility(View.GONE);
         card4.setVisibility(View.VISIBLE);
+        nestedScrollView.scrollTo(0, 0);
 
     }
 
@@ -710,6 +1931,7 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     public void siguiente5(View view) {
         card4.setVisibility(View.GONE);
         card5.setVisibility(View.VISIBLE);
+        nestedScrollView.scrollTo(0, 0);
 
     }
 
@@ -717,72 +1939,124 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     public void siguiente6(View view) {
         card5.setVisibility(View.GONE);
         card6.setVisibility(View.VISIBLE);
+        nestedScrollView.scrollTo(0, 0);
 
     }
 
 
     public void siguiente7(View view) {
         card6.setVisibility(View.GONE);
+        nestedScrollView.scrollTo(0, 0);
 
     }
 
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+
+
+
+
+
+
+    private static final int PICK_IMAGE_ID = 234; // the number doesn't matter
+
+
+
 
     private void llamarIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
+        Intent chooseImageIntent = ImagePicker.getPickImageIntent(this);
+        startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if(resultCode != RESULT_CANCELED){
+            if (requestCode == PICK_IMAGE_ID) {
+                Bitmap image = ImagePicker.getImageFromResult(this, resultCode, data);
+                // TODO use bitmap
+                ImageView img = (ImageView) findViewById(R.id.photo_ATM_prev);
 
-            photo_ATM_prev.setDrawingCacheEnabled(true);
-            photo_ATM_prev.buildDrawingCache(false);
+                img.setImageBitmap(image);
 
-            if(photo_ATM_prev.getDrawingCache() != null) {
-                Bitmap  bitmap = Bitmap.createBitmap(photo_ATM_prev.getDrawingCache());
-                photo_ATM_prev.setDrawingCacheEnabled(false);
+                flag_foto = 1;
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] imageBytes = baos.toByteArray();
+                encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+            }
+        }
+
+        if (requestCode == 1) {
+
+            if(resultCode == Activity.RESULT_OK){
+                String SC=data.getStringExtra("SC_Sel");
+                String AC=data.getStringExtra("AC_Sel");
+                TV_sc.setText(SC);
+                TV_ac.setText(AC);
+
+                if(TV_sc.getText().equals("")){
+                    TV_ac_label.setVisibility(View.GONE);
+                    TV_ac.setVisibility(View.GONE);
+                    TV_ac.setText("");
+                }else{
+                    TV_ac_label.setVisibility(View.VISIBLE);
+                    TV_ac.setVisibility(View.VISIBLE);
+                }
+
 
             }
+            if (resultCode == Activity.RESULT_CANCELED) {
 
+                if(TV_sc.getText().equals("")){
+                    TV_ac_label.setVisibility(View.GONE);
+                    TV_ac.setVisibility(View.GONE);
+                    TV_ac.setText("");
+                }else{
+                    TV_ac_label.setVisibility(View.VISIBLE);
+                    TV_ac.setVisibility(View.VISIBLE);
+                }
 
-
-
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            photo_ATM_prev.setImageBitmap(imageBitmap);
-            flag_foto=1;
+            }
         }
+
     }
 
 
-    private DatabaseReference mDatabase;
+
+    public void SC_act(View view) {
+
+
+        Intent i = new Intent(this, SCActivity.class);
+        i.putExtra("tipo","SC");
+        i.putExtra("SC_Sel",TV_sc.getText());
+        startActivityForResult(i, 1);
+
+
+    }
+
+    public void AC_act(View view) {
+
+        Intent i = new Intent(this, SCActivity.class);
+        i.putExtra("tipo","AC");
+        i.putExtra("SC_Sel",TV_sc.getText());
+        startActivityForResult(i, 1);
+
+
+    }
+
+
+
+
+
     private String idATM;
 
-
-    ////////////////////declaracion de variables
-
-
-//TODO agregar radio grup pais  MEXICO y mandarlo por default escondido
-
-
-    // TODO  id y serie, tipo, modelo , reporte, enviarlas a mayuscula spara conjuntarlas ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
     private void saveATM_prev() {
 
-
-        ///////////////////////////////////////////////////Asignar valores a variables
-
-
+        date=fecha.getText().toString();
         idATM = id_tpv.getText().toString();
-
-
         reporte_V = reporte.getText().toString();
         id_tpv_V = id_tpv.getText().toString();
         localidad_V = localidad.getText().toString();
@@ -820,6 +2094,12 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         pruebas_ping_result_V = pruebas_ping_result.getText().toString();
 
 
+        hr_ini_V=TV_hr_ini.getText().toString();
+        hr_fin_V=TV_hr_fin.getText().toString();
+        fecha_ini_V=TV_fecha_ini.getText().toString();
+        fecha_fin_V=TV_fecha_fin.getText().toString();
+        SC_V=TV_sc.getText().toString();
+        AC_V=TV_ac.getText().toString();
 
         if (RB_publico.isChecked()) {
             RB_servicio_V = RB_publico.getText().toString();
@@ -836,14 +2116,12 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         if (RB_tipo_dial_randomico.isChecked()) {
             RB_tipo_dial_V = RB_tipo_dial_randomico.getText().toString();
         }
-
         if (RB_cerradura_si.isChecked()) {
             RB_cerradura_V = RB_cerradura_si.getText().toString();
         }
         if (RB_cerradura_no.isChecked()) {
             RB_cerradura_V = RB_cerradura_no.getText().toString();
         }
-
         if (RB_puntos_anclaje_6.isChecked()) {
             RB_puntos_anclaje_V = RB_puntos_anclaje_6.getText().toString();
         }
@@ -952,7 +2230,6 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         if (RB_supresor_no.isChecked()) {
             RB_supresor_V = RB_supresor_no.getText().toString();
         }
-
         if (RB_polarizacion_correcta_si.isChecked()) {
             RB_polarizacion_correcta_V = RB_polarizacion_correcta_si.getText().toString();
         }
@@ -965,7 +2242,6 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         if (RB_volt_regulado_sum_regulador.isChecked()) {
             RB_volt_regulado_sum_V = RB_volt_regulado_sum_regulador.getText().toString();
         }
-
         if (RB_tipo_regulado_Twist_lock.isChecked()) {
             RB_tipo_regulado_V = RB_tipo_regulado_Twist_lock.getText().toString();
         }
@@ -981,6 +2257,9 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         if (RB_logo_deteriorada.isChecked()) {
             RB_logo_V = RB_logo_deteriorada.getText().toString();
         }
+        if (RB_logo_cambio.isChecked()) {
+            RB_logo_V = RB_logo_cambio.getText().toString();
+        }
         if (RB_senal_lectora_si.isChecked()) {
             RB_senal_lectora_V = RB_senal_lectora_si.getText().toString();
         }
@@ -989,6 +2268,9 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         }
         if (RB_senal_lectora_deteriorada.isChecked()) {
             RB_senal_lectora_V = RB_senal_lectora_deteriorada.getText().toString();
+        }
+        if (RB_senal_lectora_cambio.isChecked()) {
+            RB_senal_lectora_V = RB_senal_lectora_cambio.getText().toString();
         }
         if (RB_senal_impresora_si.isChecked()) {
             RB_senal_impresora_V = RB_senal_impresora_si.getText().toString();
@@ -999,6 +2281,10 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         if (RB_senal_impresora_deteriorada.isChecked()) {
             RB_senal_impresora_V = RB_senal_impresora_deteriorada.getText().toString();
         }
+        if (RB_senal_impresora_cambio.isChecked()) {
+            RB_senal_impresora_V = RB_senal_impresora_cambio.getText().toString();
+        }
+
         if (RB_senal_salida_efectivo_si.isChecked()) {
             RB_senal_salida_efectivo_V = RB_senal_salida_efectivo_si.getText().toString();
         }
@@ -1008,6 +2294,28 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         if (RB_senal_salida_efectivo_deteriorada.isChecked()) {
             RB_senal_salida_efectivo_V = RB_senal_salida_efectivo_deteriorada.getText().toString();
         }
+        if (RB_senal_salida_efectivo_cambio.isChecked()) {
+            RB_senal_salida_efectivo_V = RB_senal_salida_efectivo_cambio.getText().toString();
+        }
+
+        if (RB_01800_si.isChecked()) {
+            RB_senal_01800_V = RB_01800_si.getText().toString();
+        }
+        if (RB_01800_no.isChecked()) {
+            RB_senal_01800_V = RB_01800_no.getText().toString();
+        }
+        if (RB_01800_deteriorada.isChecked()) {
+            RB_senal_01800_V = RB_01800_deteriorada.getText().toString();
+        }
+        if (RB_01800_cambio.isChecked()) {
+            RB_senal_01800_V = RB_01800_cambio.getText().toString();
+        }
+
+
+
+
+
+
         if (RB_senal_carcaza_si.isChecked()) {
             RB_senal_carcaza_V = RB_senal_carcaza_si.getText().toString();
         }
@@ -1016,6 +2324,9 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         }
         if (RB_senal_carcaza_deteriorada.isChecked()) {
             RB_senal_carcaza_V = RB_senal_carcaza_deteriorada.getText().toString();
+        }
+        if (RB_senal_carcaza_cambio.isChecked()) {
+            RB_senal_carcaza_V = RB_senal_carcaza_cambio.getText().toString();
         }
         if (RB_edo_impresora_ok.isChecked()) {
             RB_edo_impresora_V = RB_edo_impresora_ok.getText().toString();
@@ -1062,11 +2373,9 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         if (RB_ADSL.isChecked()) {
             RB_tipo_comunicacion_V = RB_ADSL.getText().toString();
         }
-
         if (RB_3_4_G.isChecked()) {
             RB_tipo_comunicacion_V = RB_3_4_G.getText().toString();
         }
-
         if (RB_edo_cableado_maltratado.isChecked()) {
             RB_edo_cableado_V = RB_edo_cableado_maltratado.getText().toString();
         }
@@ -1088,14 +2397,12 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         if (RB_equipo_con_alte_no.isChecked()) {
             RB_equipo_con_alte_V = RB_equipo_con_alte_no.getText().toString();
         }
-
         if (RB_pruebas_ping_si.isChecked()) {
             RB_pruebas_ping_V = RB_pruebas_ping_si.getText().toString();
         }
         if (RB_pruebas_ping_no.isChecked()) {
             RB_pruebas_ping_V = RB_pruebas_ping_no.getText().toString();
         }
-
         if (CB_CSDS.isChecked()) {
             CB_CSDS_V = CB_CSDS.getText().toString();
         }
@@ -1108,9 +2415,6 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         if (CB_FIX_WIN.isChecked()) {
             CB_FIX_WIN_V = CB_FIX_WIN.getText().toString();
         }
-
-
-
         if (RB_banco_banamex.isChecked()) {
             RB_banco_V = RB_banco_banamex.getText().toString();
         }
@@ -1133,6 +2437,158 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
             RB_remo_suc_V = RB_remo_suc_sucursal.getText().toString();
         }
 
+        if (RB_regulador_si.isChecked()) {
+            RB_regulador_V = RB_regulador_si.getText().toString();
+        }
+        if (RB_regulador_no.isChecked()) {
+            RB_regulador_V = RB_regulador_no.getText().toString();
+        }
+
+
+
+
+        if (RB_01800_si.isChecked()) {
+            RB_senal_01800_V = RB_01800_si.getText().toString();
+        }
+        if (RB_01800_no.isChecked()) {
+            RB_senal_01800_V = RB_01800_no.getText().toString();
+        }
+        if (RB_01800_deteriorada.isChecked()) {
+            RB_senal_01800_V = RB_01800_deteriorada.getText().toString();
+        }
+
+        if (RB_01800_cambio.isChecked()) {
+            RB_senal_01800_V = RB_01800_cambio.getText().toString();
+        }
+
+
+        if (RB_antiskimmer_ebras.isChecked()) {
+            RB_antiskimmer_V = RB_antiskimmer_ebras.getText().toString();
+        }
+        if (RB_antiskimmer_no.isChecked()) {
+            RB_antiskimmer_V = RB_antiskimmer_no.getText().toString();
+        }
+        if (RB_antiskimmer_si.isChecked()) {
+            RB_antiskimmer_V = RB_antiskimmer_si.getText().toString();
+        }
+
+        if (RB_blindaje_cab_no.isChecked()) {
+            RB_blindaje_V = RB_blindaje_cab_no.getText().toString();
+        }
+        if (RB_blindaje_cab_si.isChecked()) {
+            RB_blindaje_V = RB_blindaje_cab_si.getText().toString();
+        }
+
+
+
+        if (RB_braile_no.isChecked()) {
+            RB_braile_V = RB_braile_no.getText().toString();
+        }
+        if (RB_braile_si.isChecked()) {
+            RB_braile_V = RB_braile_si.getText().toString();
+        }
+
+
+
+        if (RB_caseta_prefab_no.isChecked()) {
+            RB_caseta_prefab_V = RB_caseta_prefab_no.getText().toString();
+        }
+        if (RB_caseta_prefab_si.isChecked()) {
+            RB_caseta_prefab_V = RB_caseta_prefab_si.getText().toString();
+        }
+
+
+        if (RB_chapa_rand_no.isChecked()) {
+            RB_chapa_rand_V = RB_chapa_rand_no.getText().toString();
+        }
+        if (RB_chapa_rand_si.isChecked()) {
+            RB_chapa_rand_V = RB_chapa_rand_si.getText().toString();
+        }
+
+        if (RB_entintado_billete_no.isChecked()) {
+            RB_entintado_billete_V = RB_entintado_billete_no.getText().toString();
+        }
+        if (RB_entintado_billete_si.isChecked()) {
+            RB_entintado_billete_V = RB_entintado_billete_si.getText().toString();
+        }
+
+        if (RB_jumper_no.isChecked()) {
+            RB_jumper_V = RB_jumper_no.getText().toString();
+        }
+        if (RB_jumper_si.isChecked()) {
+            RB_jumper_V = RB_jumper_si.getText().toString();
+        }
+
+
+
+
+        if (RB_nicho_de_protec_no.isChecked()) {
+            RB_nicho_de_protec_V = RB_nicho_de_protec_no.getText().toString();
+        }
+        if (RB_nicho_de_protec_si.isChecked()) {
+            RB_nicho_de_protec_V = RB_nicho_de_protec_si.getText().toString();
+        }
+
+
+
+
+        if (RB_tipo_placa_antivand_der.isChecked()) {
+            RB_tipo_placa_antivand_V = RB_tipo_placa_antivand_der.getText().toString();
+        }
+        if (RB_tipo_placa_antivand_izq.isChecked()) {
+            RB_tipo_placa_antivand_V = RB_tipo_placa_antivand_izq.getText().toString();
+        }
+
+
+        if (RB_placa_antivand_no.isChecked()) {
+            RB_placa_antivand_V = RB_placa_antivand_no.getText().toString();
+        }
+        if (RB_placa_antivand_si.isChecked()) {
+            RB_placa_antivand_V = RB_placa_antivand_si.getText().toString();
+        }
+
+
+
+        if (RB_rack_no.isChecked()) {
+            RB_rack_V = RB_rack_no.getText().toString();
+        }
+        if (RB_rack_si.isChecked()) {
+            RB_rack_V = RB_rack_si.getText().toString();
+        }
+
+
+
+        if (RB_seg_shutter_no.isChecked()) {
+            RB_seg_shutter_V = RB_seg_shutter_no.getText().toString();
+        }
+        if (RB_seg_shutter_si.isChecked()) {
+            RB_seg_shutter_V = RB_seg_shutter_si.getText().toString();
+        }
+
+
+        if (RB_telecontrol_conect_dañado.isChecked()) {
+            RB_telecontrol_conect_V = RB_telecontrol_conect_dañado.getText().toString();
+        }
+        if (RB_telecontrol_conect_no.isChecked()) {
+            RB_telecontrol_conect_V = RB_telecontrol_conect_no.getText().toString();
+        }
+
+        if (RB_telecontrol_conect_si.isChecked()) {
+            RB_telecontrol_conect_V = RB_telecontrol_conect_si.getText().toString();
+        }
+
+
+
+        if (RB_tipo_telecontrol_IBOOT.isChecked()) {
+            RB_tipo_telecontrol_V = RB_tipo_telecontrol_IBOOT.getText().toString();
+        }
+        if (RB_tipo_telecontrol_MTC.isChecked()) {
+            RB_tipo_telecontrol_V = RB_tipo_telecontrol_MTC.getText().toString();
+        }
+
+        if (RB_tipo_telecontrol_Ninguno.isChecked()) {
+            RB_tipo_telecontrol_V = RB_tipo_telecontrol_Ninguno.getText().toString();
+        }
 
 
 
@@ -1142,473 +2598,351 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
 
 
 
-
-
-
-
-
-
-
-
-        final String reporte_F = reporte_V;
-        final String id_tpv_F = id_tpv_V;
-        final String localidad_F = localidad_V;
-        final String marca_F = marca_V;
-        final String modelo_F = modelo_V;
-        final String carga_F = carga_V;
-        final String serie_F = serie_V;
-        final String inventario_F = inventario_V;
-        final String cliente_final_F = cliente_final_V;
-        final String sistema_operativo_F = sistema_operativo_V;
-        final String version_checker_F = version_checker_V;
-        final String version_multivendor_F = version_multivendor_V;
-        final String puntos_anclaje_otro_F = puntos_anclaje_otro_V;
-        final String carcaza_F = carcaza_V;
-        final String temperatura_F = temperatura_V;
-        final String UPS_kva_F = UPS_kva_V;
-        final String regulador_kva_F = regulador_kva_V;
-        final String fase_neutro_pared_F = fase_neutro_v_pared_V;
-        final String fase_neutro_regulado_F = fase_neutro_v_regulado_V;
-        final String fase_tierra_pared_F = fase_tierra_v_pared_V;
-        final String fase_tierra_regulado_F = fase_tierra_v_regulado_V;
-        final String tierra_neutro_pared_F = tierra_neutro_v_pared_V;
-        final String tierra_neutro_regulado_F = tierra_neutro_v_regulado_V;
-        final String notas_seguridad_F = notas_seguridad_V;
-        final String notas_inst_elect_F = notas_inst_elect_V;
-        final String notas_comunic_F = notas_comunic_V;
-        final String ob_edo_impresora_F = ob_edo_impresora_V;
-        final String ob_edo_lectora_F = ob_edo_lectora_V;
-        final String ob_edo_teclados_F = ob_edo_teclados_V;
-        final String ob_edo_CPU_F = ob_edo_CPU_V;
-        final String ob_edo_monitor_F = ob_edo_monitor_V;
-        final String ob_edo_dispensador_F = ob_edo_dispensador_V;
-        final String marca_router_F = marca_router_V;
-        final String longitud_cable_F = longitud_cable_V;
-        final String pruebas_ping_result_F = pruebas_ping_result_V;
-
-
-        final String RB_servicio_F = RB_servicio_V;
-
-        final String RB_tipo_dial__F = RB_tipo_dial_V;
-
-        final String RB_cerradura_F = RB_cerradura_V;
-        final String RB_puntos_anclaje_F = RB_puntos_anclaje_V;
-
-        final String RB_tipo_anclaje_F = RB_tipo_anclaje_V;
-        final String RB_base_anclaje_F = RB_base_anclaje_V;
-        final String RB_placa_seguridad_F = RB_placa_seguridad_V;
-        final String RB_perapertura_F = RB_perapertura_V;
-        final String RB_placa_seg_sitio_F = RB_placa_seg_sitio_V;
-        final String RB_empotrado_F = RB_empotrado_V;
-        final String RB_postes_ext_F = RB_postes_ext_V;
-        final String RB_carcaza_F = RB_carcaza_V;
-        final String RB_aire_F = RB_aire_V;
-        final String RB_limpieza_F = RB_limpieza_V;
-
-        final String RB_cesto_F = RB_cesto_V;
-        final String RB_polvo_F = RB_polvo_V;
-        final String RB_sol_F = RB_sol_V;
-        final String RB_iluminacion_F = RB_iluminacion_V;
-        final String RB_UPS_F = RB_UPS_V;
-        final String RB_supresor_F = RB_supresor_V;
-
-        final String RB_polarizacion_correcta_F = RB_polarizacion_correcta_V;
-        final String RB_volt_regulado_sum_F = RB_volt_regulado_sum_V;
-        final String RB_tipo_regulado_F = RB_tipo_regulado_V;
-        final String RB_logo_F = RB_logo_V;
-        final String RB_senal_lectora_F = RB_senal_lectora_V;
-        final String RB_senal_impresora_F = RB_senal_impresora_V;
-        final String RB_senal_salida_efectivo_F = RB_senal_salida_efectivo_V;
-        final String RB_senal_carcaza_F = RB_senal_carcaza_V;
-        final String RB_edo_impresora_F = RB_edo_impresora_V;
-        final String RB_edo_lectora_F = RB_edo_lectora_V;
-        final String RB_edo_teclados_F = RB_edo_teclados_V;
-        final String RB_edo_CPU_F = RB_edo_CPU_V;
-        final String RB_edo_monitor_F = RB_edo_monitor_V;
-        final String RB_edo_dispensador_F = RB_edo_dispensador_V;
-        final String RB_tipo_comunicacion_F = RB_tipo_comunicacion_V;
-        final String RB_edo_cableado_F = RB_edo_cableado_V;
-        final String RB_conf_cableado_conex_F = RB_conf_cableado_conex_V;
-        final String RB_equipo_con_alte_F = RB_equipo_con_alte_V;
-
-        final String RB_pruebas_ping_F = RB_pruebas_ping_V;
-        final String CB_CSDS_F = CB_CSDS_V;
-        final String CB_CHECKER_F = CB_CHECKER_V;
-        final String CB_RKL_F = CB_RKL_V;
-        final String CB_FIX_WIN_F = CB_FIX_WIN_V;
-
-
-        final String RB_banco_F = RB_banco_V;
-        final String RB_remo_suc_F = RB_remo_suc_V;
-
-
-
-
-        final String sp_tipo_dial_F = sp_tipo_dial_V;
-
-
-        final String date = fecha.getText().toString();
-        final String usuario = usuarioid;
-        final String ubicacion = "mexico2";
-
-
-
-
-        ////////////////////////////valida datos obligatorios
-
-
-
-
-            key = database.child(pais).child(idATM).child("preventivos").push().getKey();
-
-
-
-
-
-
-        reporte_child=reporte.getText().toString();
-
-
-        Post post = new Post(RB_banco_F, RB_remo_suc_F, usuario, idkey, date, CB_FIX_WIN_F, CB_RKL_F, CB_CHECKER_F, CB_CSDS_F, RB_pruebas_ping_F,  RB_equipo_con_alte_F, RB_conf_cableado_conex_F, RB_edo_cableado_F, RB_tipo_comunicacion_F, RB_edo_dispensador_F, RB_edo_monitor_F, RB_edo_CPU_F, RB_edo_teclados_F, RB_edo_lectora_F, RB_edo_impresora_F, RB_senal_carcaza_F, RB_senal_salida_efectivo_F, RB_senal_impresora_F, RB_senal_lectora_F, RB_logo_F, RB_tipo_regulado_F, RB_volt_regulado_sum_F, RB_polarizacion_correcta_F,  RB_supresor_F, RB_UPS_F, RB_iluminacion_F, RB_sol_F, RB_polvo_F, RB_cesto_F, RB_limpieza_F, RB_aire_F, RB_carcaza_F, RB_postes_ext_F, RB_empotrado_F, RB_placa_seg_sitio_F, RB_perapertura_F, RB_placa_seguridad_F, RB_base_anclaje_F, RB_tipo_anclaje_F, RB_puntos_anclaje_F, RB_cerradura_F, RB_tipo_dial__F, RB_servicio_F,  pruebas_ping_result_F, longitud_cable_F, marca_router_F, ob_edo_dispensador_F, ob_edo_monitor_F, ob_edo_CPU_F, ob_edo_teclados_F, ob_edo_lectora_F, ob_edo_impresora_F, notas_comunic_F, notas_inst_elect_F, notas_seguridad_F, tierra_neutro_regulado_F, tierra_neutro_pared_F, fase_tierra_regulado_F, fase_tierra_pared_F, fase_neutro_regulado_F, fase_neutro_pared_F, regulador_kva_F, UPS_kva_F, temperatura_F, carcaza_F, puntos_anclaje_otro_F, version_multivendor_F, version_checker_F, sistema_operativo_F, cliente_final_F, inventario_F, serie_F, carga_F, modelo_F, marca_F, localidad_F, id_tpv_F, reporte_F);
-
+        Post post = new Post();
 
         Map<String, Object> postValues = post.toMap();
 
-        Map<String, Object> childUpdates = new HashMap<>();
-        //childUpdates.put(codigo + key, postValues);
 
 
-        childUpdates.put("checklist", postValues);
+        ////////////////////////////////TODO////////Añade a Cloudant
 
-        database.child(pais).child("ATMs").child(idATM).child("preventivos").child(reporte_child).updateChildren(childUpdates);
+
+
+
+
+
+        //String url = "https://6620c8ed-e3c8-49b5-8420-fa3cb622c51e-bluemix.cloudant.com/preventivos";
+        String url=getResources().getString(R.string.urlCloudant)+"/preventivos";
+
+
+        JsonObjectRequest jar1 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(postValues), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    REV = jsonObject.getString("rev");
+                } catch (JSONException e) {
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Json Error Res: ", "" + error);
+
+
+                try {
+
+                    /// si no hay conexcion o hay error guarda el post en file txt
+
+                    String comas=  "\"";
+
+                    String guardaPost = "{" +
+                            comas+"IDkey"+comas+":"+comas+idkey+comas+","+
+                            comas+"Fecha"+comas+":"+comas+date+comas+","+
+                            comas+"Usuario"+comas+":"+comas+usuarioid+comas+","+
+                            comas+"aire_acondicionado"+comas+":"+comas+RB_aire_V+comas+","+
+                            comas+"ATM_da_servicio_a"+comas+":"+comas+RB_servicio_V+comas+","+
+                            comas+"base_de_anclaje"+comas+":"+comas+RB_base_anclaje_V+comas+","+
+                            comas+"carcaza"+comas+":"+comas+RB_carcaza_V+comas+","+
+                            comas+"carga"+comas+":"+comas+carga_V+comas+","+
+                            comas+"cerradura_tipo_H"+comas+":"+comas+RB_cerradura_V+comas+","+
+                            comas+"cesto_de_basura"+comas+":"+comas+RB_cesto_V+comas+","+
+                            comas+"cliente_final"+comas+":"+comas+cliente_final_V+comas+","+
+                            comas+"configuracion_cable_de_red"+comas+":"+comas+RB_conf_cableado_conex_V+comas+","+
+                            comas+"empotrado_al_muro"+comas+":"+comas+RB_empotrado_V+comas+","+
+                            comas+"equipo_de_comunicacion_alertado"+comas+":"+comas+RB_equipo_con_alte_V+comas+","+
+                            comas+"especifique_carcaza"+comas+":"+comas+carcaza_V+comas+","+
+                            comas+"estado_CPU_observaciones"+comas+":"+comas+ob_edo_CPU_V+comas+","+
+                            comas+"estado_CPU"+comas+":"+comas+RB_edo_CPU_V+comas+","+
+                            comas+"estado_del_cableado"+comas+":"+comas+RB_edo_cableado_V+comas+","+
+                            comas+"estado_dispensador_observaciones"+comas+":"+comas+ob_edo_dispensador_V+comas+","+
+                            comas+"estado_dispensador"+comas+":"+comas+RB_edo_dispensador_V+comas+","+
+                            comas+"estado_impresora_observaciones"+comas+":"+comas+ob_edo_impresora_V+comas+","+
+                            comas+"estado_impresora"+comas+":"+comas+RB_edo_impresora_V+comas+","+
+                            comas+"estado_lectora_observaciones"+comas+":"+comas+ob_edo_lectora_V+comas+","+
+                            comas+"estado_lectora"+comas+":"+comas+RB_edo_lectora_V+comas+","+
+                            comas+"estado_monitor_observaciones"+comas+":"+comas+ob_edo_monitor_V+comas+","+
+                            comas+"estado_monitor"+comas+":"+comas+RB_edo_monitor_V+comas+","+
+                            comas+"estado_teclados_observaciones"+comas+":"+comas+ob_edo_teclados_V+comas+","+
+                            comas+"estado_teclados"+comas+":"+comas+RB_edo_teclados_V+comas+","+
+                            comas+"expuesto_a_polvo"+comas+":"+comas+RB_polvo_V+comas+","+
+                            comas+"expuesto_a_sol"+comas+":"+comas+RB_sol_V+comas+","+
+                            comas+"fase_neutro_voltaje_pared"+comas+":"+comas+fase_neutro_v_pared_V+comas+","+
+                            comas+"fase_neutro_voltaje_regulado"+comas+":"+comas+fase_neutro_v_regulado_V+comas+","+
+                            comas+"fase_tierra_voltaje_pared"+comas+":"+comas+fase_tierra_v_pared_V+comas+","+
+                            comas+"fase_tierra_voltaje_regulado"+comas+":"+comas+fase_tierra_v_regulado_V+comas+","+
+                            comas+"herramientas_de_seguridad_instaladas_h1"+comas+":"+comas+CB_CSDS_V+comas+","+
+                            comas+"herramientas_de_seguridad_instaladas_h2"+comas+":"+comas+CB_CHECKER_V+comas+","+
+                            comas+"herramientas_de_seguridad_instaladas_h3"+comas+":"+comas+CB_RKL_V+comas+","+
+                            comas+"herramientas_de_seguridadinstaladas_h4"+comas+":"+comas+CB_FIX_WIN_V+comas+","+
+                            comas+"id_ATM"+comas+":"+comas+id_tpv_V+comas+","+
+                            comas+"iluminacion"+comas+":"+comas+RB_iluminacion_V+comas+","+
+                            comas+"KVA_regulador"+comas+":"+comas+regulador_kva_V+comas+","+
+                            comas+"KVA_UPS"+comas+":"+comas+UPS_kva_V+comas+","+
+                            comas+"limpieza_del_sitio"+comas+":"+comas+RB_limpieza_V+comas+","+
+                            comas+"localidad"+comas+":"+comas+localidad_V+comas+","+
+                            comas+"logo"+comas+":"+comas+RB_logo_V+comas+","+
+                            comas+"longitud_cable"+comas+":"+comas+longitud_cable_V+comas+","+
+                            comas+"marca_router"+comas+":"+comas+marca_router_V+comas+","+
+                            comas+"marca"+comas+":"+comas+marca_V+comas+","+
+                            comas+"modelo"+comas+":"+comas+modelo_V+comas+","+
+                            comas+"notas_comunicaciones"+comas+":"+comas+notas_comunic_V+comas+","+
+                            comas+"notas_instalacion_electrica"+comas+":"+comas+notas_inst_elect_V+comas+","+
+                            comas+"notas_seguridad"+comas+":"+comas+notas_seguridad_V+comas+","+
+                            comas+"numero_de_inventario"+comas+":"+comas+inventario_V+comas+","+
+                            comas+"perno_de_apertura"+comas+":"+comas+RB_perapertura_V+comas+","+
+                            comas+"placa_de_seguridad_sitio"+comas+":"+comas+RB_placa_seg_sitio_V+comas+","+
+                            comas+"placa_de_seguridad"+comas+":"+comas+RB_placa_seguridad_V+comas+","+
+                            comas+"polarizacion_correcta"+comas+":"+comas+RB_polarizacion_correcta_V+comas+","+
+                            comas+"postes_exteriores"+comas+":"+comas+RB_postes_ext_V+comas+","+
+                            comas+"pruebas_ping_resultado"+comas+":"+comas+pruebas_ping_result_V+comas+","+
+                            comas+"pruebas_ping"+comas+":"+comas+RB_pruebas_ping_V+comas+","+
+                            comas+"puntos_de_anclaje_otros"+comas+":"+comas+puntos_anclaje_otro_V+comas+","+
+                            comas+"puntos_de_anclaje"+comas+":"+comas+RB_puntos_anclaje_V+comas+","+
+                            comas+"reporte"+comas+":"+comas+reporte_V+comas+","+
+                            comas+"señal_carcaza"+comas+":"+comas+RB_senal_carcaza_V+comas+","+
+                            comas+"señal_impresora"+comas+":"+comas+RB_senal_impresora_V+comas+","+
+                            comas+"señal_lectora"+comas+":"+comas+RB_senal_lectora_V+comas+","+
+                            comas+"señal_salida_efectivo"+comas+":"+comas+RB_senal_salida_efectivo_V+comas+","+
+                            comas+"serie"+comas+":"+comas+serie_V+comas+","+
+                            comas+"sistema_operativo"+comas+":"+comas+sistema_operativo_V+comas+","+
+                            comas+"supresor_de_picos"+comas+":"+comas+RB_supresor_V+comas+","+
+                            comas+"temperatura"+comas+":"+comas+temperatura_V+comas+","+
+                            comas+"tierra_neutro_voltaje_pared"+comas+":"+comas+tierra_neutro_v_pared_V+comas+","+
+                            comas+"tierra_neutro_voltaje_regulado"+comas+":"+comas+tierra_neutro_v_regulado_V+comas+","+
+                            comas+"tipo_de_anclaje"+comas+":"+comas+RB_tipo_anclaje_V+comas+","+
+                            comas+"regulador"+comas+":"+comas+RB_regulador_V+comas+","+
+                            comas+"tipo_de_comunicacion"+comas+":"+comas+RB_tipo_comunicacion_V+comas+","+
+                            comas+"tipo_de_dial"+comas+":"+comas+RB_tipo_dial_V+comas+","+
+                            comas+"tipo_voltaje_regulado"+comas+":"+comas+RB_tipo_regulado_V+comas+","+
+                            comas+"UPS"+comas+":"+comas+RB_UPS_V+comas+","+
+                            comas+"version_checker"+comas+":"+comas+version_checker_V+comas+","+
+                            comas+"version_multivendor"+comas+":"+comas+version_multivendor_V+comas+","+
+                            comas+"voltaje_regulado_suministrado_por"+comas+":"+comas+RB_volt_regulado_sum_V+comas+","+
+                            comas+"banco"+comas+":"+comas+RB_banco_V+comas+","+
+                            comas+"remoto_sucursal"+comas+":"+comas+RB_remo_suc_V+comas+","+
+                            comas+"pais"+comas+":"+comas+"Mexico"+comas+","+
+                            comas+"equipo"+comas+":"+comas+"ATM"+comas+","+
+                            comas+"tipo_reporte"+comas+":"+comas+"Preventivo"+comas+","+
+                            comas+"solucion"+comas+":"+comas+solucion.getText().toString()+comas+","+
+                            comas+"Vobo"+comas+":"+comas+vobo.getText().toString()+comas+","+
+                            comas+"puesto"+comas+":"+comas+puesto.getText().toString()+comas+","+
+                            comas+"folio"+comas+":"+comas+folio.getText().toString()+comas+","+
+                            comas+"latitud"+comas+":"+comas+mLatitude.getText().toString()+comas+","+
+                            comas+"longitud"+comas+":"+comas+mLongitude.getText().toString()+comas+","+
+                            comas+"hr_ini"+comas+":"+comas+hr_ini_V+comas+","+
+                            comas+"hr_fin"+comas+":"+comas+hr_fin_V+comas+","+
+                            comas+"fecha_ini"+comas+":"+comas+fecha_ini_V+comas+","+
+                            comas+"fecha_fin"+comas+":"+comas+fecha_fin_V+comas+","+
+                            comas+"SC"+comas+":"+comas+SC_V+comas+","+
+                            comas+"AC"+comas+":"+comas+AC_V+comas+","+
+                            comas+"capacidad_hd"+comas+":"+comas+capacidad_hd.getText()+comas+","+
+                            comas+"RAM"+comas+":"+comas+RAM.getText()+comas+","+
+                            comas+"nombre_atm"+comas+":"+comas+nombre_atm.getText()+comas+","+
+                            comas+"ob_esp_sitio"+comas+":"+comas+ob_esp_sitio.getText()+comas+","+
+                            comas+"obs_telecontrol"+comas+":"+comas+obs_telecontrol.getText()+comas+","+
+                            comas+"tamano_monitor"+comas+":"+comas+tamaño_monitor.getText()+comas+","+
+                            comas+"procesador"+comas+":"+comas+procesador.getText()+comas+","+
+                            comas+"vel_procesador"+comas+":"+comas+vel_procesador.getText()+comas+","+
+                            comas+"version_antivirus"+comas+":"+comas+version_antivirus.getText()+comas+","+
+                            comas+"senal_01800"+comas+":"+comas+RB_senal_01800_V+comas+","+
+                            comas+"antiskimmer"+comas+":"+comas+RB_antiskimmer_V+comas+","+
+                            comas+"blindaje"+comas+":"+comas+RB_blindaje_V+comas+","+
+                            comas+"braile"+comas+":"+comas+RB_braile_V+comas+","+
+                            comas+"caseta_prefab"+comas+":"+comas+RB_caseta_prefab_V+comas+","+
+                            comas+"chapa_rand"+comas+":"+comas+RB_chapa_rand_V+comas+","+
+                            comas+"entintado_billete"+comas+":"+comas+RB_entintado_billete_V+comas+","+
+                            comas+"jumper"+comas+":"+comas+RB_jumper_V+comas+","+
+                            comas+"nicho_de_protec"+comas+":"+comas+RB_nicho_de_protec_V+comas+","+
+                            comas+"tipo_placa_antivand"+comas+":"+comas+RB_tipo_placa_antivand_V+comas+","+
+                            comas+"placa_antivand"+comas+":"+comas+RB_placa_antivand_V+comas+","+
+                            comas+"rack"+comas+":"+comas+RB_rack_V+comas+","+
+                            comas+"seg_shutter"+comas+":"+comas+RB_seg_shutter_V+comas+","+
+                            comas+"telecontrol_conect"+comas+":"+comas+RB_telecontrol_conect_V+comas+","+
+                            comas+"tipo_telecontrol"+comas+":"+comas+RB_tipo_telecontrol_V+comas+
+
+
+                            "}";
+
+                    ////Genera JSON de variables
+
+
+
+
+                    Long tsLong = System.currentTimeMillis()/1000;
+                    String ts = tsLong.toString();
+
+                    String filename= "PR_"+ts+"_"+reporte.getText().toString()+".txt";
+
+                    OutputStreamWriter archivo = new OutputStreamWriter(openFileOutput(filename, Activity.MODE_PRIVATE));
+                    archivo.write(guardaPost);
+                    archivo.flush();
+                    archivo.close();
+
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Problema al subir file, almacenado en pendientes. " + filename;
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+
+
+                } catch (IOException e) {
+                }
+
+
+
+
+            }
+        });
+        requestQueue.add(jar1);
+
+        jar1.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
 
 
     }
-private String reporte_child;
 
-    DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-    private ValueEventListener eventListener;
-
-    private String key="";
+    private String REV;
 
 
-    @IgnoreExtraProperties
+
+
     public class Post {
 
-        public String date;
-        public String usuario;
-        public String ubicacion;
-        public String idkey;
-
-
-        public String reporte_F;
-        public String id_tpv_F;
-        public String localidad_F;
-        public String marca_F;
-        public String modelo_F;
-        public String carga_F;
-        public String serie_F;
-        public String inventario_F;
-        public String cliente_final_F;
-        public String sistema_operativo_F;
-        public String version_checker_F;
-        public String version_multivendor_F;
-        public String puntos_anclaje_otro_F;
-        public String carcaza_F;
-        public String temperatura_F;
-        public String UPS_kva_F;
-        public String regulador_kva_F;
-        public String fase_neutro_pared_F;
-        public String fase_neutro_regulado_F;
-        public String fase_tierra_pared_F;
-        public String fase_tierra_regulado_F;
-        public String tierra_neutro_pared_F;
-        public String tierra_neutro_regulado_F;
-        public String notas_seguridad_F;
-        public String notas_inst_elect_F;
-        public String notas_comunic_F;
-        public String ob_edo_impresora_F;
-        public String ob_edo_lectora_F;
-        public String ob_edo_teclados_F;
-        public String ob_edo_CPU_F;
-        public String ob_edo_monitor_F;
-        public String ob_edo_dispensador_F;
-        public String marca_router_F;
-        public String longitud_cable_F;
-        public String pruebas_ping_result_F;
-
-
-        public String RB_servicio_F;
-        public String RB_Personal_F;
-        public String RB_tipo_dial__F;
-
-        public String RB_cerradura_F;
-        public String RB_puntos_anclaje_F;
-
-        public String RB_tipo_anclaje_F;
-        public String RB_base_anclaje_F;
-        public String RB_placa_seguridad_F;
-        public String RB_perapertura_F;
-        public String RB_placa_seg_sitio_F;
-        public String RB_empotrado_F;
-        public String RB_postes_ext_F;
-        public String RB_carcaza_F;
-        public String RB_aire_F;
-        public String RB_limpieza_F;
-
-        public String RB_cesto_F;
-        public String RB_polvo_F;
-        public String RB_sol_F;
-        public String RB_iluminacion_F;
-        public String RB_UPS_F;
-        public String RB_supresor_F;
-
-        public String RB_polarizacion_correcta_F;
-        public String RB_Folt_regulado_sum_F;
-        public String RB_tipo_regulado_F;
-        public String RB_logo_F;
-        public String RB_senal_lectora_F;
-        public String RB_senal_impresora_F;
-        public String RB_senal_salida_efectivo_F;
-        public String RB_senal_carcaza_F;
-        public String RB_edo_impresora_F;
-        public String RB_edo_lectora_F;
-        public String RB_edo_teclados_F;
-        public String RB_edo_CPU_F;
-        public String RB_edo_monitor_F;
-        public String RB_edo_dispensador_F;
-        public String RB_tipo_comunicacion_F;
-        public String RB_edo_cableado_F;
-        public String RB_conf_cableado_conex_F;
-        public String RB_equipo_con_alte_F;
-
-        public String RB_pruebas_ping_F;
-
-        public String RB_banco_F;
-        public String RB_remo_suc_F;
-
-
-
-        public String CB_CSDS_F;
-        public String CB_CHECKER_F;
-        public String CB_RKL_F;
-        public String CB_FIX_WIN_F;
-        public String sp_tipo_dial_F;
 
 
         public Post() {
-            // Default constructor required for calls to DataSnapshot.getValue(Post.class)
-        }
-
-        public Post(String RB_banco_F, String RB_remo_suc_F, String usuario, String idkey, String date, String CB_FIX_WIN_F, String CB_RKL_F, String CB_CHECKER_F, String CB_CSDS_F, String RB_pruebas_ping_F,  String RB_equipo_con_alte_F, String RB_conf_cableado_conex_F, String RB_edo_cableado_F, String RB_tipo_comunicacion_F, String RB_edo_dispensador_F, String RB_edo_monitor_F, String RB_edo_CPU_F, String RB_edo_teclados_F, String RB_edo_lectora_F, String RB_edo_impresora_F, String RB_senal_carcaza_F, String RB_senal_salida_efectivo_F, String RB_senal_impresora_F, String RB_senal_lectora_F, String RB_logo_F, String RB_tipo_regulado_F, String RB_Folt_regulado_sum_F, String RB_polarizacion_correcta_F,  String RB_supresor_F, String RB_UPS_F, String RB_iluminacion_F, String RB_sol_F, String RB_polvo_F, String RB_cesto_F, String RB_limpieza_F, String RB_aire_F, String RB_carcaza_F, String RB_postes_ext_F, String RB_empotrado_F, String RB_placa_seg_sitio_F, String RB_perapertura_F, String RB_placa_seguridad_F, String RB_base_anclaje_F, String RB_tipo_anclaje_F, String RB_puntos_anclaje_F, String RB_cerradura_F, String RB_tipo_dial__F, String RB_servicio_F,  String pruebas_ping_result_F, String longitud_cable_F, String marca_router_F, String ob_edo_dispensador_F, String ob_edo_monitor_F, String ob_edo_CPU_F, String ob_edo_teclados_F, String ob_edo_lectora_F, String ob_edo_impresora_F, String notas_comunic_F, String notas_inst_elect_F, String notas_seguridad_F, String tierra_neutro_regulado_F, String tierra_neutro_pared_F, String fase_tierra_regulado_F, String fase_tierra_pared_F, String fase_neutro_regulado_F, String fase_neutro_pared_F, String regulador_kva_F, String UPS_kva_F, String temperatura_F, String carcaza_F, String puntos_anclaje_otro_F, String version_multivendor_F, String version_checker_F, String sistema_operativo_F, String cliente_final_F, String inventario_F, String serie_F, String carga_F, String modelo_F, String marca_F, String localidad_F, String id_tpv_F, String reporte_F) {
-            //////////////////////////////////////////////aqui poner variables
-            this.date = date;
-            this.usuario = usuario;
-            this.ubicacion = ubicacion;
-            this.idkey = idkey;
-
-            this.reporte_F = reporte_F;
-            this.id_tpv_F = id_tpv_F;
-            this.localidad_F = localidad_F;
-            this.marca_F = marca_F;
-            this.modelo_F = modelo_F;
-            this.carga_F = carga_F;
-            this.serie_F = serie_F;
-            this.inventario_F = inventario_F;
-            this.cliente_final_F = cliente_final_F;
-            this.sistema_operativo_F = sistema_operativo_F;
-            this.version_checker_F = version_checker_F;
-            this.version_multivendor_F = version_multivendor_F;
-            this.puntos_anclaje_otro_F = puntos_anclaje_otro_F;
-            this.carcaza_F = carcaza_F;
-            this.temperatura_F = temperatura_F;
-            this.UPS_kva_F = UPS_kva_F;
-            this.regulador_kva_F = regulador_kva_F;
-            this.fase_neutro_pared_F = fase_neutro_pared_F;
-            this.fase_neutro_regulado_F = fase_neutro_regulado_F;
-            this.fase_tierra_pared_F = fase_tierra_pared_F;
-            this.fase_tierra_regulado_F = fase_tierra_regulado_F;
-            this.tierra_neutro_pared_F = tierra_neutro_pared_F;
-            this.tierra_neutro_regulado_F = tierra_neutro_regulado_F;
-            this.notas_seguridad_F = notas_seguridad_F;
-            this.notas_inst_elect_F = notas_inst_elect_F;
-            this.notas_comunic_F = notas_comunic_F;
-            this.ob_edo_impresora_F = ob_edo_impresora_F;
-            this.ob_edo_lectora_F = ob_edo_lectora_F;
-            this.ob_edo_teclados_F = ob_edo_teclados_F;
-            this.ob_edo_CPU_F = ob_edo_CPU_F;
-            this.ob_edo_monitor_F = ob_edo_monitor_F;
-            this.ob_edo_dispensador_F = ob_edo_dispensador_F;
-            this.marca_router_F = marca_router_F;
-            this.longitud_cable_F = longitud_cable_F;
-            this.pruebas_ping_result_F = pruebas_ping_result_F;
-
-
-
-            this.RB_tipo_dial__F = RB_tipo_dial__F;
-
-            this.RB_servicio_F = RB_servicio_F;
-            this.RB_cerradura_F = RB_cerradura_F;
-            this.RB_puntos_anclaje_F = RB_puntos_anclaje_F;
-            this.RB_tipo_anclaje_F = RB_tipo_anclaje_F;
-            this.RB_base_anclaje_F = RB_base_anclaje_F;
-            this.RB_placa_seguridad_F = RB_placa_seguridad_F;
-            this.RB_perapertura_F = RB_perapertura_F;
-            this.RB_placa_seg_sitio_F = RB_placa_seg_sitio_F;
-            this.RB_empotrado_F = RB_empotrado_F;
-            this.RB_postes_ext_F = RB_postes_ext_F;
-            this.RB_carcaza_F = RB_carcaza_F;
-            this.RB_aire_F = RB_aire_F;
-            this.RB_limpieza_F = RB_limpieza_F;
-            this.RB_cesto_F = RB_cesto_F;
-            this.RB_polvo_F = RB_polvo_F;
-            this.RB_sol_F = RB_sol_F;
-            this.RB_iluminacion_F = RB_iluminacion_F;
-            this.RB_UPS_F = RB_UPS_F;
-            this.RB_supresor_F = RB_supresor_F;
-
-            this.RB_polarizacion_correcta_F = RB_polarizacion_correcta_F;
-            this.RB_Folt_regulado_sum_F = RB_Folt_regulado_sum_F;
-            this.RB_tipo_regulado_F = RB_tipo_regulado_F;
-            this.RB_logo_F = RB_logo_F;
-            this.RB_senal_lectora_F = RB_senal_lectora_F;
-            this.RB_senal_impresora_F = RB_senal_impresora_F;
-            this.RB_senal_salida_efectivo_F = RB_senal_salida_efectivo_F;
-            this.RB_senal_carcaza_F = RB_senal_carcaza_F;
-            this.RB_edo_impresora_F = RB_edo_impresora_F;
-            this.RB_edo_lectora_F = RB_edo_lectora_F;
-            this.RB_edo_teclados_F = RB_edo_teclados_F;
-            this.RB_edo_CPU_F = RB_edo_CPU_F;
-            this.RB_edo_monitor_F = RB_edo_monitor_F;
-            this.RB_edo_dispensador_F = RB_edo_dispensador_F;
-            this.RB_tipo_comunicacion_F = RB_tipo_comunicacion_F;
-            this.RB_edo_cableado_F = RB_edo_cableado_F;
-            this.RB_conf_cableado_conex_F = RB_conf_cableado_conex_F;
-            this.RB_equipo_con_alte_F = RB_equipo_con_alte_F;
-
-            this.RB_pruebas_ping_F = RB_pruebas_ping_F;
-
-
-            this.RB_banco_F = RB_banco_F;
-            this.RB_remo_suc_F = RB_remo_suc_F;
-
-
-
-
-
-            this.CB_CSDS_F = CB_CSDS_F;
-            this.CB_CHECKER_F = CB_CHECKER_F;
-            this.CB_RKL_F = CB_RKL_F;
-            this.CB_FIX_WIN_F = CB_FIX_WIN_F;
-            this.sp_tipo_dial_F = sp_tipo_dial_F;
-
 
         }
 
-        @Exclude
+
         public Map<String, Object> toMap() {
             HashMap<String, Object> result = new HashMap<>();
             result.put("IDkey", idkey);
             result.put("Fecha", date);
-            result.put("Usuario", usuario);
-
-
-            result.put("aire acondicionado", RB_aire_F);
-
-            result.put("ATM da servicio a", RB_Personal_F);
-            result.put("ATM da servicio a", RB_servicio_V);
-            result.put("base de anclaje", RB_base_anclaje_F);
-            result.put("carcaza", RB_carcaza_F);
-            result.put("carga", carga_F);
-            result.put("cerradura tipo H", RB_cerradura_F);
-            result.put("cesto de basura", RB_cesto_F);
-            result.put("cliente final", cliente_final_F);
-            result.put("configuracion cable de red", RB_conf_cableado_conex_F);
-            result.put("empotrado al muro", RB_empotrado_F);
-            result.put("equipo de comunicación alertado", RB_equipo_con_alte_F);
-            result.put("especifique carcaza", carcaza_F);
-            result.put("estado CPU observaciones", ob_edo_CPU_F);
-            result.put("estado CPU", RB_edo_CPU_F);
-            result.put("estado del cableado", RB_edo_cableado_F);
-            result.put("estado dispensador observaciones", ob_edo_dispensador_F);
-            result.put("estado dispensador", RB_edo_dispensador_F);
-            result.put("estado impresora observaciones", ob_edo_impresora_F);
-            result.put("estado impresora", RB_edo_impresora_F);
-            result.put("estado lectora observaciones", ob_edo_lectora_F);
-            result.put("estado lectora", RB_edo_lectora_F);
-            result.put("estado monitor observaciones", ob_edo_monitor_F);
-            result.put("estado monitor", RB_edo_monitor_F);
-            result.put("estado teclados observaciones", ob_edo_teclados_F);
-            result.put("estado teclados", RB_edo_teclados_F);
-            result.put("expuesto a polvo", RB_polvo_F);
-            result.put("expuesto a sol", RB_sol_F);
-            result.put("fase neutro voltaje pared", fase_neutro_pared_F);
-            result.put("fase neutro voltaje regulado", fase_neutro_regulado_F);
-            result.put("fase tierra voltaje pared", fase_tierra_pared_F);
-            result.put("fase tierra voltaje regulado", fase_tierra_regulado_F);
-            result.put("herramientas de seguridad instaladas h1", CB_CSDS_F);
-            result.put("herramientas de seguridad instaladas h2", CB_CHECKER_F);
-            result.put("herramientas de seguridad instaladas h3", CB_RKL_F);
-            result.put("herramientas de seguridad instaladas h4", CB_FIX_WIN_F);
-            result.put("id atm", id_tpv_F);
-            result.put("iluminacion", RB_iluminacion_F);
-            result.put("KVA regulador", regulador_kva_F);
-            result.put("KVA UPS", UPS_kva_F);
-            result.put("limpieza del sitio", RB_limpieza_F);
-
-            result.put("localidad", localidad_F);
-            result.put("logo", RB_logo_F);
-            result.put("longitud cable", longitud_cable_F);
-            result.put("marca router", marca_router_F);
-            result.put("marca", marca_F);
-            result.put("modelo", modelo_F);
-            result.put("notas comunicaciones", notas_comunic_F);
-            result.put("notas instalacion electrica", notas_inst_elect_F);
-            result.put("notas seguridad", notas_seguridad_F);
-            result.put("numero de inventario", inventario_F);
-            result.put("perno de apertura", RB_perapertura_F);
-            result.put("placa de seguridad sitio", RB_placa_seg_sitio_F);
-            result.put("placa de seguridad", RB_placa_seguridad_F);
-            result.put("polarizacion correcta", RB_polarizacion_correcta_F);
-            result.put("postes exteriores", RB_postes_ext_F);
-            result.put("pruebas ping resultado", pruebas_ping_result_F);
-            result.put("pruebas ping", RB_pruebas_ping_F);
-            result.put("puntos de anclaje otros", puntos_anclaje_otro_F);
-            result.put("puntos de anclaje", RB_puntos_anclaje_F);
-            result.put("reporte", reporte_F);
-
-            result.put("señal carcaza", RB_senal_carcaza_F);
-            result.put("señal impresora", RB_senal_impresora_F);
-            result.put("señal lectora", RB_senal_lectora_F);
-            result.put("señal salida efectivo", RB_senal_salida_efectivo_F);
-            result.put("serie", serie_F);
-            result.put("sistema operativo", sistema_operativo_F);
-            result.put("supresor de picos", RB_supresor_F);
-            result.put("temperatura", temperatura_F);
-            result.put("tierra neutro voltaje pared", tierra_neutro_pared_F);
-            result.put("tierra neutro voltaje regulado", tierra_neutro_regulado_F);
-            result.put("tipo de anclaje", RB_tipo_anclaje_F);
-
-            result.put("tipo de comunicación", RB_tipo_comunicacion_F);
-            result.put("tipo de dial", RB_tipo_dial__F);
-
-            result.put("tipo voltaje regulado", RB_tipo_regulado_F);
-            result.put("UPS", RB_UPS_F);
-            result.put("version checker", version_checker_F);
-            result.put("version multivendor", version_multivendor_F);
-            result.put("voltaje regulado suministrado por", RB_Folt_regulado_sum_F);
-
-
-            result.put("banco", RB_banco_F);
-            result.put("remoto_sucursal", RB_remo_suc_F);
-
-
-
-
-
-
-
-
+            result.put("Usuario", usuarioid);
+            result.put("aire_acondicionado", RB_aire_V);
+            result.put("ATM_da_servicio_a", RB_servicio_V);
+            result.put("base_de_anclaje", RB_base_anclaje_V);
+            result.put("carcaza", RB_carcaza_V);
+            result.put("carga", carga_V);
+            result.put("cerradura_tipo_H", RB_cerradura_V);
+            result.put("cesto_de_basura", RB_cesto_V);
+            result.put("cliente_final", cliente_final_V);
+            result.put("configuracion_cable_de_red", RB_conf_cableado_conex_V);
+            result.put("empotrado_al_muro", RB_empotrado_V);
+            result.put("equipo_de_comunicacion_alertado", RB_equipo_con_alte_V);
+            result.put("especifique_carcaza", carcaza_V);
+            result.put("estado_CPU_observaciones", ob_edo_CPU_V);
+            result.put("estado_CPU", RB_edo_CPU_V);
+            result.put("estado_del_cableado", RB_edo_cableado_V);
+            result.put("estado_dispensador_observaciones", ob_edo_dispensador_V);
+            result.put("estado_dispensador", RB_edo_dispensador_V);
+            result.put("estado_impresora_observaciones", ob_edo_impresora_V);
+            result.put("estado_impresora", RB_edo_impresora_V);
+            result.put("estado_lectora_observaciones", ob_edo_lectora_V);
+            result.put("estado_lectora", RB_edo_lectora_V);
+            result.put("estado_monitor_observaciones", ob_edo_monitor_V);
+            result.put("estado_monitor", RB_edo_monitor_V);
+            result.put("estado_teclados_observaciones", ob_edo_teclados_V);
+            result.put("estado_teclados", RB_edo_teclados_V);
+            result.put("expuesto_a_polvo", RB_polvo_V);
+            result.put("expuesto_a_sol", RB_sol_V);
+            result.put("fase_neutro_voltaje_pared", fase_neutro_v_pared_V);
+            result.put("fase_neutro_voltaje_regulado", fase_neutro_v_regulado_V);
+            result.put("fase_tierra_voltaje_pared", fase_tierra_v_pared_V);
+            result.put("fase_tierra_voltaje_regulado", fase_tierra_v_regulado_V);
+            result.put("herramientas_de_seguridad_instaladas_h1", CB_CSDS_V);
+            result.put("herramientas_de_seguridad_instaladas_h2", CB_CHECKER_V);
+            result.put("herramientas_de_seguridad_instaladas_h3", CB_RKL_V);
+            result.put("herramientas_de_seguridad instaladas_h4", CB_FIX_WIN_V);
+            result.put("id_ATM", id_tpv_V);
+            result.put("iluminacion", RB_iluminacion_V);
+            result.put("KVA_regulador", regulador_kva_V);
+            result.put("KVA_UPS", UPS_kva_V);
+            result.put("limpieza_del_sitio", RB_limpieza_V);
+            result.put("localidad", localidad_V);
+            result.put("logo", RB_logo_V);
+            result.put("longitud_cable", longitud_cable_V);
+            result.put("marca_router", marca_router_V);
+            result.put("marca", marca_V);
+            result.put("modelo", modelo_V);
+            result.put("notas_comunicaciones", notas_comunic_V);
+            result.put("notas_instalacion_electrica", notas_inst_elect_V);
+            result.put("notas_seguridad", notas_seguridad_V);
+            result.put("numero_de_inventario", inventario_V);
+            result.put("perno_de_apertura", RB_perapertura_V);
+            result.put("placa_de_seguridad_sitio", RB_placa_seg_sitio_V);
+            result.put("placa_de_seguridad", RB_placa_seguridad_V);
+            result.put("polarizacion_correcta", RB_polarizacion_correcta_V);
+            result.put("postes_exteriores", RB_postes_ext_V);
+            result.put("pruebas_ping_resultado", pruebas_ping_result_V);
+            result.put("pruebas_ping", RB_pruebas_ping_V);
+            result.put("puntos_de_anclaje_otros", puntos_anclaje_otro_V);
+            result.put("puntos_de_anclaje", RB_puntos_anclaje_V);
+            result.put("reporte", reporte_V);
+            result.put("señal_carcaza", RB_senal_carcaza_V);
+            result.put("señal_impresora", RB_senal_impresora_V);
+            result.put("señal_lectora", RB_senal_lectora_V);
+            result.put("señal_salida_efectivo", RB_senal_salida_efectivo_V);
+            result.put("serie", serie_V);
+            result.put("sistema_operativo", sistema_operativo_V);
+            result.put("supresor_de_picos", RB_supresor_V);
+            result.put("temperatura", temperatura_V);
+            result.put("tierra_neutro_voltaje_pared", tierra_neutro_v_pared_V);
+            result.put("tierra_neutro_voltaje_regulado", tierra_neutro_v_regulado_V);
+            result.put("tipo_de_anclaje", RB_tipo_anclaje_V);
+            result.put("regulador", RB_regulador_V);
+            result.put("tipo_de_comunicacion", RB_tipo_comunicacion_V);
+            result.put("tipo_de_dial", RB_tipo_dial_V);
+            result.put("tipo_voltaje_regulado", RB_tipo_regulado_V);
+            result.put("UPS", RB_UPS_V);
+            result.put("version_checker", version_checker_V);
+            result.put("version_multivendor", version_multivendor_V);
+            result.put("voltaje_regulado_suministrado_por", RB_volt_regulado_sum_V);
+            result.put("banco", RB_banco_V);
+            result.put("remoto_sucursal", RB_remo_suc_V);
+            result.put("pais", "Mexico");
+            result.put("equipo", "ATM");
+            result.put("tipo_reporte", "Preventivo");
+            result.put("solucion", solucion.getText().toString());
+            result.put("Vobo", vobo.getText().toString());
+            result.put("puesto", puesto.getText().toString());
+            result.put("folio", folio.getText().toString());
+            result.put("latitud", mLatitude.getText().toString());
+            result.put("longitud", mLongitude.getText().toString());
+            result.put("hr_ini",hr_ini_V);
+            result.put("hr_fin",hr_fin_V);
+            result.put("fecha_ini",fecha_ini_V);
+            result.put("fecha_fin",fecha_fin_V);
+            result.put("SC",SC_V);
+            result.put("AC",AC_V);
+            result.put("capacidad_hd",capacidad_hd.getText().toString());
+            result.put("RAM",RAM.getText().toString());
+            result.put("nombre_atm",nombre_atm.getText().toString());
+            result.put("ob_esp_sitio",ob_esp_sitio.getText().toString());
+            result.put("obs_telecontrol",obs_telecontrol.getText().toString());
+            result.put("tamano_monitor",tamaño_monitor.getText().toString());
+            result.put("procesador",procesador.getText().toString());
+            result.put("vel_procesador",vel_procesador.getText().toString());
+            result.put("version_antivirus",version_antivirus.getText().toString());
+            result.put("senal_01800",RB_senal_01800_V);
+            result.put("antiskimmer",RB_antiskimmer_V);
+            result.put("blindaje",RB_blindaje_V);
+            result.put("braile",RB_braile_V);
+            result.put("caseta_prefab",RB_caseta_prefab_V);
+            result.put("chapa_rand",RB_chapa_rand_V);
+            result.put("entintado_billete",RB_entintado_billete_V);
+            result.put("jumper",RB_jumper_V);
+            result.put("nicho_de_protec",RB_nicho_de_protec_V);
+            result.put("tipo_placa_antivand",RB_tipo_placa_antivand_V);
+            result.put("placa_antivand",RB_placa_antivand_V);
+            result.put("rack",RB_rack_V);
+            result.put("seg_shutter",RB_seg_shutter_V);
+            result.put("telecontrol_conect",RB_telecontrol_conect_V);
+            result.put("tipo_telecontrol",RB_tipo_telecontrol_V);
             Context context = getApplicationContext();
             CharSequence text = "Checklist Almacenado";
             int duration = Toast.LENGTH_SHORT;
@@ -1644,39 +2978,23 @@ private String reporte_child;
 
 
 
-
-    private String nota_recilcer;
-    private ImageView imagen_photo;
-    private int i_photos;
-
-
-
-    //TODO https://expocodetech.com/como-crear-una-lista-con-recyclerview/                 //////////////////////////////// http://www.hermosaprogramacion.com/2015/02/android-recyclerview-cardview/
-
-
-
-    FirebaseStorage storage = FirebaseStorage.getInstance();
+    private int i_photos=0;
 
 
 
 
-
-
-
-
+    private String encodedImage;
 
 
     public  void subir_imagen(View view){
 
+
+        reporte_V = reporte.getText().toString();
+        id_tpv_V = id_tpv.getText().toString();
+
         i_photos=i_photos+1;
 
         // valida q reporte y ID existan
-
-        String reporte_photos = reporte.getText().toString();
-        String ID_atm_photos = id_tpv.getText().toString();
-
-
-
 
 
         if (reporte.getText().toString().equals("")) {
@@ -1733,166 +3051,125 @@ private String reporte_child;
         }
 
 
-
-
         progressBarPhoto.setVisibility(View.VISIBLE);
+        notas_post=notas_image.getText().toString();
+        idATM=id_tpv.getText().toString();
+        i_photos_post=""+i_photos;
 
-
-        // Create a storage reference from our app
-        StorageReference storageRef = storage.getReference();
-
-// Create a reference to "mountains.jpg"
-        StorageReference mountainsRef = storageRef.child(pais).child("ATM_Prev/"+ID_atm_photos+"/"+reporte_photos+"_"+i_photos+".jpg");
-
-// Create a reference to 'images/mountains.jpg'
-
-
-        photo_ATM_prev.setDrawingCacheEnabled(true);
-        photo_ATM_prev.buildDrawingCache();
-
-        Bitmap bitmap = photo_ATM_prev.getDrawingCache();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
-
-        UploadTask uploadTask = mountainsRef.putBytes(data);
+        Post_2 post_2 = new Post_2();
+        Map<String, Object> post_2Values = post_2.toMap();
 
 
 
-        uploadTask.addOnFailureListener(new OnFailureListener() {
+        ////////////////////////////TODO////////Añade a Cloudant
+
+        //String url = "https://6620c8ed-e3c8-49b5-8420-fa3cb622c51e-bluemix.cloudant.com/ima_prev";
+
+        String url=getResources().getString(R.string.urlCloudant)+"/ima_prev";
+
+        JsonObjectRequest jar1 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(post_2Values), new Response.Listener<JSONObject>() {
             @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
+            public void onResponse(JSONObject response) {
+                try {
+                    añadir_im_recicler();
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    REV = jsonObject.getString("rev");
+                } catch (JSONException e) {
+                }
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        }, new Response.ErrorListener() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                urlPhoto= downloadUrl.toString();
-                url_photo.setText(urlPhoto);
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Json Error Res: ", "" + error);
 
-            }
-        });
+                try {
+                    añadir_im_recicler();
+                    /// si no hay conexcion o hay error guarda el post en file txt
 
+                    String comas=  "\"";
 
-        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                System.out.println("Upload is " + progress + "% done");
+                    String guardaPost = "{" +
+                            comas+"imagen"+comas+":"+comas+encodedImage+comas+","+
+                            comas+"observaciones"+comas+":"+comas+notas_post+comas+","+
+                            comas+"id_img"+comas+":"+comas+i_photos_post+comas+","+
+                            comas+"id_ATM"+comas+":"+comas+id_tpv_V+comas+","+
+                            comas+"serie"+comas+":"+comas+serie.getText().toString()+comas+","+
+                            comas+"id_ATM"+comas+":"+comas+idATM+comas+","+
+                            comas+"reporte"+comas+":"+comas+reporte.getText().toString()+comas+","+
+                            comas+"equipo"+comas+":"+comas+"ATM"+comas+","+
+                            comas+"tipo_reporte"+comas+":"+comas+"Correctivo"+comas+","+
+                            comas+"latitud"+comas+":"+comas+mLatitude.getText().toString()+comas+","+
+                            comas+"longitud"+comas+":"+comas+mLongitude.getText().toString()+comas+
 
+                            "}";
 
-
-                if (progress==100){
-
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-
-
-                            public void run() {
-
-
-
-
-                                Picasso.with(contexto).load(urlPhoto).into(fotito);
-                                idATM=id_tpv.getText().toString();
-
-                                // actualizo la base si no hay chil lo creo
-
-                                String key2;
-
-
-
-                                key = database.child(pais).child(idATM).child("preventivos").push().getKey();
-
-                                 notas_post=notas_image.getText().toString();
-
-                                reporte_child=reporte.getText().toString();
-                                idATM=id_tpv.getText().toString();
-
-
-
-                                key2 = database.child(pais).child(idATM).child("preventivos").child("imagenes").push().getKey();
-
-                                i_photos_post=""+i_photos;
-
-                                Post_2 post_2 = new Post_2(urlPhoto, notas_post, i_photos_post);
-                                Map<String, Object> post_2Values = post_2.toMap();
-
-                                Map<String, Object> childUpdates = new HashMap<>();
-                                //childUpdates.put(codigo + key, postValues);
-
-
-                                childUpdates.put(""+i_photos, post_2Values);
-
-                                database.child(pais).child("ATMs").child(idATM).child("preventivos").child(reporte_child).child("imagenes").updateChildren(childUpdates);
-
-
-
-                                //database.child("ATMs").child(idATM).child(reporte_child).child("imagenes").child(""+i_photos).put(post);
-
-                                //database.child("ATMs").child(idATM).child("imagenes").child(key2).setValue("ob_foto",notas_image);
-
-
-                                añadir_im_recicler();
-
-                            }
-                        }, 2000);
+                    ////Genera JSON de variables
 
 
 
 
+                    Long tsLong = System.currentTimeMillis()/1000;
+                    String ts = tsLong.toString();
 
+                    String filename= "IP_"+ts+"_"+reporte.getText().toString()+".txt";
+
+                    OutputStreamWriter archivo = new OutputStreamWriter(openFileOutput(filename, Activity.MODE_PRIVATE));
+                    archivo.write(guardaPost);
+                    archivo.flush();
+                    archivo.close();
+
+
+                    Context context = getApplicationContext();
+                    CharSequence text = "Problema al subir file, almacenado en pendientes. " + filename;
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+
+
+                } catch (IOException e) {
                 }
 
 
 
-
-            }
-        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-                System.out.println("Upload is paused");
             }
         });
 
 
 
-
-
+        requestQueue.add(jar1);
+        jar1.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
 
     }
+
+
+
 private String  i_photos_post;
-    @IgnoreExtraProperties
+
     public class Post_2{
 
-        public String urlPhoto;
-        public String notas_post;
-        public String i_photos_post;
+
 
         public Map<String, Boolean> stars = new HashMap<>();
 
         public Post_2() {
-            // Default constructor required for calls to DataSnapshot.getValue(Post.class)
-        }
 
-        public Post_2(String urlPhoto, String notas_post, String i_photos_post) {
-            this.urlPhoto = urlPhoto;
-            this.notas_post = notas_post;
-            this.i_photos_post = i_photos_post;
 
         }
 
-        @Exclude
+
         public Map<String, Object> toMap() {
             HashMap<String, Object> result = new HashMap<>();
-            result.put("url", urlPhoto);
+            result.put("imagen", encodedImage);
             result.put("observaciones", notas_post);
             result.put("id_img", i_photos_post);
-
+            result.put("id_ATM", id_tpv_V);
+            result.put("reporte", reporte_V);
+            result.put("equipo", "ATM");
+            result.put("tipo_reporte", "Preventivo");
+            result.put("latitud", mLatitude.getText().toString());
+            result.put("longitud", mLongitude.getText().toString());
 
             return result;
         }
@@ -1901,19 +3178,14 @@ private String  i_photos_post;
 
     private  Context contexto = this;
     private int flag_foto;
-
-   private String urlPhoto;
-private  String notas_post;
+    private String urlPhoto;
+    private  String notas_post;
     private  List items = new ArrayList();
 
     public  void añadir_im_recicler(){
 
 
-
-
-
-
-        items.add(new Anime(urlPhoto, notas_image.getText().toString()));
+        items.add(new Foto(encodedImage, notas_image.getText().toString()));
 
 
 // Obtener el Recycler
@@ -1925,7 +3197,7 @@ private  String notas_post;
         recycler.setLayoutManager(lManager);
 
 // Crear un nuevo adaptador
-        adapter = new AnimeAdapter(items);
+        adapter = new FotoAdapter(items);
         recycler.setAdapter(adapter);
 
 
@@ -1937,6 +3209,249 @@ private  String notas_post;
 
 
     }
+
+
+
+    public void firma(View view){
+
+
+
+        idATM=id_tpv.getText().toString();
+
+
+        if (fecha.getText().toString().equals("Fecha")) {
+
+            Context context = getApplicationContext();
+            CharSequence text = "Favor seleccionar fecha de ateción";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
+            return;
+
+
+        }
+
+        if (idATM.equals("")) {
+
+                Context context = getApplicationContext();
+                CharSequence text = "Favor documentar ID ATM";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+                return;
+        }
+
+
+        if (reporte.getText().toString().equals("")) {
+
+            Context context = getApplicationContext();
+            CharSequence text = "Favor documentar Reporte";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
+            return;
+        }
+
+
+        if (vobo.getText().toString().equals("")) {
+
+            Context context = getApplicationContext();
+            CharSequence text = "Favor documentar VoBo";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
+            return;
+        }
+
+        if (puesto.getText().toString().equals("")) {
+
+            Context context = getApplicationContext();
+            CharSequence text = "Favor documentar puesto";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
+            return;
+        }
+
+
+        if (folio.getText().toString().equals("")) {
+
+            Context context = getApplicationContext();
+            CharSequence text = "Favor documentar folio";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
+            return;
+        }
+
+
+
+        Intent activity_signature = new Intent(getApplicationContext(), SignatureActivity.class);
+
+
+        activity_signature.putExtra("usuario",usuarioid);
+        activity_signature.putExtra("pais","México");
+        activity_signature.putExtra("reporte",reporte.getText().toString());
+        activity_signature.putExtra("prim_child",prim_child);
+        activity_signature.putExtra("id_serie",idATM);
+        activity_signature.putExtra("corr_prev","Correctivos");
+        activity_signature.putExtra("Vobo",vobo.getText().toString());
+        activity_signature.putExtra("puesto", puesto.getText().toString());
+        activity_signature.putExtra("tipo_rep","Preventivos");
+        activity_signature.putExtra("folio",folio.getText().toString());
+        activity_signature.putExtra("latitud", mLatitude.getText().toString());
+        activity_signature.putExtra("longitud", mLongitude.getText().toString());
+        activity_signature.putExtra("fecha", fecha.getText().toString());
+
+        startActivity(activity_signature);
+
+
+
+    }
+
+
+
+    private String mJSONURLString,url2;
+
+
+
+
+    /////////GEOLOCALIZACION
+    private GoogleApiClient mGoogleApiClient;
+    public static final int REQUEST_LOCATION = 1;
+    public static final int REQUEST_CHECK_SETTINGS = 2;
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // Aquí muestras confirmación explicativa al usuario
+                // por si rechazó los permisos anteriormente
+            } else {
+                ActivityCompat.requestPermissions(
+                        this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_LOCATION);
+            }
+        } else {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (mLastLocation != null) {
+                mLatitude.setText(String.valueOf(mLastLocation.getLatitude()));
+                mLongitude.setText(String.valueOf(mLastLocation.getLongitude()));
+            } else {
+                Toast.makeText(this, "Ubicación no encontrada, favor de Conectar GPS", Toast.LENGTH_LONG).show();
+            }
+        }
+
+
+
+
+
+
+    }
+
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if(grantResults.length == 1
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                if (mLastLocation != null) {
+                    mLatitude.setText(String.valueOf(mLastLocation.getLatitude()));
+                    mLongitude.setText(String.valueOf(mLastLocation.getLongitude()));
+                } else {
+                    Toast.makeText(this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(this, "Permisos no otorgados", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
+    }
+
+
+    private void processLastLocation() {
+        getLastLocation();
+        if (mLastLocation != null) {
+            updateLocationUI();
+        }
+    }
+    private void getLastLocation() {
+        if (isLocationPermissionGranted()) {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        } else {
+            manageDeniedPermission();
+        }
+    }
+
+    private boolean isLocationPermissionGranted() {
+        int permission = ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
+        return permission == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void manageDeniedPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // Aquí muestras confirmación explicativa al usuario
+            // por si rechazó los permisos anteriormente
+        } else {
+            ActivityCompat.requestPermissions(
+                    this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION);
+        }
+    }
+    private void updateLocationUI() {
+
+        String errorMessage = "";
+
+
+        List<Address> addresses = null;
+
+        mPosicion.setText(String.valueOf(mLastLocation.getExtras()));
+        mLatitude.setText(String.valueOf(mLastLocation.getLatitude()));
+        mLongitude.setText(String.valueOf(mLastLocation.getLongitude()));
+    }
+
+
+
+
+
+
 
 
 

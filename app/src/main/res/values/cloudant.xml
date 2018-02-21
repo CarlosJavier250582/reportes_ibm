@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cloudantUsername">0e7e26d4-f906-4705-84ca-184f758d94f7-bluemix</string>
+    <string name="cloudantPassword">41eb18afd8dde6fbb1e2843eb92eac8bc5b5cc4662409b0aeba6c192ded5ebed</string>
+    <string name="cloudantUrl">https://0e7e26d4-f906-4705-84ca-184f758d94f7-bluemix:41eb18afd8dde6fbb1e2843eb92eac8bc5b5cc4662409b0aeba6c192ded5ebed@0e7e26d4-f906-4705-84ca-184f758d94f7-bluemix.cloudant.com</string>
+    <string name="cloudantDatabase">reportesibm</string>
+</resources>

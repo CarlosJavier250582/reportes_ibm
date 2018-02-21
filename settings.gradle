@@ -1,1 +1,2 @@
-include ':app'
+rootProject.name = 'reportes_ibm'
+include ':app', ':signature-pad'

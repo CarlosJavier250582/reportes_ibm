@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+
+
+    android:id="@+id/card_busqueda_recicler"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="0dp"
+    android:focusable="false"
+    android:visibility="visible"
+    app:cardElevation="8dp"
+    app:cardUseCompatPadding="true"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lb_fotos"
+        android:foregroundGravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingBottom="24dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp">
+
+
+        <TextView
+            android:id="@+id/fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:ems="10"
+            android:text="Fecha"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            />
+
+
+        <TextView
+            android:id="@+id/reporte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_marginTop="4dp"
+            android:ems="10"
+            android:text="Reporte"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:layout_below="@+id/fecha"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/lb_falla"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/reporte"
+            android:layout_marginLeft="32px"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:text="Falla:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/falla"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lb_falla"
+            android:layout_marginLeft="32px"
+            android:ems="10"
+            android:text="Falla"
+            android:textSize="14sp" />
+
+
+
+        <TextView
+            android:id="@+id/lb_solucion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/falla"
+            android:layout_marginLeft="32px"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:text="Solución"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/solucion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lb_solucion"
+            android:layout_marginLeft="32px"
+            android:ems="10"
+            android:text=""
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/lb_comentarios"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/solucion"
+            android:layout_marginLeft="32px"
+            android:layout_marginTop="8dp"
+
+            android:ems="10"
+            android:text="Comentarios:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/comentarios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lb_comentarios"
+            android:layout_marginLeft="32px"
+            android:layout_toRightOf="@+id/photo_ATM_reci"
+            android:ems="10"
+            android:text=""
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/lb_partes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/comentarios"
+            android:layout_marginLeft="32px"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/photo_ATM_reci"
+            android:ems="10"
+            android:text="Partes:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/partes1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lb_partes"
+            android:layout_marginLeft="32px"
+             android:ems="10"
+            android:text=""
+            android:textSize="14sp"
+
+            />
+
+        <TextView
+            android:id="@+id/partes2"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lb_partes"
+            android:layout_marginLeft="32px"
+            android:layout_toRightOf="@+id/partes1"
+
+            android:ems="10"
+            android:text=""
+            android:textSize="14sp"
+            />
+        <TextView
+            android:id="@+id/partes3"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32px"
+            android:layout_toRightOf="@+id/partes2"
+            android:layout_below="@id/lb_partes"
+            android:ems="10"
+            android:text=""
+            android:textSize="14sp"
+            />
+        <TextView
+            android:id="@+id/partes4"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/partes1"
+            android:layout_marginLeft="32px"
+            android:layout_toRightOf="@+id/photo_ATM_reci"
+            android:ems="10"
+            android:text=""
+            android:textSize="14sp"
+            />
+        <TextView
+            android:id="@+id/partes5"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/partes1"
+            android:layout_marginLeft="32px"
+            android:layout_toRightOf="@+id/partes4"
+            android:ems="10"
+            android:text=""
+            android:textSize="14sp"
+            />
+        <TextView
+            android:id="@+id/partes6"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/partes1"
+            android:layout_marginLeft="32px"
+            android:layout_toRightOf="@+id/partes5"
+            android:ems="10"
+            android:text=""
+            android:textSize="14sp"
+            />
+        <TextView
+            android:id="@+id/partes7"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/partes4"
+            android:layout_marginLeft="32px"
+            android:ems="10"
+            android:text=""
+            android:textSize="14sp"
+            />
+
+        <TextView
+            android:id="@+id/partes8"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/partes4"
+            android:layout_marginLeft="32px"
+            android:layout_toRightOf="@+id/partes7"
+            android:ems="10"
+            android:text=""
+            android:textSize="14sp"
+            />
+
+
+
+        <TextView
+            android:id="@+id/lb_soporte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/partes8"
+            android:layout_marginLeft="32px"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/photo_ATM_reci"
+            android:ems="10"
+            android:text="Soporte:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/soporte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lb_soporte"
+            android:layout_marginLeft="32px"
+            android:layout_toRightOf="@+id/photo_ATM_reci"
+            android:ems="10"
+            android:text="Soporte"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/lb_usuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/soporte"
+            android:layout_marginLeft="32px"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/photo_ATM_reci"
+            android:ems="10"
+            android:text="SSR:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/usuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lb_usuario"
+            android:layout_marginLeft="32px"
+            android:layout_toRightOf="@+id/photo_ATM_reci"
+            android:ems="10"
+            android:text="SSR"
+            android:textSize="14sp" />
+
+
+
+
+
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+</android.support.v7.widget.CardView>
+
+
+

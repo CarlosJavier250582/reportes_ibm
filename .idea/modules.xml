@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/reportes_ibm.iml" filepath="$PROJECT_DIR$/reportes_ibm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/signature-pad/signature-pad.iml" filepath="$PROJECT_DIR$/signature-pad/signature-pad.iml" />
     </modules>
   </component>
 </project>
