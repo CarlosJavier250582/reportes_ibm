@@ -8,15 +8,11 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 
 
-
-
 /**
  * Created by carlosje on 9/20/2017.
  */
 
 public class F_dialog extends android.app.DialogFragment {
-
-
 
 
         @Override
@@ -37,9 +33,6 @@ public class F_dialog extends android.app.DialogFragment {
             // Create the AlertDialog object and return it
             return builder.create();
         }
-
-
-
 
 
 }

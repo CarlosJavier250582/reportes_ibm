@@ -219,6 +219,7 @@
     <string name="link_web">https://ibmtssdigital.mybluemix.net/<a href="https://ibmtssdigital.mybluemix.net/" target="_top"></a></string>
 
     <string name="urlCloudant">https://6620c8ed-e3c8-49b5-8420-fa3cb622c51e-bluemix.cloudant.com</string>
-
+    <string name="user_cloudant">6620c8ed-e3c8-49b5-8420-fa3cb622c51e-bluemix</string>
+    <string name="pass_cloudant">97e542480dcfa4ba9382f2413e2b926a4eeaec88bc065f1f6090b338fb465dcb</string>
     <string name="comas">"</string>
 </resources>

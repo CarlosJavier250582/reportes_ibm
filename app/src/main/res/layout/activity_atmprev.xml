@@ -7,37 +7,6 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.carlosje.reportes_ibm.ATMprevActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
-        android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
-            app:toolbarId="@+id/toolbar">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
-
-            <ImageView
-                android:id="@+id/app_bar_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/cabecera" />
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-
-    </android.support.design.widget.AppBarLayout>
-
 
     <TextView
         android:id="@+id/tv_user"
@@ -83,6 +52,35 @@
                     android:paddingTop="16dp"
                     android:visibility="visible"
                     android:weightSum="1">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <android.support.design.widget.FloatingActionButton
+                            android:id="@+id/fl_btn_respaldo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+
+                            android:layout_marginRight="4dp"
+                            android:clickable="true"
+
+                            android:onClick="accion_respaldo"
+                            app:backgroundTint="?android:attr/colorAccent"
+                            app:elevation="8dp"
+                            app:fabSize="mini"
+
+
+                            app:srcCompat="@android:drawable/stat_sys_download" />
+
+                    </RelativeLayout>
 
 
                     <android.support.v7.widget.CardView
@@ -142,7 +140,7 @@
                                     android:layout_below="@+id/fecha"
                                     android:layout_marginTop="11dp"
                                     android:ems="10"
-                                    android:hint="Call"
+                                    android:hint="Call (IBM)"
                                     android:inputType="textCapCharacters" />
 
 
@@ -163,7 +161,7 @@
                                     android:layout_alignParentStart="true"
                                     android:layout_marginTop="15dp"
                                     android:ems="10"
-                                    android:hint="ID ATM"
+                                    android:hint="ID ATM / Det CCK"
                                     android:inputType="textCapCharacters" />
                             </android.support.design.widget.TextInputLayout>
 
@@ -176,13 +174,13 @@
 
                                 <EditText
                                     android:id="@+id/nombre_atm"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_alignParentLeft="true"
                                     android:layout_alignParentStart="true"
                                     android:layout_marginTop="15dp"
                                     android:ems="10"
-                                    android:hint="Nombre ATM"
+                                    android:hint="Nombre ATM / Tienda CCK"
                                     android:inputType="textCapCharacters" />
                             </android.support.design.widget.TextInputLayout>
 
@@ -239,7 +237,7 @@
                                     android:layout_below="@+id/lb_datos_atm"
                                     android:ems="10"
                                     android:hint="Marca"
-                                    android:inputType="textPersonName" />
+                                    android:inputType="textCapCharacters" />
 
                             </android.support.design.widget.TextInputLayout>
 
@@ -263,7 +261,7 @@
                                     android:layout_below="@+id/lb_datos_atm"
                                     android:ems="10"
                                     android:hint="Modelo"
-                                    android:inputType="textPersonName" />
+                                    android:inputType="textCapCharacters"/>
 
                             </android.support.design.widget.TextInputLayout>
 
@@ -385,6 +383,13 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Santander"
+                                    android:textColor="#424242" />
+
+                                <RadioButton
+                                    android:id="@+id/RB_banco_CCK"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="CCK"
                                     android:textColor="#424242" />
 
 
@@ -1434,7 +1439,7 @@
                                 android:layout_below="@+id/input_obs_telecontrol"
                                 android:layout_marginBottom="40px"
                                 android:layout_marginTop="40px"
-                                android:text="Placa antivandálica"
+                                android:text="Antiskimmer"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="14sp" />
 
@@ -3935,7 +3940,7 @@
                                     android:layout_alignParentStart="true"
 
                                     android:ems="10"
-                                    android:hint="Detalle del mantenimiento (solución)"
+                                    android:hint="Detalle del mtto (observ.)"
                                     android:inputType="text|textCapSentences" />
                             </android.support.design.widget.TextInputLayout>
 
@@ -4189,15 +4194,7 @@
                                 </LinearLayout>
                             </LinearLayout>
 
-                            <Button
-                                android:id="@+id/bt_get_firma"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/ly_sc"
-                                android:layout_marginTop="32px"
-                                android:layout_weight="1"
-                                android:onClick="firma"
-                                android:text="Obtener Firma" />
+
 
 
                             <TextView
@@ -4206,7 +4203,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
                                 android:layout_alignParentStart="true"
-                                android:layout_below="@+id/bt_get_firma"
+                                android:layout_below="@+id/ly_sc"
                                 android:layout_marginBottom="16px"
                                 android:layout_marginLeft="32px"
                                 android:layout_marginTop="80px"
@@ -4244,6 +4241,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_marginRight="4dp"
                             android:clickable="true"
+                            android:onClick="valida_campos"
                             app:backgroundTint="@android:color/holo_red_dark"
                             app:elevation="8dp"
                             app:fabSize="mini"
@@ -4383,12 +4381,12 @@
                                 style="?android:attr/progressBarStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignTop="@+id/bt_imagen_a_recicler"
+                                android:layout_alignTop="@+id/bt_carga_photo"
                                 android:layout_centerHorizontal="true"
                                 android:visibility="gone" />
 
                             <android.support.design.widget.FloatingActionButton
-                                android:id="@+id/bt_imagen_a_recicler"
+                                android:id="@+id/bt_carga_photo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
@@ -4408,7 +4406,7 @@
                                 android:id="@+id/url_photo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/bt_imagen_a_recicler"
+                                android:layout_below="@+id/bt_carga_photo"
                                 android:text="URL"
                                 android:visibility="gone" />
 

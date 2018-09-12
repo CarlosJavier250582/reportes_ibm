@@ -65,8 +65,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_search);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
         requestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
         reciclador= (RecyclerView) findViewById(R.id.reciclador);

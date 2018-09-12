@@ -40,6 +40,11 @@ import com.ibm.bluemix.appid.android.api.tokens.IdentityToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -58,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onSaveInstanceState(guardarEstado);
         username =user.getText().toString();
         password =pass.getText().toString();
-
         guardarEstado.putString("username", username);
         guardarEstado.putString("password", password);
     }
@@ -87,7 +91,6 @@ public class LoginActivity extends AppCompatActivity {
         AppID.getInstance().initialize(getApplicationContext(), tenantId, AppID.REGION_US_SOUTH);
 
         RL_login=(RelativeLayout) findViewById(R.id.RL_login);
-
         user = (EditText) findViewById(R.id.field_email);
         pass = (EditText) findViewById(R.id.field_password);
         title_text= (TextView) findViewById(R.id.title_text);
@@ -108,6 +111,45 @@ public class LoginActivity extends AppCompatActivity {
         progressBar.setVisibility(View.INVISIBLE);
 
 
+        String fileUser="";
+
+        String[] archivos = fileList();
+        String archbusca = "user.txt";
+        int flagFiles = 0;
+
+        for (int f = 0; f < archivos.length; f++) {
+            if (archbusca.equals(archivos[f])) {
+                flagFiles = 1;
+                 fileUser= archivos[f];
+            }
+        }
+
+
+        if (flagFiles == 1) {
+
+            try {////////////llena el post
+                String F_user="";
+                InputStreamReader archivo = new InputStreamReader(openFileInput(fileUser));
+                BufferedReader br = new BufferedReader(archivo);
+                String linea = br.readLine();
+                F_user = "";
+                while (linea != null) {
+                    F_user = F_user + linea;
+                    linea = br.readLine();
+
+                }
+                br.close();
+                archivo.close();
+                user.setText(F_user);
+            } catch (IOException e) {
+                progressBar.setVisibility(View.GONE);
+                Context context = getApplicationContext();
+                CharSequence text = "Error al leer archivo: " +e;
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        }
 
         String versionName = "";
         int versionCode = -1;
@@ -115,13 +157,8 @@ public class LoginActivity extends AppCompatActivity {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             versionName = packageInfo.versionName;
             //versionCode = packageInfo.versionCode;
-
             tv_Ver.setText(versionName);
-
-            //String url = "https://6620c8ed-e3c8-49b5-8420-fa3cb622c51e-bluemix.cloudant.com/android_version/version";
-
             String url=getResources().getString(R.string.urlCloudant)+"/android_version/version";
-
             JsonObjectRequest obreq2 = new JsonObjectRequest(Request.Method.GET, url, null,
                     // The third parameter Listener overrides the method onResponse() and passes
                     //JSONObject as a parameter
@@ -131,15 +168,11 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-
                                 JSONObject obj2 = response;
                                 // Retrieves the string labeled "colorName" and "description" from
                                 //the response JSON Object
                                 //and converts them into javascript objects
                                 String versionA = obj2.getString("name");
-
-
-
                                 if(versionA.equals(tv_Ver.getText().toString())){
                                     //RL_login.setVisibility(View.VISIBLE);
 
@@ -148,22 +181,16 @@ public class LoginActivity extends AppCompatActivity {
                                     tv_ver1.setVisibility(View.VISIBLE);
                                     tv_ver2.setVisibility(View.VISIBLE);
                                 }
-
-
-
-
                             }
 
 
                             // Try and catch are included to handle any errors due to JSON
                             catch (JSONException e) {
-
                                 Context context = getApplicationContext();
                                 CharSequence text = "" + e ;
                                 int duration = Toast.LENGTH_SHORT;
                                 Toast toast = Toast.makeText(context, text, duration);
                                 toast.show();
-
                             }
                         }
 
@@ -176,7 +203,6 @@ public class LoginActivity extends AppCompatActivity {
                         // Handles errors that occur due to Volley
                         public void onErrorResponse(VolleyError error) {
                             Log.e("Volley", "Error");
-
                             Context context = getApplicationContext();
                             CharSequence text = "Error:  Verifica tu conexión y vuelve a iniciar la aplicación" ;
                             int duration = Toast.LENGTH_LONG;
@@ -188,22 +214,9 @@ public class LoginActivity extends AppCompatActivity {
             // Adds the JSON object request "obreq" to the request queue
             requestQueue.add(obreq2);
 
-
-
-
-
-
-
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
-
-
-
-
-
-
     }
 
     private static final int REQUEST_CODE_ASK_PERMISSIONS_camera = 123;
@@ -212,12 +225,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_ASK_PERMISSIONS_location = 987;
 
     public void examplePermission(View view) {
-
     }
 
     private void checkPermission() {
-
-
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
 
@@ -229,7 +239,6 @@ public class LoginActivity extends AppCompatActivity {
             int hasWriteContactsPermission_storage_write = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int hasWriteContactsPermission_storage_read = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
             int hasWriteContactsPermission_location = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-
 
             if (hasWriteContactsPermission_camera != PackageManager.PERMISSION_GRANTED) {
 
@@ -295,102 +304,65 @@ public class LoginActivity extends AppCompatActivity {
                 // openCamera();
                 RL_login.setVisibility(View.VISIBLE);
             }
-
-
-
-
         }
 
         return;
 
     }
 
-
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
-
-
 
         if(grantResults.length > 0 && REQUEST_CODE_ASK_PERMISSIONS_camera == requestCode) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //Toast.makeText(this, "OK Permissions granted ! <img draggable="false" class="emoji" alt="🙂" src="https://s.w.org/images/core/emoji/2.4/svg/1f642.svg"> " + Build.VERSION.SDK_INT, Toast.LENGTH_LONG).show();
                 RL_login.setVisibility(View.VISIBLE);
-
-
             } else {
                 RL_login.setVisibility(View.GONE);
-
             }
-
             checkPermission();
         }
-
-
         if(grantResults.length > 0 && REQUEST_CODE_ASK_PERMISSIONS_Storage_read == requestCode) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 RL_login.setVisibility(View.VISIBLE);
-
             } else {
                 RL_login.setVisibility(View.GONE);
-
             }
             checkPermission();
         }
-
-
         if(grantResults.length > 0 && REQUEST_CODE_ASK_PERMISSIONS_Storage_write == requestCode) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 RL_login.setVisibility(View.VISIBLE);
-
             } else {
                 RL_login.setVisibility(View.GONE);
-
             }
             checkPermission();
         }
-
         if(grantResults.length > 0 && REQUEST_CODE_ASK_PERMISSIONS_location == requestCode) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 RL_login.setVisibility(View.VISIBLE);
-
             } else {
                 RL_login.setVisibility(View.GONE);
-
             }
             checkPermission();
         }
-        //checkPermission();
-
-
-
-
-
-
 
     }
 
-
-
-
-
-
+     /* --------------------------------------------------
+           Crea acceso directo
+     -------------------------------------------------- */
 
     public void crearAccesoDirectoAlInstalar(Activity actividad)  {
         SharedPreferences preferenciasapp;
-        boolean aplicacioninstalada = Boolean.FALSE;
-
-/*
+        boolean aplicacioninstalada = Boolean.FALSE;/*
 * Compruebo si es la primera vez que se ejecuta la alicación,
 * entonces es cuando creo el acceso directo
 */
         preferenciasapp = PreferenceManager.getDefaultSharedPreferences(actividad);
         aplicacioninstalada = preferenciasapp.getBoolean("aplicacioninstalada", Boolean.FALSE);
 
-        if(!aplicacioninstalada)
-        {
+        if(!aplicacioninstalada)       {
 /*
 * Código creación acceso directo
 */
@@ -402,7 +374,6 @@ public class LoginActivity extends AppCompatActivity {
             intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,Intent.ShortcutIconResource.fromContext(actividad, R.drawable.icon));
             intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
             actividad.sendBroadcast(intent);
-
 /*
 * Indico que ya se ha creado el acceso directo para que no se vuelva a crear mas
 */
@@ -414,28 +385,18 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-
     public  void login(View v){
-
         tv_no_conect.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
-
         username=user.getText().toString();
         password=pass.getText().toString();
-
-
-
         if (user.getText().toString().equals("")){
-
             Context context = getApplicationContext();
             CharSequence text = "Por favor introduce tu email" ;
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-
             return;
-
-
         }
         if (pass.getText().toString().equals("")){
             Context context = getApplicationContext();
@@ -443,55 +404,32 @@ public class LoginActivity extends AppCompatActivity {
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-
             return;
-
-
-
         }
-
-
-
-
         String validaIBM = username.substring(username.length() - 7);
-
         if (validaIBM.equals("ibm.com")){
             appid();
-
-
-
-
         }else{
             Context context = getApplicationContext();
             CharSequence text = "Correo no válido, Favor de acceder con cuenta de IBM " ;
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-
-
-
         }
-
-
     }
 
 
     private String picUrl = null;
     private String displayName = null;
 
-
     private void appid(){
-
 
         AppID.getInstance().obtainTokensWithROP(getApplicationContext(), username, password,
                 new TokenResponseListener() {
                     @Override
                     public void onAuthorizationFailure (AuthorizationException exception) {
                         //Exception occurred
-
                         NoConect();
-
-
                     }
 
                     @Override
@@ -504,22 +442,35 @@ public class LoginActivity extends AppCompatActivity {
 
                             }
                         });
+                        String[] archivos = fileList();
+                        String archbusca = "user.txt";
+                        int flagFiles = 0;
 
-                        String usuario =user.getText().toString();
+                        for (int f = 0; f < archivos.length; f++) {
+                            if (archbusca.equals(archivos[f])) {
+                                flagFiles = 1;
+                            }
+                        }
+                        if (flagFiles == 0) {
+                            try {
+                                String filename = "user.txt";
+                                OutputStreamWriter archivo = new OutputStreamWriter(openFileOutput(filename, Activity.MODE_PRIVATE));
+                                archivo.write(user.getText().toString());
+                                archivo.flush();
+                                archivo.close();
+
+                            } catch (IOException e) {
+                            }
+                            String usuario = user.getText().toString();
+                        }
                         Intent activity__menu = new Intent(getApplicationContext(), MenuActivity.class);
-                        activity__menu.putExtra("usuario",user.getText().toString());
+                        activity__menu.putExtra("usuario", user.getText().toString());
                         startActivity(activity__menu);
                         identifiedAccessToken = accessToken.toString();
                         extractAndDisplayDataFromIdentityToken(identityToken);
-
                     }
                 });
-
-
-
     }
-
-
 
     private void NoConect(){
 
@@ -530,11 +481,7 @@ public class LoginActivity extends AppCompatActivity {
                 findViewById(R.id.tv_no_conect).setVisibility(View.VISIBLE);
             }
         });
-
-
     }
-
-
 
     private void extractAndDisplayDataFromIdentityToken(IdentityToken identityToken) {
 
@@ -543,14 +490,9 @@ public class LoginActivity extends AppCompatActivity {
             if (identityToken.isAnonymous()) {
                 picUrl = null;
                 displayName = "Anonymous User ( " + userId + " )";
-
-
-
             } else {
                 picUrl = identityToken.getPicture();
                 displayName = identityToken.getName() + " ( " + userId + " )";
-
-
             }
             //logger.info("User is: " + userId);
             //showPictureAndName(picUrl, displayName);
@@ -560,31 +502,21 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
     public  void ver(View v){
-
         if(displayName == null) {
-
             Context context = getApplicationContext();
             CharSequence text = "Email o PW errones";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-
         }else {
             Context context = getApplicationContext();
             CharSequence text = ""+ displayName;
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-
         }
-
-
-
-
     }
-
 
     public void singup(View v){
         LoginWidget loginWidget = AppID.getInstance().getLoginWidget();
@@ -593,12 +525,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthorizationFailure (AuthorizationException exception) {
                 //Exception occurred
             }
-
             @Override
             public void onAuthorizationCanceled () {
                 //Sign up canceled by the user
             }
-
             @Override
             public void onAuthorizationSuccess (AccessToken accessToken, IdentityToken identityToken) {
                 if (accessToken != null && identityToken != null) {
@@ -609,8 +539,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
 
@@ -633,9 +561,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
-
 
 }

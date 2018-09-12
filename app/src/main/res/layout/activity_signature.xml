@@ -42,7 +42,32 @@
             android:background="@color/colorPrimary"
             android:text="Clear"
             android:textColor="@android:color/white"
-             />
+            />
+
+        <Button
+            android:id="@+id/SR"
+            android:layout_width="@dimen/weight_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+
+            android:background="@color/colorPrimary"
+            android:text="Sin Resp."
+            android:textColor="@android:color/white"
+            />
+
+        <TextView
+            android:id="@+id/tv_reporte_r"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:background="@color/colorPrimary"
+
+
+            android:text="Reporte"
+            android:textColor="@android:color/black"/>
+
+
+
 
         <Button
             android:id="@+id/getsign"

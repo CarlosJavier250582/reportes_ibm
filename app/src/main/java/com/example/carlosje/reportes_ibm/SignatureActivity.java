@@ -47,6 +47,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -62,7 +63,7 @@ import java.util.Map;
 
 public class SignatureActivity extends AppCompatActivity {
 
-    Button mClear, mGetSign, mCancel;
+    Button mClear, mGetSign, mCancel, mSR;
     File file;
     LinearLayout mContent;
     View view;
@@ -78,7 +79,7 @@ public class SignatureActivity extends AppCompatActivity {
     private String usuario;
     private String pais ;
     private String reporte;
-    private String prim_child;
+
     private String idATM;
     private String corr_prev;
     private String Vobo,puesto;
@@ -90,8 +91,10 @@ public class SignatureActivity extends AppCompatActivity {
     private String coments="";
     private FloatingActionButton fl_btn_save_firma;
     private LinearLayout lay_encuesta;
-    private TextView lb_gracias;
+    private TextView lb_gracias,tv_reporte_r;
     private EditText coments_enc;
+    private String cliente;
+    private Integer flag_SR;
 
 
     private ImageView e1_w1,e1_w2,e1_w3,e1_w4,e1_w5,e2_w1,e2_w2,e2_w3,e2_w4,e2_w5,e3_w1,e3_w2,e3_w3,e3_w4,e3_w5;
@@ -104,8 +107,8 @@ public class SignatureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
+        getSupportActionBar().hide();
+        flag_SR=0;
         i=0;
         Res_E1=0;
         Res_E2=0;
@@ -115,31 +118,23 @@ public class SignatureActivity extends AppCompatActivity {
         iE3=0;
 
 
-
-
-
         usuario = getIntent().getStringExtra("usuario");
         pais = getIntent().getStringExtra("pais");
         reporte = getIntent().getStringExtra("reporte");
-        prim_child = getIntent().getStringExtra("prim_child");
         idATM= getIntent().getStringExtra("id_serie");
-
         corr_prev= getIntent().getStringExtra("corr_prev");
         Vobo= getIntent().getStringExtra("Vobo");
         puesto= getIntent().getStringExtra("puesto");
-
         tipo_rep= getIntent().getStringExtra("tipo_rep");
         folio= getIntent().getStringExtra("folio");
         latitud= getIntent().getStringExtra("latitud");
         longitud= getIntent().getStringExtra("longitud");
         fecha= getIntent().getStringExtra("fecha");
-
-
+        cliente= getIntent().getStringExtra("cliente");
 
         setContentView(R.layout.activity_signature);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
-
         fl_btn_save_firma=(FloatingActionButton) findViewById(R.id.fl_btn_save_firma);
         lay_encuesta=(LinearLayout) findViewById(R.id.lay_encuesta);
 
@@ -159,15 +154,9 @@ public class SignatureActivity extends AppCompatActivity {
         e3_w4 =(ImageView) findViewById(R.id.e3_w4);
         e3_w5 =(ImageView) findViewById(R.id.e3_w5);
 
-       // lb_gracias=(TextView) findViewById(R.id.lb_gracias);
+
 
         coments_enc=(EditText) findViewById(R.id.coments_enc);
-
-
-
-
-
-
         mContent = (LinearLayout) findViewById(R.id.canvasLayout);
         mSignature = new signature(getApplicationContext(), null);
         mSignature.setBackgroundColor(Color.WHITE);
@@ -175,20 +164,22 @@ public class SignatureActivity extends AppCompatActivity {
         mContent.addView(mSignature, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mClear = (Button) findViewById(R.id.clear);
         mGetSign = (Button) findViewById(R.id.getsign);
+        mSR= (Button) findViewById(R.id.SR);
         mGetSign.setEnabled(false);
         mCancel = (Button) findViewById(R.id.cancel);
+        tv_reporte_r= (TextView) findViewById(R.id.tv_reporte_r);
         view = mContent;
         mGetSign.setOnClickListener(onButtonClick);
         mClear.setOnClickListener(onButtonClick);
         mCancel.setOnClickListener(onButtonClick);
+        mSR.setOnClickListener(onButtonClick);
 
 
         mContent.setVisibility(View.GONE);
         //lb_gracias.setVisibility(View.GONE);
         lay_encuesta.setVisibility(View.VISIBLE);
 
-
-
+        tv_reporte_r.setText("Call "+reporte);
 
 
         fl_btn_save_firma.setOnClickListener(new View.OnClickListener() {
@@ -206,10 +197,8 @@ public class SignatureActivity extends AppCompatActivity {
                 }
                 if(i==4) {
                     subir_firma();
-
-
                 }
-                if (i<3){
+                if (i<3 || flag_SR==1){
 
                     Context context = getApplicationContext();
                     CharSequence text = "Por favor completar la encuesta";
@@ -222,7 +211,7 @@ public class SignatureActivity extends AppCompatActivity {
         });
     }
 
-        // Method to create Directory, if the Directory doesn't exists
+    // Method to create Directory, if the Directory doesn't exists
 
 
 
@@ -231,7 +220,6 @@ public class SignatureActivity extends AppCompatActivity {
         public void onClick(View v) {
             // TODO Auto-generated method stub
             if (v == mClear) {
-
 
                 if(i<4){
 
@@ -257,33 +245,24 @@ public class SignatureActivity extends AppCompatActivity {
                     e3_w3 .setVisibility(View.VISIBLE);
                     e3_w4.setVisibility(View.VISIBLE);
                     e3_w5.setVisibility(View.VISIBLE);
-
-
-
                     return;
-
                 }
-
-
-
-
                 mSignature.clear();
                 mGetSign.setEnabled(false);
-
-
-
-
             }
 
+            if (v == mSR) {
+                subir_encuesta_no_resp();
+                lay_encuesta.setVisibility(View.GONE);
+                mContent.setVisibility(View.VISIBLE);
+                return;
+            }
 
             else if(v == mCancel){
-
                 finish();
             }
         }
     };
-
-
 
 
 
@@ -293,7 +272,6 @@ public class SignatureActivity extends AppCompatActivity {
         private static final float HALF_STROKE_WIDTH = STROKE_WIDTH / 2;
         private Paint paint = new Paint();
         private Path path = new Path();
-
         private float lastTouchX;
         private float lastTouchY;
         private final RectF dirtyRect = new RectF();
@@ -429,16 +407,8 @@ public class SignatureActivity extends AppCompatActivity {
 
     public  void subir_firma(){
 
-
-
-
-        progressBar.setVisibility(View.VISIBLE);
-
-
-
-
+       progressBar.setVisibility(View.VISIBLE);
         //////CLOUDANT
-
         mContent.destroyDrawingCache();
         mContent.buildDrawingCache();
         Bitmap image = mContent.getDrawingCache();
@@ -447,34 +417,12 @@ public class SignatureActivity extends AppCompatActivity {
         byte[] imageBytes = baos1.toByteArray();
         encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
-
-
-
-                            SignatureActivity.Post_2 post_2 = new SignatureActivity.Post_2(reporte);
-                            Map<String, Object> post_2Values = post_2.toMap();
-
-
-
-
-
-
-
-
-
-
-
-
+        SignatureActivity.Post_2 post_2 = new SignatureActivity.Post_2(reporte);
+        Map<String, Object> post_2Values = post_2.toMap();
 
 ///////////////////TODO subir a cloudant firma
-
-
-
-
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-
-
-        //String url = "https://6620c8ed-e3c8-49b5-8420-fa3cb622c51e-bluemix.cloudant.com/folios";
         String url=getResources().getString(R.string.urlCloudant)+"/folios";
 
         JsonObjectRequest jar1 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(post_2Values), new Response.Listener<JSONObject>() {
@@ -490,13 +438,8 @@ public class SignatureActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Json Error Res: ", "" + error);
-
-
-
                 try {
-
                     /// si no hay conexcion o hay error guarda el post en file txt
-
                     String comas=  "\"";
 
                     String guardaPost = "{" +
@@ -513,14 +456,12 @@ public class SignatureActivity extends AppCompatActivity {
                             comas+"longitud"+comas+":"+comas+longitud+comas+","+
                             comas+"fecha"+comas+":"+comas+fecha+comas+","+
                             comas+"imagen"+comas+":"+comas+encodedImage+comas+","+
+                            comas+"cliente"+comas+":"+comas+cliente+comas+","+
                             comas+"comentarios"+comas+":"+comas+coments+comas+
 
                             "}";
 
                     ////Genera JSON de variables
-
-
-
 
                     Long tsLong = System.currentTimeMillis()/1000;
                     String ts = tsLong.toString();
@@ -539,17 +480,21 @@ public class SignatureActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
 
-
-
                 } catch (IOException e) {
                 }
-
-
-
-
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                String credentials = getResources().getString(R.string.user_cloudant) + ":" + getResources().getString(R.string.pass_cloudant);
+                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                return headers;
+            }
+        };
         requestQueue.add(jar1);
+
         jar1.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         progressBar.setVisibility(View.GONE);
 
@@ -558,11 +503,7 @@ public class SignatureActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
-
         finish();
-
-
-
 
     }
 
@@ -570,16 +511,12 @@ public class SignatureActivity extends AppCompatActivity {
 
 
     public class Post_2{
-
-
         public Map<String, Boolean> stars = new HashMap<>();
-
         public Post_2() {
             // Default constructor required for calls to DataSnapshot.getValue(Post.class)
         }
 
         public Post_2(String reporte) {
-
         }
 
 
@@ -599,31 +536,23 @@ public class SignatureActivity extends AppCompatActivity {
             result.put("fecha", fecha);
             result.put("imagen", encodedImage);
             result.put("comentarios", coments);
-
-
-
-
+            result.put("cliente", cliente);
             return result;
         }
 
     }
 
 
+/* --------------------------------------------------
+encuestas
+ -------------------------------------------------- */
+
+/* --------------------------------------------------
+E1
+ -------------------------------------------------- */
 
 
-
-
-
-///
-
-
-/////////////////////ENCIUESTAS
-
-
-    //////E1
-
-
-private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
+    private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
 
     public  void Selec_e1_w1(View view){
         if(iE1==1){
@@ -635,26 +564,18 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e1_w3 .setVisibility(View.VISIBLE);
             e1_w4.setVisibility(View.VISIBLE);
             e1_w5.setVisibility(View.VISIBLE);
-
             return;
-
         }
         if (iE1==0){
             i=i+1;
         }
         iE1=1;
-
         Res_E1=1;
-
         e1_w1.setVisibility(View.VISIBLE);
         e1_w2.setVisibility(View.GONE);
         e1_w3 .setVisibility(View.GONE);
         e1_w4.setVisibility(View.GONE);
         e1_w5.setVisibility(View.GONE);
-
-
-
-
     }
 
     public  void Selec_e1_w2(View view){
@@ -667,25 +588,18 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e1_w3 .setVisibility(View.VISIBLE);
             e1_w4.setVisibility(View.VISIBLE);
             e1_w5.setVisibility(View.VISIBLE);
-
             return;
-
         }
         if (iE1==0){
             i=i+1;
         }
         iE1=1;
-
         Res_E1=2;
-
         e1_w1.setVisibility(View.GONE);
         e1_w2.setVisibility(View.VISIBLE);
         e1_w3 .setVisibility(View.GONE);
         e1_w4.setVisibility(View.GONE);
         e1_w5.setVisibility(View.GONE);
-
-
-
     }
     public  void Selec_e1_w3(View view){
         if(iE1==1){
@@ -697,24 +611,18 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e1_w3 .setVisibility(View.VISIBLE);
             e1_w4.setVisibility(View.VISIBLE);
             e1_w5.setVisibility(View.VISIBLE);
-
             return;
-
         }
         if (iE1==0){
             i=i+1;
         }
         iE1=1;
-
         Res_E1=3;
-
         e1_w1.setVisibility(View.GONE);
         e1_w2.setVisibility(View.GONE);
         e1_w3 .setVisibility(View.VISIBLE);
         e1_w4.setVisibility(View.GONE);
         e1_w5.setVisibility(View.GONE);
-
-
     }
     public  void Selec_e1_w4(View view){
         if(iE1==1){
@@ -727,23 +635,17 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e1_w4.setVisibility(View.VISIBLE);
             e1_w5.setVisibility(View.VISIBLE);
             return;
-
-
         }
         if (iE1==0){
             i=i+1;
         }
         iE1=1;
-
         Res_E1=4;
-
         e1_w1.setVisibility(View.GONE);
         e1_w2.setVisibility(View.GONE);
         e1_w3 .setVisibility(View.GONE);
         e1_w4.setVisibility(View.VISIBLE);
         e1_w5.setVisibility(View.GONE);
-
-
     }
     public  void Selec_e1_w5(View view){
         if(iE1==1){
@@ -756,28 +658,23 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e1_w4.setVisibility(View.VISIBLE);
             e1_w5.setVisibility(View.VISIBLE);
             return;
-
-
         }
         if (iE1==0){
             i=i+1;
         }
         iE1=1;
-
         Res_E1=5;
-
         e1_w1.setVisibility(View.GONE);
         e1_w2.setVisibility(View.GONE);
         e1_w3 .setVisibility(View.GONE);
         e1_w4.setVisibility(View.GONE);
         e1_w5.setVisibility(View.VISIBLE);
-
-
     }
 
 
-    //////E2
-
+/* --------------------------------------------------
+E2
+ -------------------------------------------------- */
 
     public  void Selec_e2_w1(View view){
         if(iE2==1){
@@ -790,23 +687,17 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e2_w4.setVisibility(View.VISIBLE);
             e2_w5.setVisibility(View.VISIBLE);
             return;
-
-
         }
         if (iE2==0){
             i=i+1;
         }
         iE2=1;
-
         Res_E2=1;
-
         e2_w1.setVisibility(View.VISIBLE);
         e2_w2.setVisibility(View.GONE);
         e2_w3.setVisibility(View.GONE);
         e2_w4.setVisibility(View.GONE);
         e2_w5.setVisibility(View.GONE);
-
-
     }
 
     public  void Selec_e2_w2(View view){
@@ -820,23 +711,17 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e2_w4.setVisibility(View.VISIBLE);
             e2_w5.setVisibility(View.VISIBLE);
             return;
-
-
         }
         if (iE2==0){
             i=i+1;
         }
         iE2=1;
-
         Res_E2=2;
-
         e2_w1.setVisibility(View.GONE);
         e2_w2.setVisibility(View.VISIBLE);
         e2_w3.setVisibility(View.GONE);
         e2_w4.setVisibility(View.GONE);
         e2_w5.setVisibility(View.GONE);
-
-
     }
     public  void Selec_e2_w3(View view){
         if(iE2==1){
@@ -849,23 +734,17 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e2_w4.setVisibility(View.VISIBLE);
             e2_w5.setVisibility(View.VISIBLE);
             return;
-
-
         }
         if (iE2==0){
             i=i+1;
         }
         iE2=1;
-
         Res_E2=3;
-
         e2_w1.setVisibility(View.GONE);
         e2_w2.setVisibility(View.GONE);
         e2_w3.setVisibility(View.VISIBLE);
         e2_w4.setVisibility(View.GONE);
         e2_w5.setVisibility(View.GONE);
-
-
     }
     public  void Selec_e2_w4(View view){
         if(iE2==1){
@@ -878,23 +757,17 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e2_w4.setVisibility(View.VISIBLE);
             e2_w5.setVisibility(View.VISIBLE);
             return;
-
-
         }
         if (iE2==0){
             i=i+1;
         }
         iE2=1;
-
         Res_E2=4;
-
         e2_w1.setVisibility(View.GONE);
         e2_w2.setVisibility(View.GONE);
         e2_w3.setVisibility(View.GONE);
         e2_w4.setVisibility(View.VISIBLE);
         e2_w5.setVisibility(View.GONE);
-
-
     }
     public  void Selec_e2_w5(View view){
         if(iE2==1){
@@ -907,30 +780,21 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e2_w4.setVisibility(View.VISIBLE);
             e2_w5.setVisibility(View.VISIBLE);
             return;
-
-
         }
         if (iE2==0){
             i=i+1;
         }
         iE2=1;
-
         Res_E2=5;
-
         e2_w1.setVisibility(View.GONE);
         e2_w2.setVisibility(View.GONE);
         e2_w3.setVisibility(View.GONE);
         e2_w4.setVisibility(View.GONE);
         e2_w5.setVisibility(View.VISIBLE);
-
-
     }
-
-
-
-
-    //////E3
-
+/* --------------------------------------------------
+E3
+ -------------------------------------------------- */
 
     public  void Selec_e3_w1(View view){
         if(iE3==1){
@@ -943,23 +807,17 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e3_w4.setVisibility(View.VISIBLE);
             e3_w5.setVisibility(View.VISIBLE);
             return;
-
-
         }
         if (iE3==0){
             i=i+1;
         }
         iE3=1;
-
         Res_E3=1;
-
         e3_w1.setVisibility(View.VISIBLE);
         e3_w2.setVisibility(View.GONE);
         e3_w3.setVisibility(View.GONE);
         e3_w4.setVisibility(View.GONE);
         e3_w5.setVisibility(View.GONE);
-
-
     }
 
     public  void Selec_e3_w2(View view){
@@ -972,24 +830,17 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e3_w3 .setVisibility(View.VISIBLE);
             e3_w4.setVisibility(View.VISIBLE);
             e3_w5.setVisibility(View.VISIBLE);
-            return;
-
-
-        }
+            return;        }
         if (iE3==0){
             i=i+1;
         }
         iE3=1;
-
         Res_E3=2;
-
         e3_w1.setVisibility(View.GONE);
         e3_w2.setVisibility(View.VISIBLE);
         e3_w3.setVisibility(View.GONE);
         e3_w4.setVisibility(View.GONE);
         e3_w5.setVisibility(View.GONE);
-
-
     }
     public  void Selec_e3_w3(View view){
         if(iE3==1){
@@ -1002,22 +853,16 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e3_w4.setVisibility(View.VISIBLE);
             e3_w5.setVisibility(View.VISIBLE);
             return;
-
-
         }
         if (iE3==0){
-            i=i+1;
-        }
+            i=i+1;        }
         iE3=1;
-
         Res_E3=3;
-
         e3_w1.setVisibility(View.GONE);
         e3_w2.setVisibility(View.GONE);
         e3_w3.setVisibility(View.VISIBLE);
         e3_w4.setVisibility(View.GONE);
         e3_w5.setVisibility(View.GONE);
-
 
     }
     public  void Selec_e3_w4(View view){
@@ -1031,23 +876,17 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e3_w4.setVisibility(View.VISIBLE);
             e3_w5.setVisibility(View.VISIBLE);
             return;
-
-
         }
         if (iE3==0){
             i=i+1;
         }
         iE3=1;
-
         Res_E3=4;
-
         e3_w1.setVisibility(View.GONE);
         e3_w2.setVisibility(View.GONE);
         e3_w3.setVisibility(View.GONE);
         e3_w4.setVisibility(View.VISIBLE);
         e3_w5.setVisibility(View.GONE);
-
-
     }
     public  void Selec_e3_w5(View view){
         if(iE3==1){
@@ -1060,25 +899,18 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             e3_w4.setVisibility(View.VISIBLE);
             e3_w5.setVisibility(View.VISIBLE);
             return;
-
-
         }
         if (iE3==0){
             i=i+1;
         }
         iE3=1;
-
         Res_E3=5;
-
         e3_w1.setVisibility(View.GONE);
         e3_w2.setVisibility(View.GONE);
         e3_w3.setVisibility(View.GONE);
         e3_w4.setVisibility(View.GONE);
         e3_w5.setVisibility(View.VISIBLE);
-
-
     }
-
 
     private String REV;
 
@@ -1086,25 +918,15 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
 
         progressBar.setVisibility(View.VISIBLE);
 
-
-
-
-
-
-
         SignatureActivity.Post_3 post_3 = new SignatureActivity.Post_3();
         Map<String, Object> post_3Values = post_3.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(reporte, post_3Values);
 
-
-
 ////////////TODO////////Añade a Cloudant
-
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-        //String url = "https://6620c8ed-e3c8-49b5-8420-fa3cb622c51e-bluemix.cloudant.com/encuestas";
         String url=getResources().getString(R.string.urlCloudant)+"/encuestas";
 
         JsonObjectRequest jar1 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(post_3Values), new Response.Listener<JSONObject>() {
@@ -1142,15 +964,135 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
                             comas+"Encuesta_2"+comas+":"+comas+Res_E2+comas+","+
                             comas+"Encuesta_3"+comas+":"+comas+Res_E3+comas+","+
                             comas+"fecha"+comas+":"+comas+fecha+comas+","+
+                            comas+"cliente"+comas+":"+comas+cliente+comas+","+
                             comas+"comentarios"+comas+":"+comas+coments+comas+
-
-
                             "}";
-
                     ////Genera JSON de variables
 
+                    Long tsLong = System.currentTimeMillis()/1000;
+                    String ts = tsLong.toString();
+
+                    String filename= "EN_"+ts+"_"+reporte+".txt";
+
+                    OutputStreamWriter archivo = new OutputStreamWriter(openFileOutput(filename, Activity.MODE_PRIVATE));
+                    archivo.write(guardaPost);
+                    archivo.flush();
+                    archivo.close();
 
 
+                    Context context = getApplicationContext();
+                    CharSequence text = "Problema al subir file, almacenado en pendientes. " + filename;
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                } catch (IOException e) {
+                }
+            }
+        }){
+
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                String credentials = getResources().getString(R.string.user_cloudant) + ":" + getResources().getString(R.string.pass_cloudant);
+                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                return headers;
+            }
+        };
+        requestQueue.add(jar1);
+
+        jar1.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        progressBar.setVisibility(View.GONE);
+
+        Context context = getApplicationContext();
+        CharSequence text = "Gracias, su resultados han sido guardados, por favor firme en la pantalla.";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
+        progressBar.setVisibility(View.GONE);
+
+    }
+
+    public class Post_3{
+
+        public Map<String, Object> toMap() {
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("reporte", reporte);
+            result.put("pais", pais);
+            result.put("Usuario", usuario);
+            result.put("id_ATM", idATM);
+            result.put("serie", idATM);
+            result.put("Vobo", Vobo);
+            result.put("puesto", puesto);
+            result.put("folio", folio);
+            result.put("latitud", latitud);
+            result.put("longitud", longitud);
+            result.put("Encuesta_1", Res_E1);
+            result.put("Encuesta_2", Res_E2);
+            result.put("Encuesta_3", Res_E3);
+            result.put("fecha", fecha);
+            result.put("comentarios", coments);
+            result.put("cliente", cliente);
+            return result;
+        }
+
+    }
+
+    public void  subir_encuesta_no_resp(){
+
+        progressBar.setVisibility(View.VISIBLE);
+        flag_SR=1;
+        SignatureActivity.Post_4 post_4 = new SignatureActivity.Post_4();
+        Map<String, Object> post_4Values = post_4.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(reporte, post_4Values);
+
+////////////TODO////////Añade a Cloudant
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        String url=getResources().getString(R.string.urlCloudant)+"/encuestas";
+
+        JsonObjectRequest jar1 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(post_4Values), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    REV = jsonObject.getString("rev");
+                } catch (JSONException e) {
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Json Error Res: ", "" + error);
+                try {
+                    /// si no hay conexcion o hay error guarda el post en file txt
+                    String comas=  "\"";
+                    String guardaPost = "{" +
+                            comas+"reporte"+comas+":"+comas+reporte+comas+","+
+                            comas+"pais"+comas+":"+comas+pais+comas+","+
+                            comas+"Usuario"+comas+":"+comas+usuario+comas+","+
+                            comas+"id_ATM"+comas+":"+comas+idATM+comas+","+
+                            comas+"serie"+comas+":"+comas+idATM+comas+","+
+                            comas+"Vobo"+comas+":"+comas+Vobo+comas+","+
+                            comas+"puesto"+comas+":"+comas+puesto+comas+","+
+                            comas+"folio"+comas+":"+comas+folio+comas+","+
+                            comas+"latitud"+comas+":"+comas+latitud+comas+","+
+                            comas+"longitud"+comas+":"+comas+longitud+comas+","+
+                            comas+"Encuesta_1"+comas+":NA,"+
+                            comas+"Encuesta_2"+comas+":NA,"+
+                            comas+"Encuesta_3"+comas+":NA,"+
+                            comas+"fecha"+comas+":"+comas+fecha+comas+","+
+                            comas+"cliente"+comas+":"+comas+cliente+comas+","+
+                            comas+"comentarios"+comas+":"+comas+coments+comas+
+
+                            "}";
+                    ////Genera JSON de variables
 
                     Long tsLong = System.currentTimeMillis()/1000;
                     String ts = tsLong.toString();
@@ -1173,40 +1115,34 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
 
                 } catch (IOException e) {
                 }
-
-
-
-
-
-
-
-
-
-
             }
-        });
+        }){
+
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                String credentials = getResources().getString(R.string.user_cloudant) + ":" + getResources().getString(R.string.pass_cloudant);
+                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                return headers;
+            }
+        };
         requestQueue.add(jar1);
 
         jar1.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-
         progressBar.setVisibility(View.GONE);
-
-
 
         Context context = getApplicationContext();
         CharSequence text = "Gracias, su resultados han sido guardados, por favor firme en la pantalla.";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
-
         progressBar.setVisibility(View.GONE);
-
     }
 
-    public class Post_3{
-
-
+    public class Post_4{
 
         public Map<String, Object> toMap() {
             HashMap<String, Object> result = new HashMap<>();
@@ -1220,23 +1156,13 @@ private int Res_E1,Res_E2,Res_E3, iE1,iE2,iE3;
             result.put("folio", folio);
             result.put("latitud", latitud);
             result.put("longitud", longitud);
-            result.put("Encuesta_1", Res_E1);
-            result.put("Encuesta_2", Res_E2);
-            result.put("Encuesta_3", Res_E3);
+            result.put("Encuesta_1", "NA");
+            result.put("Encuesta_2", "NA");
+            result.put("Encuesta_3", "NA");
             result.put("fecha", fecha);
             result.put("comentarios", coments);
-
-
-
-
+            result.put("cliente", cliente);
             return result;
         }
-
     }
-
-
-
-
-
-
 }

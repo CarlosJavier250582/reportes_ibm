@@ -70,7 +70,7 @@
         android:id="@+id/RL_login"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/email_password_fields"
@@ -91,11 +91,11 @@
                     android:id="@+id/field_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
                     android:layout_weight="1"
                     android:hint="@string/hint_email"
                     android:inputType="textEmailAddress"
                     android:selectAllOnFocus="true"
+                    android:text=""
                     android:textColorLink="@color/colorPrimaryDark" />
             </android.support.design.widget.TextInputLayout>
 
@@ -110,8 +110,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="@string/hint_password"
-                    android:text=""
                     android:inputType="textPassword"
+                    android:text=""
                     android:textColorLink="@color/colorPrimaryDark" />
 
 

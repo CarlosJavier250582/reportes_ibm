@@ -23,7 +23,13 @@ private int mNum;
         if (mNum==1){
             return new DatePickerDialog(getActivity(), (ATMcorrectActivity)getActivity(),  year, month, day);
         }else{
-            return new DatePickerDialog(getActivity(), (ATMprevActivity)getActivity(),  year, month, day);
+            if (mNum==2){
+                return new DatePickerDialog(getActivity(), (ATMprevActivity)getActivity(),  year, month, day);
+            }else{
+
+                    return new DatePickerDialog(getActivity(), (InventarioActivity)getActivity(),  year, month, day);
+
+            }
         }
 
 

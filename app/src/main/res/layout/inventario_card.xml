@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:foregroundGravity="center_horizontal|center"
+    android:padding="8dp"
+    app:cardElevation="4dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardUseCompatPadding="true">
+
+    <RelativeLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+
+        <TextView
+            android:id="@+id/lb_determinante"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Det."
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/tv_determinante"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/lb_determinante"
+            android:text="Determinante"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/lb_reporte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/tv_determinante"
+            android:text="Reporte"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/tv_reporte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/lb_reporte"
+            android:text="Reporte"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/lb_tipo_equipo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo de equipo  "
+            android:layout_below="@+id/tv_determinante"
+            android:textColor="@color/colorAccent"/>
+
+        <TextView
+            android:id="@+id/tv_tipo_equipo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_determinante"
+            android:text="Equipo"
+            android:layout_toRightOf="@+id/lb_tipo_equipo"/>
+
+        <TextView
+            android:id="@+id/lb_descrit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+
+            android:layout_below="@+id/lb_tipo_equipo"
+            android:text="Desc."
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/lb_tipo_equipo"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/lb_descrit"
+            android:text="descript"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/lb_marca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@+id/lb_descrit"
+            android:text="Marca"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/tv_marca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@+id/lb_descrit"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/lb_marca"
+            android:text="Marca"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/lb_modelo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@+id/lb_marca"
+
+            android:text="Modelo"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/tv_modelo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_marca"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/lb_modelo"
+            android:text="Modelo"
+            android:textSize="14sp"
+
+
+            />
+
+
+        <TextView
+            android:id="@+id/lb_serie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@+id/lb_modelo"
+            android:text="Serie"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/tv_serie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_modelo"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/lb_serie"
+            android:text="Serie"
+            android:textSize="14sp"
+
+
+            />
+
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

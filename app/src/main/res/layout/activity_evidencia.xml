@@ -11,38 +11,6 @@
 
 
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
-            app:toolbarId="@+id/toolbar">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize">
-
-            </android.support.v7.widget.Toolbar>
-
-            <ImageView
-                android:id="@+id/app_bar_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/cabecera" />
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-
-    </android.support.design.widget.AppBarLayout>
 
     <TextView android:id="@+id/tv_user"
         android:layout_width="match_parent"
@@ -102,7 +70,7 @@
                     android:layout_below="@+id/fecha"
                     android:layout_marginTop="11dp"
                     android:ems="10"
-                    android:hint="Call"
+                    android:hint="Call (IBM)"
 
                     android:inputType="textCapCharacters" />
                 </android.support.design.widget.TextInputLayout>
@@ -266,14 +234,14 @@
                                 style="?android:attr/progressBarStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignTop="@+id/bt_imagen_a_recicler"
+                                android:layout_alignTop="@+id/bt_carga_photo"
                                 android:layout_centerHorizontal="true"
                                 android:visibility="gone"
                                 />
 
 
                             <android.support.design.widget.FloatingActionButton
-                                android:id="@+id/bt_imagen_a_recicler"
+                                android:id="@+id/bt_carga_photo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
@@ -299,7 +267,7 @@
                                 android:id="@+id/url_photo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/bt_imagen_a_recicler"
+                                android:layout_below="@+id/bt_carga_photo"
                                 android:text="URL"
                                 android:visibility="gone" />
 

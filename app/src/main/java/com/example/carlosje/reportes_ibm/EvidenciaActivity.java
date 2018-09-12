@@ -110,22 +110,10 @@ public class EvidenciaActivity  extends AppCompatActivity implements GoogleApiCl
                 .addApi(LocationServices.API)
                 .enableAutoManage(this, this)
                 .build();
-
-
-
-
-
-
     }
 
 
-
-
-
     private static final int PICK_IMAGE_ID = 234; // the number doesn't matter
-
-
-
 
     private void llamarIntent() {
         Intent chooseImageIntent = ImagePicker.getPickImageIntent(this);
@@ -133,19 +121,13 @@ public class EvidenciaActivity  extends AppCompatActivity implements GoogleApiCl
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
-
         if(resultCode != RESULT_CANCELED){
             if (requestCode == PICK_IMAGE_ID) {
                 Bitmap image = ImagePicker.getImageFromResult(this, resultCode, data);
                 // TODO use bitmap
                 ImageView img = (ImageView) findViewById(R.id.photo_Evidencia);
-
                 img.setImageBitmap(image);
-
                 flag_foto = 1;
-
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] imageBytes = baos.toByteArray();
@@ -154,76 +136,72 @@ public class EvidenciaActivity  extends AppCompatActivity implements GoogleApiCl
         }
     }
 
-
-
     private String encodedImage;
     private int i_photos, sube;
 
-
     public void subir_imagen_e(View view) {
-
-
-
         i_photos = i_photos + 1;
-
         notas_post = notas_image.getText().toString();
 
         if (reporte.getText().toString().equals("")) {
-
             Context context = getApplicationContext();
             CharSequence text = "Favor documentar el reporte";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
+            return;
+        }
+
+
+        if (reporte.getText().toString().length()!=7) {
+
+            Context context = getApplicationContext();
+            CharSequence text = "Favor documentar correctamente reporte IBM (7 caracteres)";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            return;
+        }
+
+        if (reporte.getText().toString().substring(0,1).equals("P")) {}
+        else{
+            Context context = getApplicationContext();
+            CharSequence text = "Favor documentar correctamente reporte IBM";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
 
             return;
-
-
         }
 
 
         if (flag_foto == 0) {
-
             Context context = getApplicationContext();
             CharSequence text = "Favor capturar la fotografía";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-
             return;
-
-
         }
 
         if (notas_image.getText().toString().equals("")) {
-
             Context context = getApplicationContext();
             CharSequence text = "Favor documentar las Observaciones";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-
             return;
-
-
         }
-
-
         progressBar.setVisibility(View.VISIBLE);
-
-
-
         final EvidenciaActivity.Post_2 post_2 = new EvidenciaActivity.Post_2();
         final Map<String, Object> post_2Values = post_2.toMap();
 
-        /////////////////////////////TODO////////Añade a Cloudant
 
-
-
-       // String url = "https://6620c8ed-e3c8-49b5-8420-fa3cb622c51e-bluemix.cloudant.com/evidencias";
+     /* --------------------------------------------------
+        Añade a Cloudant
+     -------------------------------------------------- */
 
         String url=getResources().getString(R.string.urlCloudant)+"/evidencias";
-
 
         JsonObjectRequest jar1 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(post_2Values), new Response.Listener<JSONObject>() {
             @Override
@@ -232,10 +210,6 @@ public class EvidenciaActivity  extends AppCompatActivity implements GoogleApiCl
                         añadir_im_recicler();
                         JSONObject jsonObject = new JSONObject(response.toString());
                         REV = jsonObject.getString("rev");
-
-
-
-
                 } catch (JSONException e) {
                 }
             }
@@ -244,14 +218,9 @@ public class EvidenciaActivity  extends AppCompatActivity implements GoogleApiCl
             public void onErrorResponse(VolleyError error) {
                 Log.e("Json Error Res: ", "" + error);
 
-
-
                 try {
-
                     /// si no hay conexcion o hay error guarda el post en file txt
-
                     String comas=  "\"";
-
                     String guardaPost = "{" +
                             comas+"imagen"+comas+":"+comas+ encodedImage+comas+", "+
                             comas+"observaciones"+comas+":"+comas+ notas_post+comas+", "+
@@ -259,66 +228,36 @@ public class EvidenciaActivity  extends AppCompatActivity implements GoogleApiCl
                             comas+"latitud"+comas+":"+comas+ mLatitude.getText().toString()+comas+", "+
                             comas+"longitud"+comas+":"+comas+ mLongitude.getText().toString()+comas+", "+
                             comas+"Usuario"+comas+":"+comas+ usuarioid+comas+
-
                             "}";
-
                     ////Genera JSON de variables
-
-
-
-
                     Long tsLong = System.currentTimeMillis()/1000;
                     String ts = tsLong.toString();
-
                     String filename= "EV_"+ts+"_"+reporte.getText().toString()+".txt";
-
                     OutputStreamWriter archivo = new OutputStreamWriter(openFileOutput(filename, Activity.MODE_PRIVATE));
                     archivo.write(guardaPost);
                     archivo.flush();
                     archivo.close();
-
-
                     Context context = getApplicationContext();
                     CharSequence text = "Problema al subir file, almacenado en pendientes. " + filename;
                     int duration = Toast.LENGTH_LONG;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
-
                     añadir_im_recicler();
 
                 } catch (IOException e) {
                 }
-
-
-
             }
         });
-
-
-
-
-
-
-
         requestQueue.add(jar1);
-
         jar1.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        //jar1.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
     }
     private Boolean flagSube=false;
-
     public class Post_2 {
-
-
         public Map<String, Boolean> stars = new HashMap<>();
-
         public Post_2() {
             // Default constructor required for calls to DataSnapshot.getValue(Post.class)
         }
-
-
-
         public Map<String, Object> toMap() {
             HashMap<String, Object> result = new HashMap<>();
             result.put("imagen", encodedImage);
@@ -327,12 +266,8 @@ public class EvidenciaActivity  extends AppCompatActivity implements GoogleApiCl
             result.put("latitud", mLatitude.getText().toString());
             result.put("longitud", mLongitude.getText().toString());
             result.put("Usuario", usuarioid);
-
-
-
             return result;
         }
-
     }
 
     private List items = new ArrayList();
@@ -353,12 +288,9 @@ public class EvidenciaActivity  extends AppCompatActivity implements GoogleApiCl
         adapter = new FotoAdapter(items);
         recycler.setAdapter(adapter);
 
-
         flag_foto = 0;
         notas_image.setText("");
-
         photo_Evidencia.setImageResource(R.drawable.ic_shutter);
-
 
     }
 
@@ -391,12 +323,6 @@ public class EvidenciaActivity  extends AppCompatActivity implements GoogleApiCl
                 Toast.makeText(this, "Ubicación no encontrada, favor de Conectar GPS", Toast.LENGTH_LONG).show();
             }
         }
-
-
-
-
-
-
     }
 
     public void onRequestPermissionsResult(int requestCode,
@@ -421,12 +347,10 @@ public class EvidenciaActivity  extends AppCompatActivity implements GoogleApiCl
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 
 
@@ -476,33 +400,18 @@ public class EvidenciaActivity  extends AppCompatActivity implements GoogleApiCl
         }
     }
     private void updateLocationUI() {
-
         String errorMessage = "";
-
         mLatitude.setText(valueOf(mLastLocation.getLatitude()));
         mLongitude.setText(valueOf(mLastLocation.getLongitude()));
     }
 
-
-
-
-
-
-
-
     private boolean existe(String[] archivos, String archbusca) {
+
         for (int f = 0; f < archivos.length; f++)
             if (archbusca.equals(archivos[f]))
                 return true;
         return false;
     }
-
-
-
-
-
-
-
 
 
 

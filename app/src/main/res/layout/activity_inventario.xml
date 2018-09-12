@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.carlosje.reportes_ibm.InventarioActivity">
+
+
+
+
+    <TextView android:id="@+id/tv_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="18sp"
+        android:visibility="invisible" />
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
+    <LinearLayout
+        android:id="@+id/lay_gral"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+
+
+
+
+        <RelativeLayout
+            android:id="@+id/lay_nuevo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+
+            android:paddingTop="16dp"
+            android:visibility="visible"
+            android:weightSum="1">
+
+
+
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card1"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="3.73"
+                android:elevation="0dp"
+                android:focusable="false"
+                android:visibility="visible"
+                app:cardElevation="8dp"
+                app:cardUseCompatPadding="true">
+
+                <RelativeLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp">
+
+
+                    <TextView
+                        android:id="@+id/fecha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:onClick="showDatePickerDialog_Head_i"
+                        android:text="Fecha"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp" />
+
+
+                    <TextView
+                        android:id="@+id/lb_cliente"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:layout_below="@+id/input_et_no_inv"
+
+                        android:layout_marginBottom="16px"
+                        android:layout_marginTop="56px"
+
+                        android:text="Cliente"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp" />
+
+
+                    <RadioGroup
+                        android:id="@+id/op_cliente"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/lb_cliente"
+
+
+
+                        android:gravity="left"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/RB_cliente_ALSEA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:onClick="ocultarotro"
+                            android:text="ALSEA"
+                            android:textColor="#424242" />
+
+                        <RadioButton
+                            android:id="@+id/RB_cliente_Banorte_Suc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+
+                            android:onClick="ocultarotro"
+                            android:text="Banorte Sucursales"
+                            android:textColor="#424242" />
+
+                        <RadioButton
+                            android:id="@+id/RB_cliente_Banorte_Nod"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+
+                            android:onClick="ocultarotro"
+                            android:text="Banorte Nodos"
+                            android:textColor="#424242" />
+
+                        <RadioButton
+                            android:id="@+id/RB_cliente_CCK"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+
+                            android:onClick="ocultarotro"
+                            android:text="CCK"
+                            android:textColor="#424242" />
+
+                        <RadioButton
+                            android:id="@+id/RB_cliente_otro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+
+                            android:onClick="verotro"
+                            android:text="Otro"
+                            android:textColor="#424242" />
+
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_cliente_otro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+
+                            >
+
+
+                            <EditText
+                                android:id="@+id/cliente_otro"
+                                android:layout_width="170dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginTop="11dp"
+                                android:ems="10"
+                                android:hint="Otro"
+                                android:visibility="gone"
+
+                                android:inputType="textCapCharacters" />
+
+
+                        </android.support.design.widget.TextInputLayout>
+
+
+                    </RadioGroup>
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_et_reporte"
+                        android:layout_width="350px"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/op_cliente"
+                        android:layout_marginTop="64px">
+
+
+                        <EditText
+                            android:id="@+id/reporte"
+                            android:layout_width="170dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/fecha"
+                            android:layout_marginTop="11dp"
+                            android:ems="10"
+                            android:hint="Call (IBM)"
+
+                            android:inputType="textCapCharacters" />
+
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_deter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="350px"
+                        android:layout_below="@+id/op_cliente"
+                        android:layout_toRightOf="@+id/input_et_reporte"
+                        android:layout_marginTop="64px">
+
+                        <EditText
+                            android:id="@+id/deter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="15dp"
+                            android:ems="10"
+                            android:hint="Determinante"
+                            android:inputType="textCapCharacters" />
+                    </android.support.design.widget.TextInputLayout>
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_et_Localidad"
+                        android:layout_width="350px"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/input_et_reporte">
+
+                        <EditText
+                            android:id="@+id/localidad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/input_et_reporte"
+                            android:ems="10"
+                            android:hint="Localidad"
+                            android:inputType="text|textCapSentences" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_et_folio"
+                        android:layout_width="350px"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/input_et_Localidad"
+
+                        android:layout_below="@+id/input_et_reporte">
+
+                        <EditText
+                            android:id="@+id/folio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/input_et_reporte"
+
+                            android:ems="10"
+                            android:hint="Folio"
+                            android:inputType="text|textCapSentences" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+
+
+
+
+
+            <android.support.v7.widget.CardView
+
+                android:id="@+id/card2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.73"
+                android:elevation="0dp"
+                android:focusable="false"
+                android:visibility="visible"
+                app:cardElevation="8dp"
+                app:cardUseCompatPadding="true"
+                android:layout_below="@+id/card1"
+
+
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <RelativeLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:foregroundGravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:id="@+id/lb_inventario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:text="Inventario"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="14sp" />
+
+
+                    <RelativeLayout
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/lb_inventario"
+                        android:foregroundGravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+
+
+                        android:paddingTop="8dp">
+
+
+
+
+                        <RadioGroup
+                            android:id="@+id/op_equipo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+
+
+
+
+                            android:gravity="left"
+                            android:orientation="vertical">
+
+                            <RadioButton
+                                android:id="@+id/RB_POS1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:onClick="ocultar_eq_otro"
+                                android:text="POS1"
+                                android:textColor="#424242" />
+
+                            <RadioButton
+                                android:id="@+id/RB_POS2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+
+                                android:onClick="ocultar_eq_otro"
+                                android:text="POS2"
+                                android:textColor="#424242" />
+
+                            <RadioButton
+                                android:id="@+id/RB_POS3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+
+                                android:onClick="ocultar_eq_otro"
+                                android:text="POS3"
+                                android:textColor="#424242" />
+
+                            <RadioButton
+                                android:id="@+id/RB_POS4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+
+                                android:onClick="ocultar_eq_otro"
+                                android:text="POS4"
+                                android:textColor="#424242" />
+
+                            <RadioButton
+                                android:id="@+id/RB_equipo_otro"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+
+                                android:onClick="ver_eq_otro"
+                                android:text="Otro"
+                                android:textColor="#424242" />
+
+
+                            <android.support.design.widget.TextInputLayout
+                                android:id="@+id/input_equipo_otro"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+
+                                >
+
+
+                                <EditText
+                                    android:id="@+id/equipo_otro"
+                                    android:layout_width="170dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_marginTop="11dp"
+                                    android:ems="10"
+                                    android:hint="Otro"
+                                    android:visibility="gone"
+
+                                    android:inputType="textCapCharacters" />
+
+
+                            </android.support.design.widget.TextInputLayout>
+
+
+                        </RadioGroup>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_descript"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/op_equipo">
+
+                            <EditText
+                                android:id="@+id/description"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_below="@+id/lb_datos_atm"
+                                android:ems="10"
+                                android:hint="Descripción del equipo"
+                                android:inputType="textCapCharacters" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_et_marca"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/input_descript"
+                            android:layout_toLeftOf="@+id/input_et_carga"
+                            android:layout_toStartOf="@+id/input_et_carga">
+
+                            <EditText
+                                android:id="@+id/marca"
+                                android:layout_width="172dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentStart="true"
+
+                                android:ems="10"
+                                android:hint="Marca"
+                                android:inputType="textCapCharacters" />
+
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_et_modelo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/input_descript"
+                            android:layout_toRightOf="@+id/input_et_marca">
+
+                            <EditText
+                                android:id="@+id/modelo"
+                                android:layout_width="206dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_below="@+id/lb_datos_atm"
+                                android:ems="10"
+                                android:hint="Modelo"
+                                android:inputType="textCapCharacters" />
+
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_et_serie"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/input_et_marca">
+
+                            <EditText
+                                android:id="@+id/serie"
+                                android:layout_width="172dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_below="@+id/input_et_marca"
+                                android:ems="10"
+                                android:hint="Serie"
+                                android:inputType="textCapCharacters" />
+
+                        </android.support.design.widget.TextInputLayout>
+
+
+                        <ProgressBar
+                            android:id="@+id/progressBarINV"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_below="@+id/bt_carga_inventario"
+                            android:layout_centerHorizontal="true"
+                            android:visibility="gone" />
+
+                        <android.support.design.widget.FloatingActionButton
+                            android:id="@+id/bt_carga_inventario"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+
+                            android:layout_below="@+id/input_et_modelo"
+
+
+                            android:layout_marginBottom="12dp"
+
+
+                            android:layout_marginRight="8dp"
+                            android:layout_marginTop="20dp"
+                            android:clickable="true"
+                            android:onClick="save_in"
+                            app:backgroundTint="?android:attr/colorAccent"
+                            app:elevation="4dp"
+                            app:fabSize="mini"
+                            app:srcCompat="@drawable/ic_add" />
+
+
+
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/card2">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/reciclador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center"
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="16dp"
+
+
+        android:elevation="8dp"
+
+        android:foregroundGravity="center_horizontal|center"
+        android:orientation="horizontal"
+        android:scrollbars="horizontal"
+        android:visibility="visible"
+        app:layout_goneMarginEnd="0dp"
+        tools:layout_editor_absoluteX="8dp">
+
+    </android.support.v7.widget.RecyclerView>
+
+</ScrollView>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

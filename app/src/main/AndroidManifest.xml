@@ -23,7 +23,6 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -52,52 +51,53 @@
         <activity
             android:name=".MenuActivity"
             android:label="Menu"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ATMprevActivity"
             android:label="Preventive"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ATMcorrectActivity"
             android:label="Corrective"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".SearchActivity"
             android:label="Search"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".SignatureActivity"
-            android:label="Firma"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.example.carlosje.reportes_ibm.EvidenciaActivity"
+            android:name=".EvidenciaActivity"
             android:label="Evidencias"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".SCActivity"
             android:label="Seleccionar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
+            android:name=".PendiantesActivity"
             android:label="Pendientes"
-           android:windowSoftInputMode="adjustPan"
-            android:name="com.example.carlosje.reportes_ibm.PendiantesActivity"
-             />
-
-
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity android:name=".auth" />
-
+        <activity android:name=".InventarioActivity"
+            android:label="Inventario"
+            android:screenOrientation="portrait"
+        />
     </application>
 
 </manifest>
