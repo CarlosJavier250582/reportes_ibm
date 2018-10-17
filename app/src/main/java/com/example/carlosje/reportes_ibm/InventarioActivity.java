@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -901,6 +904,43 @@ public class InventarioActivity extends AppCompatActivity implements  DatePicker
         }
     }
 
+    public void scanNow(View view){
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+        integrator.setPrompt("Scanea el código de barras");
+        integrator.setResultDisplayDuration(0);
+        integrator.setWide();  // Wide scanning rectangle, may work better for 1D barcodes
+        integrator.setCameraId(0);  // Use a specific camera of the device
+        integrator.initiateScan();
+
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        //retrieve scan result
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        String scanContent="";
+
+        if (scanningResult.getContents() != null) {
+            //we have a result
+
+
+            scanContent = scanningResult.getContents();
+
+
+            // display it on screen
+
+
+
+        }else{
+            Toast toast = Toast.makeText(getApplicationContext(),"No se recibió Código de Barras", Toast.LENGTH_SHORT);
+            toast.show();
+
+
+        }
+
+        serie.setText(scanContent);
+    }
 
 
 }

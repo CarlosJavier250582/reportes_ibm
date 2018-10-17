@@ -444,7 +444,7 @@
                             android:id="@+id/RB_banco_banamex"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:onClick="ocultarotro_banco"
                             android:text="Banamex"
                             android:textColor="#424242" />
 
@@ -453,7 +453,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
-
+                            android:onClick="ocultarotro_banco"
                             android:text="Bancomer"
                             android:textColor="#424242" />
 
@@ -461,7 +461,7 @@
                             android:id="@+id/RB_banco_banorte"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:onClick="ocultarotro_banco"
 
                             android:text="Banorte"
                             android:textColor="#424242" />
@@ -471,7 +471,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
-
+                            android:onClick="ocultarotro_banco"
                             android:text="Bancoppel"
                             android:textColor="#424242" />
 
@@ -479,10 +479,45 @@
                             android:id="@+id/RB_banco_santander"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:onClick="ocultarotro_banco"
 
                             android:text="Santander"
                             android:textColor="#424242" />
+
+                        <RadioButton
+                            android:id="@+id/RB_banco_otro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="verotro_banco"
+                            android:text="Otro"
+                            android:textColor="#424242" />
+
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_banco_otro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+
+                            >
+
+
+                            <EditText
+                                android:id="@+id/banco_otro"
+                                android:layout_width="170dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginTop="11dp"
+                                android:ems="10"
+                                android:hint="Otro"
+                                android:visibility="gone"
+
+                                android:inputType="textCapCharacters" />
+
+
+                        </android.support.design.widget.TextInputLayout>
+
 
 
                     </RadioGroup>
@@ -1787,13 +1822,262 @@
 
                     </LinearLayout>
 
+<LinearLayout
+    android:id="@+id/fechas_atm"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/ly_f_f"
+    android:orientation="vertical">
+
+
+
+
+                    <TextView
+                        android:id="@+id/lb_fecha_acceso"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginBottom="16px"
+                        android:layout_marginLeft="24px"
+                        android:layout_marginTop="48px"
+
+
+                        android:text="Acceso"
+
+                        android:textColor="@color/colorAccent"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:id="@+id/ly_f_A"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/TV_fecha_acceso"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginBottom="16px"
+                            android:layout_marginLeft="24px"
+                            android:layout_marginTop="48px"
+                            android:layout_weight="1"
+                            android:onClick="showDatePickerDialog_fecha_acceso"
+                            android:text="Fecha de acceso"
+
+                            android:textColor="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/TV_hr_acceso"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginBottom="16px"
+                            android:layout_marginLeft="24px"
+                            android:layout_marginTop="48px"
+                            android:layout_weight="1"
+                            android:onClick="showTimePickerDialog_Head_hr_acceso"
+                            android:text="Hora de acceso"
+
+                            android:textColor="@color/colorPrimary" />
+
+
+                    </LinearLayout>
+
+
+
+                    <TextView
+                        android:id="@+id/lb_fecha_llegada_ETV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ly_f_A"
+                        android:layout_marginBottom="16px"
+                        android:layout_marginLeft="24px"
+                        android:layout_marginTop="48px"
+
+
+                        android:text="Llegada ETV"
+
+                        android:textColor="@color/colorAccent"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:id="@+id/ly_f_LL_ETV"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/lb_fecha_llegada_ETV"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/TV_fecha_LL_ETV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginBottom="16px"
+                            android:layout_marginLeft="24px"
+                            android:layout_marginTop="48px"
+                            android:layout_weight="1"
+                            android:onClick="showDatePickerDialog_fecha_LL_ETV"
+                            android:text="Fecha de llegada ETV"
+
+                            android:textColor="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/TV_hr_LL_ETV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginBottom="16px"
+                            android:layout_marginLeft="24px"
+                            android:layout_marginTop="48px"
+                            android:layout_weight="1"
+                            android:onClick="showTimePickerDialog_Head_hr_LL_ETV"
+                            android:text="Hora de llegada ETV"
+
+                            android:textColor="@color/colorPrimary" />
+
+
+                    </LinearLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_nombre_ETV"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/ly_f_LL_ETV">
+
+                        <EditText
+                            android:id="@+id/nombre_ETV"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/input_et_reporte"
+                            android:ems="10"
+                            android:hint="Nombre Operador ETV"
+                            android:inputType="text|textCapSentences" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                    <TextView
+                        android:id="@+id/lb_fecha_atencion_MV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/input_nombre_ETV"
+                        android:layout_marginBottom="16px"
+                        android:layout_marginLeft="24px"
+                        android:layout_marginTop="48px"
+
+
+                        android:text="Atención MV"
+
+                        android:textColor="@color/colorAccent"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:id="@+id/ly_f_atencion_MV"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/lb_fecha_atencion_MV"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/TV_fecha_atencion_MV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginBottom="16px"
+                            android:layout_marginLeft="24px"
+                            android:layout_marginTop="48px"
+                            android:layout_weight="1"
+                            android:onClick="showDatePickerDialog_fecha_atencion_MV"
+                            android:text="Fecha de Atención MV"
+
+                            android:textColor="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/TV_hr_atencion_MV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginBottom="16px"
+                            android:layout_marginLeft="24px"
+                            android:layout_marginTop="48px"
+                            android:layout_weight="1"
+                            android:onClick="showTimePickerDialog_Head_hr_atencion_MV"
+                            android:text="Hora de Atención MV"
+
+                            android:textColor="@color/colorPrimary" />
+
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/lb_fecha_ATM_Validado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ly_f_atencion_MV"
+                        android:layout_marginBottom="16px"
+                        android:layout_marginLeft="24px"
+                        android:layout_marginTop="48px"
+
+
+                        android:text="ATM Validado"
+
+                        android:textColor="@color/colorAccent"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:id="@+id/ly_f_ATM_Validado"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/lb_fecha_ATM_Validado"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/TV_fecha_ATM_Validad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginBottom="16px"
+                            android:layout_marginLeft="24px"
+                            android:layout_marginTop="48px"
+                            android:layout_weight="1"
+                            android:onClick="showDatePickerDialog_fecha_ATM_Validad"
+                            android:text="Fecha de ATM Validadado"
+
+                            android:textColor="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/TV_hr_ATM_Validad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginBottom="16px"
+                            android:layout_marginLeft="24px"
+                            android:layout_marginTop="48px"
+                            android:layout_weight="1"
+                            android:onClick="showTimePickerDialog_Head_hr_ATM_Validad"
+                            android:text="Hora de ATM Validadado"
+
+                            android:textColor="@color/colorPrimary" />
+
+
+                    </LinearLayout>
+
+
+</LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/ly_sc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:weightSum="2"
-                        android:layout_below="@+id/ly_f_f">
+                        android:layout_below="@+id/fechas_atm">
 
                         <LinearLayout
                             android:layout_width="match_parent"

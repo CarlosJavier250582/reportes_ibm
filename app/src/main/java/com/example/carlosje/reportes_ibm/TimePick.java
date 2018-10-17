@@ -59,6 +59,22 @@ public class TimePick extends DialogFragment implements TimePickerDialog.OnTimeS
             TextView tv1=(TextView) getActivity().findViewById(R.id.TV_hr_fin);
             tv1.setText(hora+ ":"+ minuto);
         }
+        if (mNum==3){
+            TextView tv1=(TextView) getActivity().findViewById(R.id.TV_hr_acceso);
+            tv1.setText(hora+ ":"+ minuto);
+        }
+        if (mNum==4){
+            TextView tv1=(TextView) getActivity().findViewById(R.id.TV_hr_LL_ETV);
+            tv1.setText(hora+ ":"+ minuto);
+        }
+        if (mNum==5){
+            TextView tv1=(TextView) getActivity().findViewById(R.id.TV_hr_atencion_MV);
+            tv1.setText(hora+ ":"+ minuto);
+        }
+        if (mNum==6){
+            TextView tv1=(TextView) getActivity().findViewById(R.id.TV_hr_ATM_Validad);
+            tv1.setText(hora+ ":"+ minuto);
+        }
 
 
 

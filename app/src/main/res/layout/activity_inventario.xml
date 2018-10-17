@@ -547,6 +547,16 @@
 
                         </android.support.design.widget.TextInputLayout>
 
+                        <ImageView
+                            android:id="@+id/btn_scanner"
+                            android:layout_marginTop="8px"
+                            android:layout_width="77dp"
+                            android:layout_height="51dp"
+                            android:layout_below="@+id/input_et_modelo"
+                            android:layout_toRightOf="@+id/input_et_serie"
+                            android:onClick="scanNow"
+                            android:src="@drawable/icon_scan" />
+
 
                         <ProgressBar
                             android:id="@+id/progressBarINV"

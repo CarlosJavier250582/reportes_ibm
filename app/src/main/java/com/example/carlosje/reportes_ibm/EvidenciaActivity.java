@@ -28,6 +28,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -247,7 +248,16 @@ public class EvidenciaActivity  extends AppCompatActivity implements GoogleApiCl
                 } catch (IOException e) {
                 }
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                String credentials = getResources().getString(R.string.user_cloudant) + ":" + getResources().getString(R.string.pass_cloudant);
+                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                return headers;
+            }
+        };
         requestQueue.add(jar1);
         jar1.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 

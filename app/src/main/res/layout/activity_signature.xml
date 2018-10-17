@@ -172,8 +172,9 @@
 
             <RelativeLayout
 
+                android:id="@+id/rl1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="16dp"
                 android:paddingLeft="4dp"
@@ -186,14 +187,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-
-                    android:layout_marginBottom="16px"
                     android:layout_marginTop="24px"
                     android:text="¿Se solucionó el problema que presentaba su equipo?"
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp" />
 
                 <RelativeLayout
+                    android:id= "@+id/ec1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/lb_e1"
@@ -255,53 +255,22 @@
                         app:srcCompat="@drawable/w5" />
                 </RelativeLayout>
 
-            </RelativeLayout>
-
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/card_E_2"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_marginTop="-16dp"
-            android:elevation="0dp"
-            android:focusable="false"
-            android:visibility="visible"
-            app:cardElevation="8dp"
-
-            app:cardUseCompatPadding="true"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <RelativeLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingBottom="16dp"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:paddingTop="4dp">
-
 
                 <TextView
                     android:id="@+id/lb_e2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
+                    android:layout_below="@+id/ec1"
 
-                    android:layout_marginBottom="16px"
-                    android:layout_marginTop="24px"
+
+                    android:layout_marginTop="32px"
                     android:text="¿Que tan satisfecho está ud. con el servicio que proporcionó el Ingeniero?"
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp" />
 
                 <RelativeLayout
+                    android:id="@+id/ec2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/lb_e2"
@@ -362,53 +331,21 @@
                         app:srcCompat="@drawable/w5" />
                 </RelativeLayout>
 
-            </RelativeLayout>
-
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/card_E_3"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_marginTop="-16dp"
-            android:elevation="0dp"
-            android:focusable="false"
-            android:visibility="visible"
-            app:cardElevation="8dp"
-
-            app:cardUseCompatPadding="true"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <RelativeLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingBottom="16dp"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:paddingTop="4dp">
-
-
                 <TextView
                     android:id="@+id/lb_e3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
+                    android:layout_below="@+id/ec2"
 
-                    android:layout_marginBottom="16px"
-                    android:layout_marginTop="24px"
+
+                    android:layout_marginTop="32px"
                     android:text="¿Que tan satisfecho está ud. con el servicio de IBM?"
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp" />
 
                 <RelativeLayout
+                    android:id="@+id/ec3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/lb_e3"
@@ -469,29 +406,52 @@
                         app:srcCompat="@drawable/w5" />
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/label_com"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ec3"
+                    android:layout_marginTop="24dp"
+                    android:text="Comentarios / ¿Que otras de necesidades de servicio tiene?"
+                    android:textColor="@color/colorAccent" />
+
+
+
+                    <EditText
+                        android:id="@+id/coments_enc"
+                        android:inputType="textMultiLine"
+                        android:layout_below="@+id/label_com"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginTop="40px"
+                        android:ems="10"
+                        android:hint=""
+                        android:lines="8"
+                        android:minLines="6"
+                        android:gravity="top|left"
+                        android:maxLines="10"
+
+                        android:scrollbars="vertical"
+                        />
+
+
+
             </RelativeLayout>
+
+
+
+
+
 
 
         </android.support.v7.widget.CardView>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_coments_enc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp">
 
-            <EditText
-                android:id="@+id/coments_enc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="40px"
-                android:ems="10"
-                android:hint="Comentarios del servicio"
-                android:inputType="textCapCharacters"/>
 
-        </android.support.design.widget.TextInputLayout>
+
+
+
 
 
     </LinearLayout>

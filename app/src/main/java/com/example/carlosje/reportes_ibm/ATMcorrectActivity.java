@@ -1,6 +1,6 @@
 package com.example.carlosje.reportes_ibm;
 
-
+///PTEST12
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -106,7 +106,7 @@ public class ATMcorrectActivity extends AppCompatActivity implements  DatePicker
     private CardView card1, card2;
     private ImageView photo_ATM_prev, fotito;
     private Button bt_nuevo, bt_buscar, bt_fecha;
-    private LinearLayout  lay_nuevo, lay_gral,ly_partes,ly_falla,ly_sol_atm;
+    private LinearLayout  lay_nuevo, lay_gral,ly_partes,ly_falla,ly_sol_atm,fechas_atm;
     private FloatingActionButton fl_btn_add_photo, fl_btn_save_atm_prev,fl_btn_respaldo;
     private String usuarioid;
     private TextView tv_user, fecha, url_photo,TV_sc,TV_ac,TV_ac_label, lb_cliente;
@@ -114,9 +114,9 @@ public class ATMcorrectActivity extends AppCompatActivity implements  DatePicker
     private EditText partes_desc_1,partes_desc_2,partes_desc_3,partes_desc_4,partes_desc_5,partes_desc_6,partes_desc_7,partes_desc_8;
     private EditText indicaciones_soporte, soporte_nombre, notas_image, reporte, id_tpv, localidad, marca, modelo, serie, inventario, cliente_final, falla, solucion,puesto, vobo, folio, comentarios;
     private RadioButton RB_soporte_resuelve_si, RB_soporte_resuelve_no, RB_soporte_si, RB_soporte_no, RB_partes_si, RB_partes_no, RB_banco_banamex, RB_banco_bancomer, RB_banco_banorte, RB_banco_bancoppel, RB_banco_santander, RB_remo_suc_remoto, RB_remo_suc_sucursal;
-    private RadioButton RB_cliente_ALSEA,RB_cliente_Banorte_Suc,RB_cliente_Banorte_Nod,RB_cliente_CCK,RB_cliente_otro;
+    private RadioButton RB_cliente_ALSEA,RB_cliente_Banorte_Suc,RB_cliente_Banorte_Nod,RB_cliente_CCK,RB_cliente_otro,RB_banco_otro;
     private String cliente;
-    private EditText cliente_otro;
+    private EditText cliente_otro,banco_otro;
     private String falla_V;
     private String solucion_V;
     private String RB_partes_V;
@@ -127,11 +127,13 @@ public class ATMcorrectActivity extends AppCompatActivity implements  DatePicker
     private RadioGroup op_banco,op_cliente,op_remo_suc;
     private String pais, flag_tipo;
     private String tipo_fecha="";
-    private Boolean flag_cliente;
+    private Boolean flag_cliente,flag_banco;
     private String cual_campo;
     private String idATM;
     private String comas=  "\"";
     private int i_photos;
+    private TextView TV_fecha_acceso,TV_hr_acceso,TV_fecha_LL_ETV,TV_hr_LL_ETV,TV_fecha_atencion_MV,TV_hr_atencion_MV,TV_fecha_ATM_Validad,TV_hr_ATM_Validad;
+    private EditText nombre_ETV;
 
     RequestQueue requestQueue;
     @Override
@@ -212,11 +214,13 @@ public class ATMcorrectActivity extends AppCompatActivity implements  DatePicker
         RB_cliente_Banorte_Nod = (RadioButton) findViewById(R.id.RB_cliente_Banorte_Nod);
         RB_cliente_CCK = (RadioButton) findViewById(R.id.RB_cliente_CCK);
         RB_cliente_otro = (RadioButton) findViewById(R.id.RB_cliente_otro);
+        RB_banco_otro= (RadioButton) findViewById(R.id.RB_banco_otro);
         op_banco=(RadioGroup) findViewById(R.id.op_banco);
         op_remo_suc=(RadioGroup) findViewById(R.id.op_remo_suc);
         op_cliente=(RadioGroup) findViewById(R.id.op_cliente);
         lb_cliente=(TextView) findViewById(R.id.lb_cliente);
         cliente_otro= (EditText) findViewById(R.id.cliente_otro);
+        banco_otro= (EditText) findViewById(R.id.banco_otro);
         lb_remo_suc = (TextView) findViewById(R.id.lb_remo_suc);
         lb_banco = (TextView) findViewById(R.id.lb_banco);
         partes_solicitadas_1 = (EditText) findViewById(R.id.partes_solicitadas_1);
@@ -245,8 +249,23 @@ public class ATMcorrectActivity extends AppCompatActivity implements  DatePicker
         partes_desc_8= (EditText) findViewById(R.id.partes_desc_8);
 
 
+        nombre_ETV= (EditText) findViewById(R.id.nombre_ETV);
+        TV_fecha_acceso = (TextView) findViewById(R.id.TV_fecha_acceso);
+        TV_hr_acceso = (TextView) findViewById(R.id.TV_hr_acceso);
+        TV_fecha_LL_ETV = (TextView) findViewById(R.id.TV_fecha_LL_ETV);
+        TV_hr_LL_ETV = (TextView) findViewById(R.id.TV_hr_LL_ETV);
+        TV_fecha_atencion_MV = (TextView) findViewById(R.id.TV_fecha_atencion_MV);
+        TV_hr_atencion_MV = (TextView) findViewById(R.id.TV_hr_atencion_MV);
+        TV_fecha_ATM_Validad = (TextView) findViewById(R.id.TV_fecha_ATM_Validad);
+        TV_hr_ATM_Validad = (TextView) findViewById(R.id.TV_hr_ATM_Validad);
+
+
+        fechas_atm=(LinearLayout) findViewById(R.id.fechas_atm) ;
+
+
         pais = "México";
         flag_cliente= false;
+        flag_banco= false;
         cliente="";
         usuarioid = getIntent().getStringExtra("usuario");
         flag_tipo = getIntent().getStringExtra("tipo");
@@ -261,6 +280,8 @@ public class ATMcorrectActivity extends AppCompatActivity implements  DatePicker
         TV_ac_label.setVisibility(View.GONE);
         TV_solucion_label_2.setVisibility(View.GONE);
         TV_solucion2.setVisibility(View.GONE);
+        fechas_atm.setVisibility(View.GONE);
+
 
  /* --------------------------------------------------
 	valida si es logo o atm
@@ -282,6 +303,7 @@ public class ATMcorrectActivity extends AppCompatActivity implements  DatePicker
             falla.setVisibility(View.GONE);
             op_cliente.setVisibility(View.GONE);
             lb_cliente.setVisibility(View.GONE);
+            fechas_atm.setVisibility(View.VISIBLE);
         }
 
 
@@ -393,11 +415,13 @@ api geolocalización
                 mensaje_valida();
                 return;
             }
-            if (!RB_banco_banamex.isChecked() && !RB_banco_bancomer.isChecked() && !RB_banco_banorte.isChecked() && !RB_banco_bancoppel.isChecked() && !RB_banco_santander.isChecked()) {
+            if (!RB_banco_otro.isChecked() && !RB_banco_banamex.isChecked() && !RB_banco_bancomer.isChecked() && !RB_banco_banorte.isChecked() && !RB_banco_bancoppel.isChecked() && !RB_banco_santander.isChecked()) {
                 cual_campo="Banco";
                 mensaje_valida();
                 return;
             }
+
+
             if (!RB_remo_suc_remoto.isChecked() && !RB_remo_suc_sucursal.isChecked()) {
                 cual_campo="Remoto / Sucursal";
                 mensaje_valida();
@@ -405,6 +429,11 @@ api geolocalización
             }
             if (inventario.getText().toString().equals("")) {
                 cual_campo="inventario";
+                mensaje_valida();
+                return;
+            }
+            if(flag_banco==true && banco_otro.getText().toString().equals("") ){
+                cual_campo="banco (otro)";
                 mensaje_valida();
                 return;
             }
@@ -730,6 +759,9 @@ api geolocalización
         if (RB_banco_santander.isChecked()) {
             RB_banco_V = RB_banco_santander.getText().toString();
         }
+        if (RB_banco_otro.isChecked()) {
+            RB_banco_V = banco_otro.getText().toString();
+        }
         if (RB_remo_suc_remoto.isChecked()) {
             RB_remo_suc_V = RB_remo_suc_remoto.getText().toString();
         }
@@ -893,9 +925,24 @@ api geolocalización
                             comas+"fecha_fin"+comas+":"+comas+TV_fecha_fin.getText().toString()+comas+","+
                             comas+"SC"+comas+":"+comas+TV_sc.getText().toString()+comas+","+
                             comas+"cliente"+comas+":"+comas+cliente+comas+","+
+                            comas+"fecha_acceso"+comas+":"+comas+TV_fecha_acceso.getText().toString()+comas+","+
+                            comas+"hr_acceso"+comas+":"+comas+TV_hr_acceso.getText().toString()+comas+","+
+                            comas+"fecha_LL_ETV"+comas+":"+comas+TV_fecha_LL_ETV.getText().toString()+comas+","+
+                            comas+"hr_LL_ETV"+comas+":"+comas+TV_hr_LL_ETV.getText().toString()+comas+","+
+                            comas+"fecha_atencion_MV"+comas+":"+comas+TV_fecha_atencion_MV.getText().toString()+comas+","+
+                            comas+"hr_atencion_MV"+comas+":"+comas+TV_hr_atencion_MV.getText().toString()+comas+","+
+                            comas+"fecha_ATM_Validad"+comas+":"+comas+TV_fecha_ATM_Validad.getText().toString()+comas+","+
+                            comas+"hr_ATM_Validad"+comas+":"+comas+TV_hr_ATM_Validad.getText().toString()+comas+","+
+                            comas+"nombre_ETV"+comas+":"+comas+nombre_ETV.getText().toString()+comas+","+
                             comas+"AC"+comas+":"+comas+TV_ac.getText().toString()+comas+
-                            "}";
 
+
+
+
+
+
+                            "}";
+//TODO respaldo para enviar
                     Long tsLong = System.currentTimeMillis()/1000;
                     String ts = tsLong.toString();
                     String filename= "CO_"+ts+"_"+reporte.getText().toString()+".txt";
@@ -998,6 +1045,17 @@ Post mapa a cloudant
             result.put("SC",TV_sc.getText().toString());
             result.put("AC",TV_ac.getText().toString());
             result.put("cliente", cliente);
+            result.put("fecha_acceso",TV_fecha_acceso.getText().toString());
+            result.put("hr_acceso",TV_hr_acceso.getText().toString());
+            result.put("fecha_LL_ETV",TV_fecha_LL_ETV.getText().toString());
+            result.put("hr_LL_ETV",TV_hr_LL_ETV.getText().toString());
+            result.put("fecha_atencion_MV",TV_fecha_atencion_MV.getText().toString());
+            result.put("hr_atencion_MV",TV_hr_atencion_MV.getText().toString());
+            result.put("fecha_ATM_Validad",TV_fecha_ATM_Validad.getText().toString());
+            result.put("hr_ATM_Validad",TV_hr_ATM_Validad.getText().toString());
+            result.put("nombre_ETV",nombre_ETV.getText().toString());
+
+
             return result;
         }
     }
@@ -1021,8 +1079,15 @@ abre intent para encuesta y firma
         activity_signature.putExtra("longitud", mLongitude.getText().toString());
         activity_signature.putExtra("fecha", fecha.getText().toString());
         activity_signature.putExtra("serie", serie.getText().toString());
-        activity_signature.putExtra("cliente", cliente);
-        startActivity(activity_signature);
+
+        if (flag_tipo.equals("ATM")) {
+            activity_signature.putExtra("cliente", "ATM "+ RB_banco_V);
+            startActivity(activity_signature);
+        }else{
+            activity_signature.putExtra("cliente", cliente);
+            startActivity(activity_signature);
+        }
+
     }
 
 /* --------------------------------------------------
@@ -1035,6 +1100,16 @@ muestra y ocultatextbox cliente otro
     public void ocultarotro(View view){
         cliente_otro.setVisibility(View.GONE);
         flag_cliente=false;
+    }
+
+
+    public void verotro_banco(View view) {
+        banco_otro.setVisibility(View.VISIBLE);
+        flag_banco = true;
+    }
+    public void ocultarotro_banco(View view){
+        banco_otro.setVisibility(View.GONE);
+            flag_banco=false;
     }
 
     /* --------------------------------------------------
@@ -1071,6 +1146,44 @@ abre calendario
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
+    public void showDatePickerDialog_fecha_acceso(View v) {
+        tipo_fecha="fecha_acceso";
+        DialogFragment newFragment = new DatePick();
+        Bundle args = new Bundle();
+        args.putInt("num", 1);
+        newFragment.setArguments(args);
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+    public void showDatePickerDialog_fecha_LL_ETV(View v) {
+        tipo_fecha="fecha_LL_ETV";
+        DialogFragment newFragment = new DatePick();
+        Bundle args = new Bundle();
+        args.putInt("num", 1);
+        newFragment.setArguments(args);
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+    public void showDatePickerDialog_fecha_atencion_MV(View v) {
+        tipo_fecha="fecha_atencion_MV";
+        DialogFragment newFragment = new DatePick();
+        Bundle args = new Bundle();
+        args.putInt("num", 1);
+        newFragment.setArguments(args);
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+    public void showDatePickerDialog_fecha_ATM_Validad(View v) {
+        tipo_fecha="fecha_ATM_Validad";
+        DialogFragment newFragment = new DatePick();
+        Bundle args = new Bundle();
+        args.putInt("num", 1);
+        newFragment.setArguments(args);
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+
+
+
+
+
     public void showDatePickerDialog_Head(View v) {
         tipo_fecha="head";
         DialogFragment newFragment = new DatePick();
@@ -1103,6 +1216,20 @@ recoge datos calendario
         if (tipo_fecha.equals("fecha_fin")){
             TV_fecha_fin.setText(valueOf(year)+ "/"+ m_v + "/" + d_v  );
         }
+
+        if (tipo_fecha.equals("fecha_acceso")){
+            TV_fecha_acceso.setText(valueOf(year)+ "/"+ m_v + "/" + d_v  );
+        }
+
+        if (tipo_fecha.equals("fecha_LL_ETV")){
+            TV_fecha_LL_ETV.setText(valueOf(year)+ "/"+ m_v + "/" + d_v  );
+        }
+        if (tipo_fecha.equals("fecha_atencion_MV")){
+            TV_fecha_atencion_MV.setText(valueOf(year)+ "/"+ m_v + "/" + d_v  );
+        }
+        if (tipo_fecha.equals("fecha_ATM_Validad")){
+            TV_fecha_ATM_Validad.setText(valueOf(year)+ "/"+ m_v + "/" + d_v  );
+        }
     }
 
 /* --------------------------------------------------
@@ -1115,13 +1242,38 @@ abrir reloj
         newFragment.setArguments(args);
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
-    /* --------------------------------------------------
-    recoge datos hora
-    -------------------------------------------------- */
-    public void showTimePickerDialog_Head_hr_fin(View v) {
+     public void showTimePickerDialog_Head_hr_fin(View v) {
         DialogFragment newFragment = new TimePick();
         Bundle args = new Bundle();
         args.putInt("num", 2);
+        newFragment.setArguments(args);
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+    public void showTimePickerDialog_Head_hr_acceso(View v) {
+        DialogFragment newFragment = new TimePick();
+        Bundle args = new Bundle();
+        args.putInt("num", 3);
+        newFragment.setArguments(args);
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+    public void showTimePickerDialog_Head_hr_LL_ETV(View v) {
+        DialogFragment newFragment = new TimePick();
+        Bundle args = new Bundle();
+        args.putInt("num", 4);
+        newFragment.setArguments(args);
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+    public void showTimePickerDialog_Head_hr_atencion_MV(View v) {
+        DialogFragment newFragment = new TimePick();
+        Bundle args = new Bundle();
+        args.putInt("num", 5);
+        newFragment.setArguments(args);
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+    public void showTimePickerDialog_Head_hr_ATM_Validad(View v) {
+        DialogFragment newFragment = new TimePick();
+        Bundle args = new Bundle();
+        args.putInt("num",6);
         newFragment.setArguments(args);
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
@@ -1854,6 +2006,9 @@ private String folio_b;
         if (RB_banco_santander.isChecked()) {
             RB_banco_V = RB_banco_santander.getText().toString();
         }
+        if (RB_banco_otro.isChecked()) {
+            RB_banco_V = banco_otro.getText().toString();
+        }
         if (RB_remo_suc_remoto.isChecked()) {
             RB_remo_suc_V = RB_remo_suc_remoto.getText().toString();
         }
@@ -1973,7 +2128,7 @@ private String folio_b;
                 //falla.setText(todoJson.getString("falla"));
                 fecha.setText(todoJson.getString("Fecha"));
                // folio.setText(todoJson.getString("folio"));
-                id_tpv.setText(todoJson.getString("id_ATM"));
+                //id_tpv.setText(todoJson.getString("id_ATM"));
                 indicaciones_soporte.setText(todoJson.getString("indicaciones_de_soporte"));
                 inventario.setText(todoJson.getString("inventario"));
                 localidad.setText(todoJson.getString("localidad"));

@@ -355,6 +355,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Banamex"
+                                    android:onClick="ocultarotro_banco"
                                     android:textColor="#424242" />
 
                                 <RadioButton
@@ -362,6 +363,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Bancomer"
+                                    android:onClick="ocultarotro_banco"
                                     android:textColor="#424242" />
 
                                 <RadioButton
@@ -369,6 +371,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Banorte"
+                                    android:onClick="ocultarotro_banco"
                                     android:textColor="#424242" />
 
                                 <RadioButton
@@ -376,6 +379,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Bancoppel"
+                                    android:onClick="ocultarotro_banco"
                                     android:textColor="#424242" />
 
                                 <RadioButton
@@ -383,6 +387,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Santander"
+                                    android:onClick="ocultarotro_banco"
                                     android:textColor="#424242" />
 
                                 <RadioButton
@@ -390,7 +395,42 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="CCK"
+                                    android:onClick="ocultarotro_banco"
                                     android:textColor="#424242" />
+
+                                <RadioButton
+                                    android:id="@+id/RB_banco_otro"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="verotro_banco"
+                                    android:text="Otro"
+                                    android:textColor="#424242" />
+
+
+                                <android.support.design.widget.TextInputLayout
+                                    android:id="@+id/input_banco_otro"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+
+
+                                    >
+
+
+                                    <EditText
+                                        android:id="@+id/banco_otro"
+                                        android:layout_width="170dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_marginTop="11dp"
+                                        android:ems="10"
+                                        android:hint="Otro"
+                                        android:visibility="gone"
+
+                                        android:inputType="textCapCharacters" />
+
+
+                                </android.support.design.widget.TextInputLayout>
 
 
                             </RadioGroup>

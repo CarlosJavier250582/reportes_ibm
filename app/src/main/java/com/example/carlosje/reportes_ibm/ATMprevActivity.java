@@ -77,6 +77,7 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         GoogleApiClient.OnConnectionFailedListener{
 
 
+    private Boolean flag_banco;
     private String idATM;
     private String comas=  "\"";
     private String REV;
@@ -96,7 +97,7 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     private EditText carcaza, temperatura, UPS_kva, regulador_kva, fase_neutro_v_pared, fase_neutro_v_regulado, fase_tierra_v_pared, fase_tierra_v_regulado, tierra_neutro_v_pared, tierra_neutro_v_regulado;
     private EditText notas_seguridad, notas_inst_elect, notas_comunic;
     private EditText ob_edo_impresora, ob_edo_lectora, ob_edo_teclados, ob_edo_CPU, ob_edo_monitor, ob_edo_dispensador;
-    private EditText marca_router, longitud_cable, pruebas_ping_result, vobo,puesto, folio,solucion;
+    private EditText marca_router, longitud_cable, pruebas_ping_result, vobo,puesto, folio,solucion,banco_otro;
     private EditText capacidad_hd, RAM, nombre_atm, ob_esp_sitio, obs_telecontrol, tamaño_monitor, procesador, vel_procesador, version_antivirus;
     private RadioButton RB_publico, RB_Personal, RB_cerradura_si, RB_cerradura_no, RB_puntos_anclaje_6, RB_puntos_anclaje_4, RB_puntos_anclaje_otro, RB_tipo_anclaje_RM16, RB_tipo_anclaje_tradicional;
     private RadioButton RB_base_anclaje_no, RB_base_anclaje_si, RB_placa_seguridad_si, RB_placa_seguridad_no, RB_perno_apertura_si, RB_perno_apertura_no;
@@ -112,7 +113,7 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     private RadioButton RB_conf_cableado_conex_directa, RB_conf_cableado_conex_cruzado, RB_equipo_con_alte_si, RB_equipo_con_alte_no;
     private RadioButton  RB_pruebas_ping_si, RB_pruebas_ping_no, RB_tipo_dial_mecanico, RB_tipo_dial_electrico, RB_tipo_dial_randomico;
     private RadioButton RB_empotrado_si, RB_empotrado_no, RB_banco_banamex, RB_banco_bancomer ,RB_banco_banorte, RB_banco_bancoppel, RB_banco_santander,RB_banco_CCK, RB_remo_suc_remoto, RB_remo_suc_sucursal ;
-    private RadioButton RB_ADSL, RB_3_4_G,RB_regulador_si,RB_regulador_no;
+    private RadioButton RB_ADSL, RB_3_4_G,RB_regulador_si,RB_regulador_no,RB_banco_otro;
     private RadioButton RB_01800_cambio, RB_01800_deteriorada, RB_01800_no, RB_01800_si, RB_antiskimmer_ebras, RB_antiskimmer_no, RB_antiskimmer_si, RB_blindaje_cab_no, RB_blindaje_cab_si, RB_braile_no, RB_braile_si, RB_caseta_prefab_no, RB_caseta_prefab_si, RB_chapa_rand_no, RB_chapa_rand_si, RB_entintado_billete_no, RB_entintado_billete_si, RB_jumper_no, RB_jumper_si, RB_logo_cambio, RB_nicho_de_protec_no, RB_nicho_de_protec_si, RB_tipo_placa_antivand_der, RB_tipo_placa_antivand_izq, RB_placa_antivand_no, RB_placa_antivand_si, RB_rack_no, RB_rack_si, RB_seg_shutter_no, RB_seg_shutter_si, RB_senal_carcaza_cambio, RB_senal_impresora_cambio, RB_senal_lectora_cambio, RB_senal_salida_efectivo_cambio, RB_telecontrol_conect_dañado, RB_telecontrol_conect_no, RB_telecontrol_conect_si, RB_tipo_telecontrol_IBOOT, RB_tipo_telecontrol_MTC, RB_tipo_telecontrol_Ninguno;
     private String pais;
     private String date;
@@ -460,6 +461,8 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         TV_sc= (TextView) findViewById(R.id.TV_sc);
         TV_ac= (TextView) findViewById(R.id.TV_ac);
         TV_ac_label= (TextView) findViewById(R.id.TV_ac_label);
+        banco_otro= (EditText) findViewById(R.id.banco_otro);
+        RB_banco_otro= (RadioButton) findViewById(R.id.RB_banco_otro);
 
         card2.setVisibility(View.GONE);
         card3.setVisibility(View.GONE);
@@ -469,6 +472,8 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
         fl_btn_save_atm_prev.setVisibility(View.VISIBLE);
         TV_ac.setVisibility(View.GONE);
         TV_ac_label.setVisibility(View.GONE);
+
+        flag_banco= false;
 /* ------------------------------------------------------------------
 	busca si hay respaldos y si si los carga // crea folio digital
 --------------------------------------------------------------------*/
@@ -523,8 +528,14 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
     public void valida_campos(View view){
 
 
-        if (!RB_banco_banamex.isChecked() && !RB_banco_bancomer.isChecked()&& !RB_banco_banorte.isChecked()&& !RB_banco_bancoppel.isChecked()&& !RB_banco_santander.isChecked() && !RB_banco_CCK.isChecked()){
+        if (!RB_banco_otro.isChecked() && !RB_banco_banamex.isChecked() && !RB_banco_bancomer.isChecked()&& !RB_banco_banorte.isChecked()&& !RB_banco_bancoppel.isChecked()&& !RB_banco_santander.isChecked() && !RB_banco_CCK.isChecked()){
             cual_campo=" Banco / CCK";
+            mensaje_valida();
+            return;
+        }
+
+        if(flag_banco==true && banco_otro.getText().toString().equals("") ){
+            cual_campo="banco (otro)";
             mensaje_valida();
             return;
         }
@@ -1053,7 +1064,7 @@ public class ATMprevActivity extends AppCompatActivity implements  DatePickerDia
                 mensaje_valida();
                 return;
             }
-            if (!RB_senal_lectora_deteriorada.isChecked() && !RB_senal_lectora_si.isChecked() && !RB_senal_lectora_no.isChecked() && !RB_senal_lectora_no.isChecked()) {
+            if (!RB_senal_lectora_deteriorada.isChecked() && !RB_senal_lectora_si.isChecked() && !RB_senal_lectora_no.isChecked() && !RB_senal_lectora_cambio.isChecked()) {
                 cual_campo = " señalización lectora";
                 mensaje_valida();
                 return;
@@ -1564,6 +1575,9 @@ public void asigna_variables(){
     }
     if (RB_banco_CCK.isChecked()) {
         RB_banco_V = RB_banco_CCK.getText().toString();
+    }
+    if (RB_banco_otro.isChecked()) {
+        RB_banco_V = banco_otro.getText().toString();
     }
     if (RB_remo_suc_remoto.isChecked()) {
         RB_remo_suc_V = RB_remo_suc_remoto.getText().toString();
@@ -2134,6 +2148,22 @@ Dialogo confirmar salir
         dialog.show();
     }
 
+
+    /* --------------------------------------------------
+    muestra y ocultatextbox cliente otro
+    -------------------------------------------------- */
+
+
+
+    public void verotro_banco(View view) {
+        banco_otro.setVisibility(View.VISIBLE);
+        flag_banco = true;
+    }
+    public void ocultarotro_banco(View view){
+        banco_otro.setVisibility(View.GONE);
+        flag_banco=false;
+    }
+
 /* --------------------------------------------------
 cambia card view
 -------------------------------------------------- */
@@ -2498,7 +2528,7 @@ abre intent para encuesta y firma
         activity_signature.putExtra("longitud", mLongitude.getText().toString());
         activity_signature.putExtra("fecha", fecha.getText().toString());
         activity_signature.putExtra("serie", serie.getText().toString());
-        activity_signature.putExtra("cliente", RB_banco_V);
+        activity_signature.putExtra("cliente", "ATM "+ RB_banco_V);
         startActivity(activity_signature);
     }
     private String mJSONURLString;
@@ -3101,6 +3131,9 @@ abre intent para encuesta y firma
         }
         if (RB_banco_CCK.isChecked()) {
             RB_banco_V = RB_banco_CCK.getText().toString();
+        }
+        if (RB_banco_otro.isChecked()) {
+            RB_banco_V = banco_otro.getText().toString();
         }
         if (RB_remo_suc_remoto.isChecked()) {
             RB_remo_suc_V = RB_remo_suc_remoto.getText().toString();
